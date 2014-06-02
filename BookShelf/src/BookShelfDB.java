@@ -11,6 +11,8 @@ import java.util.Properties;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import libraryProject.Book;
+
 public class BookShelfDB {
 	private static String userName = " _445team15";
     private static String password = "dubdap,";
@@ -175,7 +177,7 @@ public class BookShelfDB {
      */
     public void addPatron(Patron aPatron) {
         String sql = "INSERT INTO _445team15.Patron VALUES "
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?);";
         
         PreparedStatement preparedStatement = null;
         try {
@@ -205,7 +207,7 @@ public class BookShelfDB {
      */
     public void addBookInfo(BookInfo aBookInfo) {
         String sql = "INSERT INTO _445team15.BookInfo VALUES "
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         
         PreparedStatement preparedStatement = null;
         try {
@@ -292,12 +294,12 @@ public class BookShelfDB {
      * @param aRecordID
      * @param aDate
      */
-    public void setReturnDate(int aRecordID, Calendar aDate) {
+    public void setReturnDate(int aRecordID, Date aDate) {
         String sql = "UPDATE _445team15.PatronRecord SET returnBy = ? WHERE recordID = ?;";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setDate(1, new Date(aDate.getTimeInMillis()));
+            preparedStatement.setDate(1, aDate);
             preparedStatement.setInt(2, aRecordID);
         } catch (SQLException e) {
             System.out.println(e);
@@ -463,4 +465,25 @@ public class BookShelfDB {
         
         return maxBookID + 1;
     }
+    
+    /**
+     * place a new order
+     */
+    public void placeOrder(int aRecordID, Date aDate, int aPatronID, int aBookID) {
+    	String sql = "INSERT INTO _445team15.PatronRecord VALUES "
+                + "(?, ?, ?, ?, NULL);";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aRecordID);
+            preparedStatement.setDate(2, aDate);
+            preparedStatement.setInt(3, aPatronID);
+            preparedStatement.setInt(4, aBookID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
 }
