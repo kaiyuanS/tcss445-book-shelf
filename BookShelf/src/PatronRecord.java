@@ -1,4 +1,6 @@
-import java.util.Calendar;
+import java.sql.Date;
+import java.util.GregorianCalendar;
+
 /**
  * The PatronRecord class holds all the information related to when a patron will check out
  * a book.
@@ -26,11 +28,11 @@ public class PatronRecord {
 	/**
 	 * The date that this book was borrowed by.
 	 */
-	private Calendar borrowBy;
+	private Date borrowBy;
 	/**
 	 * The date that this book was/will be returned by.
 	 */
-	private Calendar returnBy;
+	private Date returnBy;
 	
 	/**
 	 * The PatronRecord constructor that will be used when populating a PatronRecord with 
@@ -41,8 +43,8 @@ public class PatronRecord {
 	 * @param aBorrowByDate The date that this book was borrowed by.
 	 * @param aReturnByDate The date that this book was/will be returned by.
 	 */
-	public PatronRecord(int aRecordID, int aPatronID, int aBookID, Calendar aBorrowByDate, 
-						Calendar aReturnByDate) {
+	public PatronRecord(int aRecordID, int aPatronID, int aBookID, Date aBorrowByDate, 
+						Date aReturnByDate) {
 		recordID = aRecordID;
 		patronID = aPatronID;
 		bookID = aBookID;
@@ -57,7 +59,7 @@ public class PatronRecord {
 	 * @param aBookID The ID of the book for this record.
 	 */
 	public PatronRecord(int aPatronID, int aBookID) {
-		this(recordNum, aPatronID, aBookID, Calendar.getInstance(), null);
+		this(recordNum, aPatronID, aBookID, new Date(GregorianCalendar.getInstance().getTimeInMillis()), null);
 		recordNum++;
 	}
 	
@@ -90,7 +92,7 @@ public class PatronRecord {
 	 * This method sets the borrowBy field to the new borrowBy date.
 	 * @param aBorrowByDate The new date the book was borrowed by.
 	 */
-	public void setBorrowByDate(Calendar aBorrowByDate) {
+	public void setBorrowByDate(Date aBorrowByDate) {
 		
 		borrowBy = aBorrowByDate;
 	}
@@ -99,7 +101,7 @@ public class PatronRecord {
 	 * This method sets the returnBy field to the new returnBy date.
 	 * @param aReturnByDate The new date the book was returned by.
 	 */
-	public void setReturnByDate(Calendar aReturnByDate) {
+	public void setReturnByDate(Date aReturnByDate) {
 		returnBy = aReturnByDate;
 	}
 	
@@ -132,7 +134,7 @@ public class PatronRecord {
 	 * This method returns the borrowBy date of the current record.
 	 * @return The borrowBy date.
 	 */
-	public Calendar getBorrowByDate() {
+	public Date getBorrowByDate() {
 		return borrowBy;
 	}
 	
@@ -140,7 +142,7 @@ public class PatronRecord {
 	 * This method returns the returnBy date of the current record.
 	 * @return The returnBy date.
 	 */
-	public Calendar getReturnByDate() {
+	public Date getReturnByDate() {
 		return returnBy;
 	}
 }

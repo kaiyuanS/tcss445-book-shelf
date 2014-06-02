@@ -116,18 +116,8 @@ public class BookShelfDB {
 				int recordID = rs.getInt("recordID");
 				int patronID = rs.getInt("patronID");
 				int bookID = rs.getInt("bookID");
-				Date borrBy = rs.getDate("borrowBy");
-				Date retBy = rs.getDate("returnBy");
-				
-				Calendar borrowBy = new GregorianCalendar();
-				borrowBy.setTime(borrBy);
-				
-				Calendar returnBy = null;
-				
-				if (retBy != null) {
-					returnBy = new GregorianCalendar();
-					returnBy.setTime(retBy);
-				}
+				Date borrowBy = rs.getDate("borrowBy");
+				Date returnBy = rs.getDate("returnBy");
 				
 				PatronRecord pr = new PatronRecord(recordID, patronID, bookID, borrowBy, returnBy);
 				
@@ -140,8 +130,43 @@ public class BookShelfDB {
 				stmt.close();
 			}
 		}
-		
 		return prList;		 
+	}
+	
+	public List<PatronRecord> getPatronRecordNonReturnedBooks() {
+		List<PatronRecord> nonReturnedBooks = new ArrayList<PatronRecord>();
+		
+		try {
+			prList = getPatronRecords();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		for (PatronRecord pr : prList) {
+			if (pr.getReturnByDate() == null) {
+				nonReturnedBooks.add(pr);
+			}
+		}
+		
+		return nonReturnedBooks;
+	}
+	
+	public List<PatronRecord> getPatronRecordByID(int patronID) {
+		List<PatronRecord> individualPatronRecords = new ArrayList<PatronRecord>();
+		
+		try {
+			prList = getPatronRecords();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		
+		for (PatronRecord pr : prList) {
+			if (pr.getPatronID() == patronID) {
+				individualPatronRecords.add(pr);
+			}
+		}
+		
+		return individualPatronRecords;
 	}
 	
     /**
