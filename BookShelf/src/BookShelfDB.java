@@ -43,7 +43,7 @@ public class BookShelfDB {
 					 + ", publisherZip"
 					 + ", publisherCountry"
 					 + ", publisherFounded"
-					 + " from LibraryDB.Publisher";
+					 + " from _445team15.Publisher";
 		
 		pubList = new ArrayList<Publisher>();
 		try {
@@ -105,7 +105,7 @@ public class BookShelfDB {
 					 + ", bookID"
 					 + ", borrowBy"
 					 + ", returnBy"
-					 + " from LibraryDB.PatronRecord";
+					 + " from _445team15.PatronRecord";
 		
 		prList = new ArrayList<PatronRecord>();
 		try {
@@ -207,7 +207,7 @@ public class BookShelfDB {
      * @param aBook
      */
     public void addBook(Book aBook) {
-        String sql = "INSERT INTO LibraryDB.Book VALUES " + "(?, ?);";
+        String sql = "INSERT INTO _445team15.Book VALUES " + "(?, ?);";
         
         PreparedStatement preparedStatement = null;
         try {
