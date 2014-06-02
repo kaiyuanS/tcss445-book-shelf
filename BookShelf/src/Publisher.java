@@ -48,8 +48,8 @@ public class Publisher {
 	 * @param aCountry The publishing company's country.
 	 * @param theFoundedYear The year in which the publishing company was founded.
 	 */
-	public Publisher(String aName, String aStreet, String aCity, String aZipCode, 
-					 String aState, String aCountry, int theFoundedYear) {
+	public Publisher(String aName, String aStreet, String aCity, 
+					 String aState, String aZipCode, String aCountry, int theFoundedYear) {
 		publisherName = aName;
 		publisherStreet = aStreet;
 		publisherCity = aCity;
