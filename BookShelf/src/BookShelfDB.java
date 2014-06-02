@@ -327,8 +327,7 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
-                thePatronRecord.setReturnBy(returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID, borrowBy, returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
@@ -358,8 +357,7 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
-                thePatronRecord.setReturnBy(returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID, borrowBy, returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
@@ -468,6 +466,36 @@ public class BookShelfDB {
     
     
     /**
+     * get next recordID
+     * @return
+     * @throws SQLException
+     */
+    public int getNextOrderID() throws SQLException {
+        if (conn == null) {
+            createConnection();
+        }
+        
+        String sql = "SELECT MAX(recordID) FROM _445team15.PatronRecord;";
+        Statement statement = null;
+        int maxOrderID = 0;
+        try {
+            statement = conn.createStatement();
+            ResultSet patronResult = statement.executeQuery(sql);
+            while (patronResult.next()) {
+            	maxOrderID = patronResult.getInt("orderID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        
+        return maxOrderID + 1;
+    }
+    
+    /**
      * place a new order
      */
     public void placeOrder(int aRecordID, Date aDate, int aPatronID, int aBookID) {
@@ -487,6 +515,47 @@ public class BookShelfDB {
         } 
     }
     
+    /**
+     * get all publishers
+     * @return
+     * @throws SQLException 
+     */
+    public List<Publisher> getPublisher() throws SQLException {
+    	if (conn == null) {
+            createConnection();
+        }
+        
+        String sql = "SELECT * FROM _445team15.Publisher;";
+        Statement statement = null;
+
+        List<Publisher> publisherList = new ArrayList<Publisher>();
+        try {
+            statement = conn.createStatement();
+            ResultSet patronResult = statement.executeQuery(sql);
+            while (patronResult.next()) {
+                String publisherName = patronResult.getString("publisherName");
+                String publisherStreet = patronResult.getString("publisherStreet");
+                String publisherCity = patronResult.getString("publisherCity");
+                String publisherState = patronResult.getString("publisherState");
+                String publisherZip = patronResult.getString("publisherZip");
+                String publisherCountry = patronResult.getString("publisherCountry");
+                int publisherFounded =  patronResult.getInt("publisherFounded");
+                
+                Publisher thePublishr = new Publisher(publisherName, publisherStreet,
+                		publisherCity, publisherState, publisherZip,
+                		publisherCountry, publisherFounded);
+                
+                publisherList.add(thePublishr);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        return publisherList;
+    }
     
     public List<Book> getBooks() throws SQLException {
     	if (conn == null) {
