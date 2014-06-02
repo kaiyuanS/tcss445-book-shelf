@@ -71,7 +71,7 @@ public class Publisher {
 	 * This method sets the name of the publishing company.
 	 * @param aName The new name of the publishing company.
 	 */
-	public void setName(String aName) {
+	public void setName1(String aName) {
 		publisherName = aName;
 	}
 	
