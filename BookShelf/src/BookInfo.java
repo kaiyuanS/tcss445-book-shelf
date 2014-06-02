@@ -8,7 +8,7 @@ public class BookInfo {
     private int myFormat; // 1: hardcover, 2:paperback
     private int myPageNumber;
     private String myLanguage;
-    private int myBookselfNumber;
+    private int myBookshelfNumber;
     private int myLayerNumber;
     private String myPublisherName;
     
@@ -23,7 +23,7 @@ public class BookInfo {
         myFormat = aFormat;
         myPageNumber = aPageNumber;
         myLanguage = aLanguage;
-        myBookselfNumber = aBookselfNumber;
+        myBookshelfNumber = aBookselfNumber;
         myLayerNumber = aLayerNumber;
         myPublisherName = aPublisherName;
     }
@@ -85,11 +85,11 @@ public class BookInfo {
     }
 
     public int getBookselfNumber() {
-        return myBookselfNumber;
+        return myBookshelfNumber;
     }
 
     public void setBookselfNumber(int aBookselfNumber) {
-        myBookselfNumber = aBookselfNumber;
+        myBookshelfNumber = aBookselfNumber;
     }
 
     public int getLayerNumber() {
@@ -114,7 +114,7 @@ public class BookInfo {
                 + "\nYear: " + myYear + "\nAuthor: " + myAuthor
                 + "\nFormat: " + (myFormat == 1?"hard cover":"paper back")
                 + "\nPage Number: " + myPageNumber + "\nLanguage: " + myLanguage
-                + "\nBookself NUmber: " + myBookselfNumber + "\nLayer Number: " + myLayerNumber
+                + "\nBookself NUmber: " + myBookshelfNumber + "\nLayer Number: " + myLayerNumber
                 + "\nPublisher: " + myPublisherName;
     }
 }

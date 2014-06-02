@@ -18,6 +18,8 @@ public class BookShelfDB {
 	private static Connection conn;
 	private List<Publisher> pubList;
 	private List<PatronRecord> prList;
+	private List<Book> bookList;
+	private List<BookInfo> bookInfoList;
 	
 	public static void createConnection() throws SQLException {
 		Properties connectionProps = new Properties();
@@ -175,7 +177,7 @@ public class BookShelfDB {
      */
     public void addPatron(Patron aPatron) {
         String sql = "INSERT INTO _445team15.Patron VALUES "
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         
         PreparedStatement preparedStatement = null;
         try {
@@ -205,7 +207,7 @@ public class BookShelfDB {
      */
     public void addBookInfo(BookInfo aBookInfo) {
         String sql = "INSERT INTO _445team15.BookInfo VALUES "
-                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
         
         PreparedStatement preparedStatement = null;
         try {
@@ -292,12 +294,12 @@ public class BookShelfDB {
      * @param aRecordID
      * @param aDate
      */
-    public void setReturnDate(int aRecordID, Date aDate) {
+    public void setReturnDate(int aRecordID, Calendar aDate) {
         String sql = "UPDATE _445team15.PatronRecord SET returnBy = ? WHERE recordID = ?;";
         PreparedStatement preparedStatement = null;
         try {
             preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setDate(1, aDate);
+            preparedStatement.setDate(1, new Date(aDate.getTimeInMillis()));
             preparedStatement.setInt(2, aRecordID);
         } catch (SQLException e) {
             System.out.println(e);
@@ -325,7 +327,8 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID,borrowBy,  returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
+                thePatronRecord.setReturnBy(returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
@@ -355,7 +358,8 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID, borrowBy, returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
+                thePatronRecord.setReturnBy(returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
@@ -462,6 +466,7 @@ public class BookShelfDB {
         return maxBookID + 1;
     }
     
+    
     /**
      * place a new order
      */
@@ -480,6 +485,131 @@ public class BookShelfDB {
             System.out.println(e);
             e.printStackTrace();
         } 
+    }
+    
+    
+    public List<Book> getBooks() throws SQLException {
+    	if (conn == null) {
+    		createConnection();
+    	} 
+    	
+    	Statement stmt = null;
+		String query = "select "
+					 + "bookID"
+					 + ", bookInfo_ISBN"
+					 + " from _445team15.PatronRecord";
+		
+		bookList = new ArrayList<Book>();
+		
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				int bookID = rs.getInt("bookID");
+				String isbn = rs.getString("bookInfo_ISBN");
+				
+				Book book = new Book(bookID, isbn);
+				
+				bookList.add(book);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return bookList;		 
+	}
+    
+    public List<Book> getBookByID(int bookID) {
+    	List<Book> booksByID = new ArrayList<Book>();
+    	
+    	try {
+    		bookList = getBooks();
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	for (Book book : bookList) {
+    		if (book.getBookID() == bookID) {
+    			booksByID.add(book);
+    		}
+    	}
+    	
+    	return booksByID;
+    }
+    
+    public List<BookInfo> getBookInfo() throws SQLException {
+    	if (conn == null) {
+    		createConnection();
+    	}
+
+    	Statement stmt = null;
+    	
+		String query = "select "
+					 + "ISBN"
+					 + ", title"
+					 + ", year"
+					 + ", author"
+					 + ", format"
+					 + ", pageNumber"
+					 + ", Language"
+					 + ", bookshelfNumber"
+					 + ", layerNumber"
+					 + ", publisher_publisherName"
+					 + " from _445team15.PatronRecord";
+		
+		bookInfoList = new ArrayList<BookInfo>();
+		
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				String isbn = rs.getString("ISBN");
+				String title = rs.getString("title");
+				int year = rs.getInt("year");
+				String author = rs.getString("author");
+				int format = rs.getInt("format");
+				int pageNumber = rs.getInt("pageNumber");
+				String language = rs.getString("Language");
+				int bookshelfNumber = rs.getInt("bookshelfNumber");
+				int layerNumber = rs.getInt("layerNumber");
+				String publisherName = rs.getString("publisher_publisherName");
+				
+				BookInfo binfo = new BookInfo(isbn, title, year, author, 
+								 format, pageNumber, language, bookshelfNumber,
+								 layerNumber, publisherName);
+				
+				bookInfoList.add(binfo);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return bookInfoList;		 
+	}
+    
+    BookInfo getBookInfoByISBN(String isbn) throws NullPointerException {
+    	BookInfo bookInfo = null;
+    	try {
+    		bookInfoList = getBookInfo();
+    	} catch (SQLException e) {
+    		e.printStackTrace();
+    	}
+    	
+    	for (BookInfo binfo : bookInfoList) {
+    		if (binfo.getISBN().equals(isbn)) {
+    			bookInfo = binfo;
+    		}
+    	}
+    	
+    	return bookInfo;
     }
     
 }
