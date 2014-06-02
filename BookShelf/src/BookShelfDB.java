@@ -11,8 +11,6 @@ import java.util.Properties;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import libraryProject.Book;
-
 public class BookShelfDB {
 	private static String userName = " _445team15";
     private static String password = "dubdap,";
@@ -327,8 +325,7 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
-                thePatronRecord.setReturnBy(returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID,borrowBy,  returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
@@ -358,8 +355,7 @@ public class BookShelfDB {
                 int patronID = recordResult.getInt("patronID");
                 int bookID = recordResult.getInt("bookID");
                 Date returnBy = recordResult.getDate("returnBy");
-                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
-                thePatronRecord.setReturnBy(returnBy);
+                PatronRecord thePatronRecord = new PatronRecord(recordID, patronID, bookID, borrowBy, returnBy);
                 orderList.add(thePatronRecord);
             }
         } catch (SQLException e) {
