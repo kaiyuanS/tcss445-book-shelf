@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -13,9 +12,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class BookShelfDB {
-	private static String userName = "root";
-	private static String password = "";
-	private static String serverName = "localhost";
+	private static String userName = " _445team15";
+    private static String password = "dubdap,";
+    private static String serverName = "cssgate.insttech.washington.edu";
 	private static Connection conn;
 	private List<Publisher> pubList;
 	private List<PatronRecord> prList;
@@ -144,4 +143,299 @@ public class BookShelfDB {
 		
 		return prList;		 
 	}
+	
+    /**
+     * add new patron
+     * @param aPatron
+     */
+    public void addPatron(Patron aPatron) {
+        String sql = "INSERT INTO _445team15.Patron VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            if (conn == null) {
+                createConnection();
+            }
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aPatron.getPatronID());
+            preparedStatement.setString(2, aPatron.getFirstName());
+            preparedStatement.setString(3, aPatron.getLastName());
+            preparedStatement.setString(4, aPatron.getPatronEmail());
+            preparedStatement.setString(5, aPatron.getPhoneNumber());
+            preparedStatement.setString(6, aPatron.getStreetAddress());
+            preparedStatement.setString(7, aPatron.getCity());
+            preparedStatement.setString(8, aPatron.getState());
+            preparedStatement.setString(9, aPatron.getZip());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * add new book info
+     * @param aBookInfo
+     */
+    public void addBookInfo(BookInfo aBookInfo) {
+        String sql = "INSERT INTO _445team15.BookInfo VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, aBookInfo.getISBN());
+            preparedStatement.setString(2, aBookInfo.getTitle());
+            preparedStatement.setInt(3, aBookInfo.getYear());
+            preparedStatement.setString(4, aBookInfo.getAuthor());
+            preparedStatement.setInt(5, aBookInfo.getFormat());
+            preparedStatement.setInt(6, aBookInfo.getPageNumber());
+            preparedStatement.setString(7, aBookInfo.getLanguage());
+            preparedStatement.setInt(8, aBookInfo.getBookselfNumber());
+            preparedStatement.setInt(9, aBookInfo.getLayerNumber());
+            preparedStatement.setString(10, aBookInfo.getPublisherName());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * add a new book
+     * @param aBook
+     */
+    public void addBook(Book aBook) {
+        String sql = "INSERT INTO LibraryDB.Book VALUES " + "(?, ?);";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aBook.getBookID());
+            preparedStatement.setString(2, aBook.getISBN());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * get a list of all patron
+     * @return
+     * @throws SQLException
+     */
+    public List<Patron> getPatrons() throws SQLException {
+        if (conn == null) {
+            createConnection();
+        }
+        
+        String sql = "SELECT * FROM _445team15.Patron;";
+        Statement statement = null;
+
+        List<Patron> patronList = new ArrayList<Patron>();
+        try {
+            statement = conn.createStatement();
+            ResultSet patronResult = statement.executeQuery(sql);
+            while (patronResult.next()) {
+                int patronID = patronResult.getInt("patronID");
+                String firstName = patronResult.getString("firstName");
+                String lastName = patronResult.getString("lastName");
+                String patronEmail = patronResult.getString("patronEmail");
+                String phoneNumber = patronResult.getString("phoneNumber");
+                String streetAddress = patronResult.getString("streetAddress");
+                String City = patronResult.getString("City");
+                String State = patronResult.getString("State");
+                String zip = patronResult.getString("zip");
+                Patron thePatron = new Patron(patronID, firstName, lastName, patronEmail,
+                        phoneNumber, streetAddress, City, State, zip);
+                patronList.add(thePatron);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        return patronList;
+    }
+    
+    /**
+     * set return date
+     * @param aRecordID
+     * @param aDate
+     */
+    public void setReturnDate(int aRecordID, Calendar aDate) {
+        String sql = "UPDATE _445team15.PatronRecord SET returnBy = ? WHERE recordID = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setDate(1, new Date(aDate.getTimeInMillis()));
+            preparedStatement.setInt(2, aRecordID);
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * get the record of a book
+     * @param aBookID
+     * @return
+     */
+    public List<PatronRecord> getBookRecord(int aBookID) {
+        String sql = "SELECT * FROM _445team15.PatronRecord WHERE bookID = ?;";
+        PreparedStatement preparedStatement = null;
+
+        List<PatronRecord> orderList = new ArrayList<PatronRecord>();
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aBookID);
+            ResultSet recordResult = preparedStatement.executeQuery();
+            while (recordResult.next()) {
+                int recordID = recordResult.getInt("recordID");
+                Date borrowBy = recordResult.getDate("borrowBy");
+                int patronID = recordResult.getInt("patronID");
+                int bookID = recordResult.getInt("bookID");
+                Date returnBy = recordResult.getDate("returnBy");
+                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
+                thePatronRecord.setReturnBy(returnBy);
+                orderList.add(thePatronRecord);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+    
+    /**
+     * get the record of a patron
+     * @param aBookID
+     * @return
+     */
+    public List<PatronRecord> getPatronRecord(int aPatronID) {
+        String sql = "SELECT * FROM _445team15.PatronRecord WHERE patronID = ?;";
+        PreparedStatement preparedStatement = null;
+
+        List<PatronRecord> orderList = new ArrayList<PatronRecord>();
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aPatronID);
+            ResultSet recordResult = preparedStatement.executeQuery();
+            while (recordResult.next()) {
+                int recordID = recordResult.getInt("recordID");
+                Date borrowBy = recordResult.getDate("borrowBy");
+                int patronID = recordResult.getInt("patronID");
+                int bookID = recordResult.getInt("bookID");
+                Date returnBy = recordResult.getDate("returnBy");
+                PatronRecord thePatronRecord = new PatronRecord(recordID, borrowBy, patronID, bookID);
+                thePatronRecord.setReturnBy(returnBy);
+                orderList.add(thePatronRecord);
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        }
+        return orderList;
+    }
+    
+    /**
+     * delete a patron
+     * @param aPatronID
+     */
+    public void removePatron(int aPatronID) {
+        String sql = "DELETE FROM _445team15.Patron WHERE patronID = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, aPatronID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * update a patron
+     * @param aPatronID
+     * @param anAttribute
+     * @param data
+     */
+    public void updatePatron(int aPatronID, String anAttribute, String data) {
+        String sql = "UPDATE _445team15.Patron SET "
+                + anAttribute + " = ? WHERE patronID = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, data);
+            preparedStatement.setInt(2, aPatronID);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * get next patronID
+     * @return
+     * @throws SQLException
+     */
+    public int getNextPatronID() throws SQLException {
+        if (conn == null) {
+            createConnection();
+        }
+        
+        String sql = "SELECT MAX(patronID) FROM _445team15.Patron;";
+        Statement statement = null;
+        int maxPatronID = 0;
+        try {
+            statement = conn.createStatement();
+            ResultSet patronResult = statement.executeQuery(sql);
+            while (patronResult.next()) {
+                maxPatronID = patronResult.getInt("patronID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        return maxPatronID + 1;
+    }
+    
+    /**
+     * get next bookID
+     * @return
+     * @throws SQLException
+     */
+    public int getNextBookID() throws SQLException {
+        if (conn == null) {
+            createConnection();
+        }
+        
+        String sql = "SELECT MAX(bookID) FROM _445team15.Book;";
+        Statement statement = null;
+        int maxBookID = 0;
+        try {
+            statement = conn.createStatement();
+            ResultSet patronResult = statement.executeQuery(sql);
+            while (patronResult.next()) {
+                maxBookID = patronResult.getInt("bookID");
+            }
+        } catch (SQLException e) {
+            System.out.println(e);
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+        
+        return maxBookID + 1;
+    }
 }
