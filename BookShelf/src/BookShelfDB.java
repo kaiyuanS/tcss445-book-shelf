@@ -520,7 +520,7 @@ public class BookShelfDB {
      * @return
      * @throws SQLException 
      */
-    public List<Publisher> getPublisher() throws SQLException {
+    /*public List<Publisher> getPublisher() throws SQLException {
     	if (conn == null) {
             createConnection();
         }
@@ -555,7 +555,7 @@ public class BookShelfDB {
             }
         }
         return publisherList;
-    }
+    }*/
     
     public List<Book> getBooks() throws SQLException {
     	if (conn == null) {
@@ -625,10 +625,10 @@ public class BookShelfDB {
 					 + ", format"
 					 + ", pageNumber"
 					 + ", Language"
-					 + ", bookshelfNumber"
+					 + ", bookselfNumber"
 					 + ", layerNumber"
-					 + ", publisher_publisherName"
-					 + " from _445team15.PatronRecord";
+					 + ", publisherName"
+					 + " from _445team15.BookInfo";
 		
 		bookInfoList = new ArrayList<BookInfo>();
 		

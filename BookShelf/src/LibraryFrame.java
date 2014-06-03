@@ -18,7 +18,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class LibraryFrame extends JFrame{
 	
 	private BookShelfDB myDatabase;
@@ -32,6 +31,7 @@ public class LibraryFrame extends JFrame{
 	private JPanel myPublisherInfo;
 	private JPanel myButtonPanel; //1
 	private JPanel mySearchPanel;
+	private BookListPanel myBookInfoList;
 	
 	
 	public LibraryFrame() {
@@ -50,9 +50,11 @@ public class LibraryFrame extends JFrame{
 		initButtonPanel();
 		initBookListPanel();
 		initPublisherPanel();
+		initBookInfoList();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
-		this.add(myPublisherInfo, BorderLayout.CENTER);
+		//this.add(myPublisherInfo, BorderLayout.CENTER);
+		this.add(myBookInfoList, BorderLayout.CENTER);
 	}
 	
 	private void initButtonPanel() {
@@ -114,14 +116,42 @@ public class LibraryFrame extends JFrame{
 	
 	private void initPublisherPanel() {
 		myPublisherInfo = new JPanel();
+		myPublisherInfo.setLayout(new BorderLayout());
+		
+		
+		
 		List<Publisher> publisherList = new ArrayList<Publisher>();
+		try {
+			publisherList = myDatabase.getPublishers();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		String[] publisherColName = {"Publisher Name", "Street", "City", "State",
 				"Zip", "Country", "Founded"};
 		Object[][] publisherData = new Object[publisherList.size()][publisherColName.length];
-		JTable publisherTable = new JTable(publisherData, publisherColName);
-		JScrollPane publisherScrollPane = new JScrollPane(publisherTable);
-		myPublisherInfo.add(publisherScrollPane);
 		
+		for (int i = 0; i < publisherList.size(); i++) {
+			publisherData[i][0] = publisherList.get(i).getName();
+			publisherData[i][1] = publisherList.get(i).getStreet();
+			publisherData[i][2] = publisherList.get(i).getCity();
+			publisherData[i][3] = publisherList.get(i).getState();
+			publisherData[i][4] = publisherList.get(i).getZipCode();
+			publisherData[i][5] = publisherList.get(i).getCountry();
+			publisherData[i][6] = publisherList.get(i).getYearFounded();
+		}
+		
+		JTable publisherTable = new JTable(publisherData, publisherColName);
+		publisherTable.setColumnSelectionAllowed(false);
+		publisherTable.setRowSelectionAllowed(true);
+		JScrollPane publisherScrollPane = new JScrollPane(publisherTable);
+		publisherTable.setFillsViewportHeight(true);
+		myPublisherInfo.add(publisherScrollPane, BorderLayout.CENTER);
+		
+	}
+	
+	private void initBookInfoList() {
+		myBookInfoList = new BookListPanel(myDatabase);
 	}
 	
 	private class BookSearchListener implements ActionListener {

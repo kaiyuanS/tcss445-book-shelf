@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -159,6 +160,9 @@ public class BookListPanel extends JPanel{
 	
 	private void configList() {
 		myListPanel= new JPanel();
+		
+		refreshData();
+		
 		myBookData = new Object[myBookInfoList.size()][myColName.length];
 		for (int i=0; i<myBookInfoList.size(); i++) {
 			myBookData[i][0] = myBookInfoList.get(i).getTitle();
@@ -175,12 +179,22 @@ public class BookListPanel extends JPanel{
 		
 		myBookTable = new JTable(myBookData, myColName);
 		myListScrollPane = new JScrollPane(myBookTable);
+		myBookTable.setFillsViewportHeight(true);
 		myListPanel.add(myListScrollPane);
 	}
 	
 	private void addComponents() {
 		add(myFilterPanel, BorderLayout.WEST);
 		add(myListPanel, BorderLayout.CENTER);
+	}
+	
+	private void refreshData() {
+		try {
+			myBookInfoList = myDatebase.getBookInfo();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 }
