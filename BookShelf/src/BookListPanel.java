@@ -24,7 +24,8 @@ public class BookListPanel extends JPanel{
 	
 	private JTable myBookTable;
 	private JScrollPane myListScrollPane;
-	private String[] myColName = {"Title", "Author", "ISBN"};
+	private String[] myColName = {"Title", "Author", "ISBN", "Year", "format", "Page Number",
+			"Language", "Bookself Number", "Layer Number", "Publisher Name"};
 	private Object[][] myBookData;
 	
 	private JLabel myYearLabel;
@@ -61,6 +62,8 @@ public class BookListPanel extends JPanel{
 		configFilter();
 		configList();
 		addComponents();
+		myBookInfoList.add(new BookInfo("1234567890123", "Book Title", 2010,
+                "Book Author", 1, 500, "English", 20, 3, "Book Publisher"));
 	}
 	
 	private void configButton() {
@@ -156,12 +159,18 @@ public class BookListPanel extends JPanel{
 	
 	private void configList() {
 		myListPanel= new JPanel();
-		//myListPanel.setPreferredSize(new Dimension(300, 500));
 		myBookData = new Object[myBookInfoList.size()][myColName.length];
 		for (int i=0; i<myBookInfoList.size(); i++) {
 			myBookData[i][0] = myBookInfoList.get(i).getTitle();
 			myBookData[i][1] = myBookInfoList.get(i).getAuthor();
 			myBookData[i][2] = myBookInfoList.get(i).getISBN();
+			myBookData[i][3] = myBookInfoList.get(i).getYear();
+			myBookData[i][4] = myBookInfoList.get(i).getFormat() == 1?"Hard cover":"Paper Back";
+			myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
+			myBookData[i][6] = myBookInfoList.get(i).getLanguage();
+			myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+			myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
+			myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
 		}
 		
 		myBookTable = new JTable(myBookData, myColName);

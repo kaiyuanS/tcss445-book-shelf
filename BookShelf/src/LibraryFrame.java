@@ -23,11 +23,11 @@ public class LibraryFrame extends JFrame{
 	
 	private BookShelfDB myDatabase;
 	
-	private BookListPanel myBookListPanel; //
+	private JPanel myBookListPanel; //
 	private JPanel myPatronListPanel; //
 	private JPanel myRecordListPanel;
 	private JPanel myPublisherListPanel;
-	private BookInfoPanel myBookInfo;
+	private JPanel myBookInfo;
 	private JPanel myPatronInfo;
 	private JPanel myPublisherInfo;
 	private JPanel myButtonPanel; //1
@@ -39,7 +39,7 @@ public class LibraryFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setPreferredSize(new Dimension(800, 600));
 		this.setLayout(new BorderLayout());
-		addPanel();
+		//addPanel();
 		initPanels();
         pack();
         setLocationRelativeTo(null);
@@ -49,9 +49,10 @@ public class LibraryFrame extends JFrame{
 	private void initPanels() {
 		initButtonPanel();
 		initBookListPanel();
+		initPublisherPanel();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
-		this.add(myBookListPanel, BorderLayout.CENTER);
-		
+		//this.add(myBookListPanel, BorderLayout.CENTER);
+		this.add(myPublisherInfo, BorderLayout.CENTER);
 	}
 	
 	private void initButtonPanel() {
@@ -111,6 +112,18 @@ public class LibraryFrame extends JFrame{
 		myBookListPanel.add(scrollPane, BorderLayout.CENTER);
 	}
 	
+	private void initPublisherPanel() {
+		myPublisherInfo = new JPanel();
+		List<Publisher> publisherList = new ArrayList<Publisher>();
+		String[] publisherColName = {"Publisher Name", "Street", "City", "State",
+				"Zip", "Country", "Founded"};
+		Object[][] publisherData = new Object[publisherList.size()][publisherColName.length];
+		JTable publisherTable = new JTable(publisherData, publisherColName);
+		JScrollPane publisherScrollPane = new JScrollPane(publisherTable);
+		myPublisherInfo.add(publisherScrollPane);
+		
+	}
+	
 	private class BookSearchListener implements ActionListener {
 		
 		JFrame myMainFrame;
@@ -127,7 +140,7 @@ public class LibraryFrame extends JFrame{
 	private void configPanel() {
 		BookInfo testBookInfo = new BookInfo("1234567890123", "Book Title", 2010,
                 "Book Author", 1, 500, "English", 20, 3, "Book Publisher");
-		myBottonPanel = new ButtonPanel();
+		myButtonPanel = new ButtonPanel();
 		myBookInfo = new BookInfoPanel(testBookInfo);
 		myBookListPanel = new BookListPanel(myDatabase);
 	}
@@ -135,6 +148,6 @@ public class LibraryFrame extends JFrame{
 	private void addPanel() {
 		//add(myBookInfo, BorderLayout.CENTER);
 		add(myBookListPanel, BorderLayout.CENTER);
-		add(myBottonPanel, BorderLayout.SOUTH);
+		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 }
