@@ -2,17 +2,23 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ButtonGroup;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
+import javax.swing.event.TableModelEvent;
 
 
 public class BookListPanel extends JPanel{
@@ -28,6 +34,9 @@ public class BookListPanel extends JPanel{
 	private String[] myColName = {"Title", "Author", "ISBN", "Year", "format", "Page Number",
 			"Language", "Bookself Number", "Layer Number", "Publisher Name"};
 	private Object[][] myBookData;
+	
+	JButton myAdd;
+	JButton myDelete;
 	
 	private JLabel myYearLabel;
 	private JRadioButton myYearBefore1990;
@@ -71,13 +80,13 @@ public class BookListPanel extends JPanel{
 		myYearLabel = new JLabel("Year: ");
 		myYearLabel.setPreferredSize(LABEL_SIZE);
 		myYearBefore1990 = new JRadioButton("Before 1990");
-		myYearBefore1990.setPreferredSize(LABEL_SIZE);
+		myYearBefore1990.setPreferredSize(BUTTON_SIZE);
 		myYear1991_2000 = new JRadioButton("1991 ~ 2000");
-		myYear1991_2000.setPreferredSize(LABEL_SIZE);
+		myYear1991_2000.setPreferredSize(BUTTON_SIZE);
 		myYear2001_2010 = new JRadioButton("2001 ~ 2010");
-		myYear2001_2010.setPreferredSize(LABEL_SIZE);
+		myYear2001_2010.setPreferredSize(BUTTON_SIZE);
 		myYearAfter2011 = new JRadioButton("After 2010");
-		myYearAfter2011.setPreferredSize(LABEL_SIZE);
+		myYearAfter2011.setPreferredSize(BUTTON_SIZE);
 		ButtonGroup yearGroup = new ButtonGroup();
 		yearGroup.add(myYearBefore1990);
 		yearGroup.add(myYear1991_2000);
@@ -87,13 +96,13 @@ public class BookListPanel extends JPanel{
 		myPageLabel = new JLabel("Page Number: ");
 		myPageLabel.setPreferredSize(LABEL_SIZE);
 		myPageLess500 = new JRadioButton("Less than 500");
-		myPageLess500.setPreferredSize(LABEL_SIZE);
+		myPageLess500.setPreferredSize(BUTTON_SIZE);
 		myPage501_1000 = new JRadioButton("501 ~ 1000");
-		myPage501_1000.setPreferredSize(LABEL_SIZE);
+		myPage501_1000.setPreferredSize(BUTTON_SIZE);
 		myPage1001_2000 = new JRadioButton("1001 ~ 2000");
-		myPage1001_2000.setPreferredSize(LABEL_SIZE);
+		myPage1001_2000.setPreferredSize(BUTTON_SIZE);
 		myPageMore2000 = new JRadioButton("More than 2000");
-		myPageMore2000.setPreferredSize(LABEL_SIZE);
+		myPageMore2000.setPreferredSize(BUTTON_SIZE);
 		ButtonGroup pageGroup = new ButtonGroup();
 		pageGroup.add(myPageLess500);
 		pageGroup.add(myPage501_1000);
@@ -103,9 +112,9 @@ public class BookListPanel extends JPanel{
 		myFormatLabel = new JLabel("Format: ");
 		myFormatLabel.setPreferredSize(LABEL_SIZE);
 		myHardCover = new JRadioButton("Hard cover");
-		myHardCover.setPreferredSize(LABEL_SIZE);
+		myHardCover.setPreferredSize(BUTTON_SIZE);
 		myPaperBack = new JRadioButton("Paper back");
-		myPaperBack.setPreferredSize(LABEL_SIZE);
+		myPaperBack.setPreferredSize(BUTTON_SIZE);
 		ButtonGroup formatGroup = new ButtonGroup();
 		formatGroup.add(myHardCover);
 		formatGroup.add(myPaperBack);
@@ -113,17 +122,17 @@ public class BookListPanel extends JPanel{
 		myLanguageLabel = new JLabel("Lannguage: ");
 		myLanguageLabel.setPreferredSize(LABEL_SIZE);
 		myEnglish = new JRadioButton("English");
-		myEnglish.setPreferredSize(LABEL_SIZE);
+		myEnglish.setPreferredSize(BUTTON_SIZE);
 		mySpanish = new JRadioButton("Spanish");
-		mySpanish.setPreferredSize(LABEL_SIZE);
+		mySpanish.setPreferredSize(BUTTON_SIZE);
 		myFrench = new JRadioButton("French");
-		myFrench.setPreferredSize(LABEL_SIZE);
+		myFrench.setPreferredSize(BUTTON_SIZE);
 		myChinese = new JRadioButton("Chinese");
-		myChinese.setPreferredSize(LABEL_SIZE);
+		myChinese.setPreferredSize(BUTTON_SIZE);
 		myRussian = new JRadioButton("Russian");
-		myRussian.setPreferredSize(LABEL_SIZE);
+		myRussian.setPreferredSize(BUTTON_SIZE);
 		myOtherLanguage = new JRadioButton("Other");
-		myOtherLanguage.setPreferredSize(LABEL_SIZE);
+		myOtherLanguage.setPreferredSize(BUTTON_SIZE);
 		ButtonGroup languageGroup = new ButtonGroup();
 		languageGroup.add(myEnglish);
 		languageGroup.add(mySpanish);
@@ -178,9 +187,22 @@ public class BookListPanel extends JPanel{
 		}
 		
 		myBookTable = new JTable(myBookData, myColName);
+		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myListScrollPane = new JScrollPane(myBookTable);
-		myBookTable.setFillsViewportHeight(true);
-		myListPanel.add(myListScrollPane);
+		//myListScrollPane.setHorizontalScrollBar(myListScrollPane.createHorizontalScrollBar());
+		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		//myListScrollPane.setVerticalScrollBar(myListScrollPane.createVerticalScrollBar());
+		myListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		//myBookTable.setFillsViewportHeight(true);
+		
+		myAdd = new JButton("Add");
+		myDelete = new JButton("Delete");
+		JPanel buttons = new JPanel(new FlowLayout());
+		buttons.add(myAdd);
+		buttons.add(myDelete);
+		myListPanel.setLayout(new BorderLayout());
+		myListPanel.add(myListScrollPane, BorderLayout.CENTER);
+		//myListPanel.add(buttons, BorderLayout.SOUTH);
 	}
 	
 	private void addComponents() {
@@ -192,9 +214,9 @@ public class BookListPanel extends JPanel{
 		try {
 			myBookInfoList = myDatebase.getBookInfo();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
 	
 }
