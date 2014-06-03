@@ -22,11 +22,11 @@ public class LibraryFrame extends JFrame{
 	
 	private BookShelfDB myDatabase;
 	
-	private JPanel myBookListPanel; //
+	private BookListPanel myBookListPanel; //
 	private JPanel myPatronListPanel; //
 	private JPanel myRecordListPanel;
 	private JPanel myPublisherListPanel;
-	private JPanel myBookInfo;
+	private BookInfoPanel myBookInfo;
 	private JPanel myPatronInfo;
 	private JPanel myPublisherInfo;
 	private JPanel myButtonPanel; //1
@@ -39,8 +39,10 @@ public class LibraryFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setPreferredSize(new Dimension(800, 600));
 		this.setLayout(new BorderLayout());
-		//addPanel();
-		initPanels();
+		addPanel();
+		//initPanels();
+		myRecordListPanel = new PatronRecordList(myDatabase, null);
+		this.add(myRecordListPanel, BorderLayout.CENTER);
         pack();
         setLocationRelativeTo(null);
         this.setVisible(true);
@@ -49,12 +51,12 @@ public class LibraryFrame extends JFrame{
 	private void initPanels() {
 		initButtonPanel();
 		initBookListPanel();
-		initPublisherPanel();
 		initBookInfoList();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
 		//this.add(myPublisherInfo, BorderLayout.CENTER);
 		this.add(myBookInfoList, BorderLayout.CENTER);
+		
 	}
 	
 	private void initButtonPanel() {
@@ -89,8 +91,8 @@ public class LibraryFrame extends JFrame{
 	}
 	
 	private void initBookListPanel() {
-		myBookListPanel = new JPanel();
-		myBookListPanel.setLayout(new BorderLayout());
+		//myBookListPanel = new JPanel();
+		//myBookListPanel.setLayout(new BorderLayout());
 		
 		List<Object[]> bookList = new ArrayList<Object[]>();
 		
@@ -149,7 +151,6 @@ public class LibraryFrame extends JFrame{
 		myPublisherInfo.add(publisherScrollPane, BorderLayout.CENTER);
 		
 	}
-	
 	private void initBookInfoList() {
 		myBookInfoList = new BookListPanel(myDatabase);
 	}
