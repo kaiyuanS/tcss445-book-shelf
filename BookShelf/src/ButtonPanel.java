@@ -11,6 +11,7 @@ public class ButtonPanel extends JPanel{
 	private JButton myBookList;
 	private JButton myPatronList;
 	private JButton myBookSearch;
+	private JButton myAdd;
 	private JButton myInformation;
 	
 	public ButtonPanel() {
@@ -23,11 +24,13 @@ public class ButtonPanel extends JPanel{
 		myBookList = new JButton("Book List");
 		myPatronList = new JButton("Patron List");
 		myBookSearch = new JButton("Book Search");
+		myAdd = new JButton("Add New");
 		myInformation = new JButton("Information");
 		
 		add(myBookList);
 		add(myPatronList);
 		add(myBookSearch);
+		add(myAdd);
 		add(myInformation);
 	}
 }
