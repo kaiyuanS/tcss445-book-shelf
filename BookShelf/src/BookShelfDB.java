@@ -12,7 +12,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class BookShelfDB {
-	private static String userName = " _445team15";
+	private static String userName = "_445team15";
     private static String password = "dubdap,";
     private static String serverName = "cssgate.insttech.washington.edu";
 	private static Connection conn;
@@ -26,8 +26,8 @@ public class BookShelfDB {
 		connectionProps.put("user", userName);
 		connectionProps.put("password", password);
 		
-		conn = DriverManager.getConnection("jdbc:" + "mysql" + "//"
-				+ serverName + "/", connectionProps);
+		conn = DriverManager.getConnection("jdbc:" + "mysql:" + "//"
+				+ serverName + "/_445team15", connectionProps);
 		
 		System.out.println("Connected to database");
 	}
@@ -664,7 +664,7 @@ public class BookShelfDB {
 		return bookInfoList;		 
 	}
     
-    BookInfo getBookInfoByISBN(String isbn) throws NullPointerException {
+    public BookInfo getBookInfoByISBN(String isbn) throws NullPointerException {
     	BookInfo bookInfo = null;
     	try {
     		bookInfoList = getBookInfo();
@@ -681,4 +681,42 @@ public class BookShelfDB {
     	return bookInfo;
     }
     
+    public List<Object[]> getBookListInfo() throws SQLException {
+    	
+    	if (conn == null) {
+    		createConnection();
+    	}
+    	
+    	Statement stmt = null;
+    	
+    	String query = "select bookID, title, author, ISBN"
+    				 + " from Book natural join BookInfo";
+    	
+    	List<Object[]> bookList = new ArrayList<Object[]>();
+    	
+    	try {
+    		stmt = conn.createStatement();
+    		ResultSet rs = stmt.executeQuery(query);
+    		
+    		while(rs.next()) {
+    			int bookId = rs.getInt("bookID");
+    			String title = rs.getString("title");
+    			String author = rs.getString("author");
+    			String isbn = rs.getString("ISBN");
+    			
+    			Object[] obj = {bookId, title, author, isbn};
+    			
+    			bookList.add(obj);
+    			
+    		}
+    	} catch (SQLException e) {
+    		System.out.println(e);
+    	} finally {
+    		if (stmt != null) {
+    			stmt.close();
+    		}
+    	}
+    	
+    	return bookList;
+    }
 }
