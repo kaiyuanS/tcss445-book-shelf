@@ -9,7 +9,7 @@ public class LibraryFrame extends JFrame{
 	
 	private BookShelfDB myDatabase;
 	
-	private JPanel myBookListPanel; //
+	private BookListPanel myBookListPanel; //
 	private JPanel myPatronListPanel; //
 	private JPanel myRecordListPanel;
 	private JPanel myPublisherListPanel;
@@ -33,10 +33,12 @@ public class LibraryFrame extends JFrame{
                 "Book Author", 1, 500, "English", 20, 3, "Book Publisher");
 		myBottonPanel = new ButtonPanel();
 		myBookInfo = new BookInfoPanel(testBookInfo);
+		myBookListPanel = new BookListPanel(myDatabase);
 	}
 	
 	private void addPanel() {
-		add(myBookInfo, BorderLayout.CENTER);
+		//add(myBookInfo, BorderLayout.CENTER);
+		add(myBookListPanel, BorderLayout.CENTER);
 		add(myBottonPanel, BorderLayout.SOUTH);
 	}
 }
