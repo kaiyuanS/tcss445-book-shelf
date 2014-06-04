@@ -30,7 +30,7 @@ public class LibraryFrame extends JFrame{
 	private JPanel myPatronInfo;
 	private PublisherInfoPanel myPublisherInfoPanel;
 	private JPanel myButtonPanel; //1
-	private JPanel mySearchPanel;
+	private SearchPanel mySearchPanel;
 	private BookInfoListPanel myBookInfoListPanel;
 	
 	
@@ -57,15 +57,17 @@ public class LibraryFrame extends JFrame{
 		initPublisherListPanel();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
-		this.add(myPublisherListPanel, BorderLayout.CENTER);
-		myCurrentPanel = myPublisherListPanel;
+		//this.add(myPublisherListPanel, BorderLayout.CENTER);
+		//myCurrentPanel = myPublisherListPanel;
 		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
 		//this.add(myBookInfoListPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoListPanel;
 		//this.add(myBookInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
-		
+		mySearchPanel = new SearchPanel(myDatabase, this);
+		myCurrentPanel = myBookInfoPanel;
+		this.add(myCurrentPanel, BorderLayout.CENTER);
 	}
 	
 	private void initButtonPanel() {
@@ -89,7 +91,7 @@ public class LibraryFrame extends JFrame{
 		
 		searchKeyword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
-				
+				showSearchPanel();
 			}
 		});
 		
@@ -143,7 +145,8 @@ public class LibraryFrame extends JFrame{
 		JFrame myMainFrame;
 		
 		public BookSearchListener(final JFrame theFrame) {
-			myMainFrame = theFrame;
+			//myMainFrame = theFrame;
+			
 		}
 		
 		public void actionPerformed(ActionEvent theActionEvent) {
@@ -197,6 +200,14 @@ public class LibraryFrame extends JFrame{
 		//System.out.println("show book info panel");
 		remove(myCurrentPanel);
 		myCurrentPanel = new BookInfoPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
+	}
+	
+	public void showSearchPanel() {
+		remove(myCurrentPanel);
+		myCurrentPanel = new SearchPanel(myDatabase, this);
 		add(myCurrentPanel, BorderLayout.CENTER);
 		pack();
 		this.repaint();
