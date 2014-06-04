@@ -1,138 +1,163 @@
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class PatronRecordList extends JPanel {
+public class PatronRecordList extends JPanel implements ActionListener, TableModelListener {
 	
-	private BookShelfDB myDatabase;
+	private BookShelfDB myDB;
 	
 	private JTable myTable;
 	
 	private JPanel myButtonPanel;
 	
-	private JButton mySearchByPatronB;
+	private JButton mySearchByPatronButton;
 	
-	private JButton mySearchByBookB;
+	private JButton mySearchByBookButton;
 	
-	public PatronRecordList(BookShelfDB db, Object theObject) {
+	private LibraryFrame myFrame;
+	
+	private Object[][] myData;
+	
+	private String[] myColumnNames = {"recordID",  "patronID", "bookID", "borrowBy","returnBy"};
+	
+	public PatronRecordList(LibraryFrame theFrame, BookShelfDB theDatabase, Object theObject) {
 		super();
 		
+		myFrame = theFrame;
 		
-		myDatabase = db;
+		myDB = theDatabase;
+		
 		initializePanel(theObject);
-	}
-	
-	private JTable initializeTable(Object[][] data) {
-		
-		final String[] colNames = {"recordID",  "patronID", "bookID", "borrowBy","returnBy"};
-		JTable table = new JTable(data, colNames);
-		table.setColumnSelectionAllowed(false);
-		table.setRowSelectionAllowed(true);
-		
-		return table;
 	}
 	
 	private void initializePanel(Object theObject) {
 		this.setLayout(new BorderLayout());
-		//initializeButtons();
 		
-		if (theObject == null) {
-			initializeByNull();
-		} else {
+		List<PatronRecord> prList = new ArrayList<PatronRecord>();
+		try {
 			if (theObject instanceof Book) {
-				initializeByBook(theObject);
+				Book book = (Book)theObject;
+				prList = myDB.getPatronRecordByBookID(book.getBookID());
 			} else if (theObject instanceof Patron) {
-				initializeByPatron(theObject);
+				Patron patron = (Patron)theObject;
+				prList = myDB.getPatronRecordByPatronID(patron.getPatronID());
+			} else {
+				prList = myDB.getPatronRecords();
 			}
-		}
-	}
-	
-	private void initializeByBook(Object theObject) {
-		Book book = (Book)theObject;
-		
-		try {
-			List<PatronRecord> prList = myDatabase.getPatronRecordByBookID(book.getBookID());
-			
-			Object[][] prArray = new Object[prList.size()][];
-			prList.toArray(prArray);
-			
-			myTable = initializeTable(prArray);
-			
-			JScrollPane scrollPane = new JScrollPane(myTable);
-			myTable.setFillsViewportHeight(true);
-			
-			this.add(scrollPane, BorderLayout.CENTER);
 		} catch (SQLException e) {
-			e.printStackTrace();
+			System.out.println(e);
+			e.getStackTrace();
 		}
+		initializeButtonPanel();
+		initializeTableData(prList);
+		this.repaint();
 	}
 	
-	private void initializeByPatron(Object theObject) {
-		Patron patron = (Patron)theObject;
+	private void initializeTableData(List<PatronRecord> prList) {
+		myData = new Object[prList.size()][myColumnNames.length];
 		
-		try {
-			List<PatronRecord> prList = myDatabase.getPatronRecordByPatronID(patron.getPatronID());
-			
-			Object[][] prArray = new Object[prList.size()][];
-			prList.toArray(prArray);
-			
-			myTable = initializeTable(prArray);
-			
-			JScrollPane scrollPane = new JScrollPane(myTable);
-			myTable.setFillsViewportHeight(true);
-			
-			this.add(scrollPane, BorderLayout.CENTER);
-		} catch (SQLException e) {
-			e.printStackTrace();
+		for (int i = 0; i < prList.size(); i++) {
+			myData[i][0] = prList.get(i).getRecordID();
+			myData[i][1] = prList.get(i).getPatronID();
+			myData[i][2] = prList.get(i).getBookID();
+			myData[i][3] = prList.get(i).getBorrowByDate();
+			myData[i][4] = prList.get(i).getReturnByDate();
 		}
-	}
-	
-	private void initializeByNull() {
 		
-		try {
-			List<PatronRecord> prList = myDatabase.getPatronRecords();
-			
-			Object[][] prArray = new Object[prList.size()][];
-			prList.toArray(prArray);
-			
-			myTable = initializeTable(prArray);
-			
-			JScrollPane scrollPane = new JScrollPane(myTable);
-			myTable.setFillsViewportHeight(true);
-			
-			this.add(scrollPane, BorderLayout.CENTER);
-			
-		} catch (SQLException e) {
-			e.printStackTrace();
+		myTable = new JTable(myData, myColumnNames);
+		JScrollPane scrollPane = new JScrollPane(myTable);
+		
+		myTable.getModel().addTableModelListener(this);
+		
+		if (myTable.getRowCount() > 0 ) {
+			myTable.changeSelection(0, 0, false, false);
 		}
+		
+		this.add(scrollPane, BorderLayout.CENTER);
+		
+		this.revalidate();
 	}
 	
-	/*
-	private void initializeButtons() {
+	private void initializeButtonPanel() {
 		myButtonPanel = new JPanel();
+		myButtonPanel.setLayout(new GridLayout(0,1));
 		
-		myButtonPanel.setLayout(new BoxLayout(myButtonPanel, BoxLayout.PAGE_AXIS));
+		mySearchByPatronButton = new JButton("Search By Selected Patron");
+		mySearchByBookButton = new JButton("Search By Selected Book");
 		
-		mySearchByPatronB = new JButton("Search By Patron");
-		mySearchByBookB = new JButton("Search By Book");
+		mySearchByPatronButton.addActionListener(this);
+		mySearchByBookButton.addActionListener(this);
 		
-		mySearchByPatronB.setEnabled(false);
-		mySearchByBookB.setEnabled(false);
-		
-		mySearch
-		
-		myButtonPanel.add(mySearchByBookB);
-		myButtonPanel.add(mySearchByPatronB);
-		
-		this.add(myButtonPanel, BorderLayout.EAST);
+		myButtonPanel.add(mySearchByBookButton);
+		myButtonPanel.add(mySearchByPatronButton);
 	}
-	*/
+	
+	public void actionPerformed(ActionEvent theEvent) {
+		List<PatronRecord> prList;
+		if (theEvent.getSource() == mySearchByPatronButton) {
+			int patronID = (int)myTable.getValueAt(myTable.getSelectedRow(), 1);
+			
+			prList = new ArrayList<PatronRecord>();
+			try {
+				prList = myDB.getPatronRecord(patronID);
+			} catch (SQLException e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+			
+			if (prList.size() == 0) {
+				JOptionPane.showConfirmDialog(null, "No records for PatronID " + patronID);
+			} else {
+				initializeTableData(prList);
+				this.repaint();
+			}
+		} else if (theEvent.getSource() == mySearchByBookButton) {
+			int bookID = (int)myTable.getValueAt(myTable.getSelectedRow(), 2);
+			
+			prList = new ArrayList<PatronRecord>();
+			try {
+				prList = myDB.getPatronRecordByBookID(bookID);
+			} catch (SQLException e) {
+				System.out.println(e);
+				e.printStackTrace();
+			}
+			
+			if (prList.size() == 0) {
+				JOptionPane.showConfirmDialog(null, "No records for BookID " + bookID);
+			} else {
+				initializeTableData(prList);
+				this.repaint();
+			}
+			
+		}
+	}
+	
+	public void tableChanged(TableModelEvent theEvent) {
+		int row = theEvent.getFirstRow();
+		int col = theEvent.getColumn();
+		TableModel model = (TableModel)theEvent.getSource();
+		String columnName = model.getColumnName(col);
+		
+		Object data = model.getValueAt(row, col);
+		myDB.editPatron(row, columnName, data);
+		
+	}
+	
 }

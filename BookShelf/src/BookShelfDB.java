@@ -20,6 +20,7 @@ public class BookShelfDB {
 	private List<PatronRecord> prList;
 	private List<Book> bookList;
 	private List<BookInfo> bookInfoList;
+	private List<Patron> patronList;
 	
 	public static void createConnection() throws SQLException {
 		Properties connectionProps = new Properties();
@@ -368,7 +369,6 @@ public class BookShelfDB {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            e.printStackTrace();
         }
         return orderList;
     }
@@ -378,7 +378,7 @@ public class BookShelfDB {
      * @param aBookID
      * @return
      */
-    public List<PatronRecord> getPatronRecord(int aPatronID) {
+    public List<PatronRecord> getPatronRecord(int aPatronID) throws SQLException {
         String sql = "SELECT * FROM _445team15.PatronRecord WHERE patronID = ?;";
         PreparedStatement preparedStatement = null;
 
@@ -398,7 +398,6 @@ public class BookShelfDB {
             }
         } catch (SQLException e) {
             System.out.println(e);
-            e.printStackTrace();
         }
         return orderList;
     }
@@ -453,6 +452,37 @@ public class BookShelfDB {
         }
         
         return maxOrderID + 1;
+    }
+    
+    public void editPatronRecord(int row, String columnName, Object data) {
+    	
+    	PatronRecord patronRecord = prList.get(row);
+    	int recordID = patronRecord.getRecordID();
+    	int patronID = patronRecord.getPatronID();
+    	int bookID = patronRecord.getBookID();
+    	
+    	String sql = "update _445team15.PatronRecord set " + columnName + " = ? where recordID = ? "
+    			   + "and patronID = ? and bookId = ? ";
+    	System.out.println(sql);
+    	PreparedStatement prepStatement = null;
+    	try {
+    		prepStatement = conn.prepareStatement(sql);
+    		if (data instanceof String) {
+    			prepStatement.setString(1, (String)data);
+    		} else if (data instanceof Integer) {
+    			prepStatement.setInt(1,  (Integer)data);
+    		} else if (data instanceof Date) {
+    			prepStatement.setDate(1, (Date)data);
+    		}
+    		
+    		prepStatement.setInt(2, recordID);
+    		prepStatement.setInt(3, patronID);
+    		prepStatement.setInt(4, bookID);
+    		prepStatement.executeUpdate();
+    	} catch (SQLException e) {
+    		System.out.println(e);
+    		e.printStackTrace();
+    	}
     }
     
     
@@ -619,8 +649,8 @@ public class BookShelfDB {
     	Statement stmt = null;
 		String query = "select "
 					 + "bookID"
-					 + ", bookInfo_ISBN"
-					 + " from _445team15.PatronRecord";
+					 + ", ISBN"
+					 + " from _445team15.Book";
 		
 		bookList = new ArrayList<Book>();
 		
@@ -630,7 +660,7 @@ public class BookShelfDB {
 			
 			while(rs.next()) {
 				int bookID = rs.getInt("bookID");
-				String isbn = rs.getString("bookInfo_ISBN");
+				String isbn = rs.getString("ISBN");
 				
 				Book book = new Book(bookID, isbn);
 				
@@ -646,7 +676,7 @@ public class BookShelfDB {
 		return bookList;		 
 	}
     
-    public List<Book> getBookByID(int bookID) {
+    public Book getBookByID(int bookID) {
     	List<Book> booksByID = new ArrayList<Book>();
     	
     	try {
@@ -655,13 +685,16 @@ public class BookShelfDB {
     		e.printStackTrace();
     	}
     	
+    	Book tempBook = null;
+    	
     	for (Book book : bookList) {
     		if (book.getBookID() == bookID) {
-    			booksByID.add(book);
+    			tempBook = book;
+    			break;
     		}
     	}
     	
-    	return booksByID;
+    	return tempBook;
     }
     
 
@@ -712,7 +745,7 @@ public class BookShelfDB {
         String sql = "SELECT * FROM _445team15.Patron;";
         Statement statement = null;
 
-        List<Patron> patronList = new ArrayList<Patron>();
+        patronList = new ArrayList<Patron>();
         try {
             statement = conn.createStatement();
             ResultSet patronResult = statement.executeQuery(sql);
@@ -810,6 +843,25 @@ public class BookShelfDB {
         } 
     }
     
+    public void editPatron(int row, String columnName, Object data) {
+    	
+    	Patron patron = patronList.get(row);
+    	int patronId = patron.getPatronID();
+    	String sql = "update _445team15.Patron set " + columnName + " = ? where patronID = ? ";
+    	System.out.println(sql);
+    	PreparedStatement prepStmt = null;
+    	try {
+    		prepStmt = conn.prepareStatement(sql);
+    		prepStmt.setString(1, (String)data);
+    		prepStmt.setInt(2, patronId);
+    		
+    		prepStmt.executeUpdate();
+    	} catch (SQLException e) {
+    		System.out.println(e);
+    		e.printStackTrace();
+    	}
+    }
+    
     /**
      * get next patronID
      * @return
@@ -837,6 +889,45 @@ public class BookShelfDB {
             }
         }
         return maxPatronID + 1;
+    }
+    
+    Patron getPatronByID(int patronId) throws SQLException {
+    	if (conn == null) {
+    		createConnection();
+    	}
+    	
+    	Statement stmt = null;
+    	String query = "select * from Patron where patronID = " + patronId;
+    	
+    	Patron thePatron = null;
+    	
+    	try {
+    		stmt = conn.createStatement();
+    		ResultSet rs = stmt.executeQuery(query);
+    		while (rs.next()) {
+    			
+    			int patronID = rs.getInt("patronID");
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String patronEmail = rs.getString("patronEmail");
+                String phoneNumber = rs.getString("phoneNumber");
+                String streetAddress = rs.getString("streetAddress");
+                String City = rs.getString("City");
+                String State = rs.getString("State");
+                String zip = rs.getString("zip");
+                thePatron = new Patron(patronID, firstName, lastName, patronEmail,
+                        phoneNumber, streetAddress, City, State, zip);
+               
+    		}
+    	} catch (SQLException e) {
+    		System.out.println(e);
+    	} finally {
+    		if (stmt != null) {
+    			stmt.close();
+    		}
+    	}
+    	
+    	return thePatron;
     }
     
     /////////////////////////////////////////////////////////////////////////
