@@ -74,7 +74,7 @@ public class LibraryFrame extends JFrame{
 		//myCurrentPanel = myPublisherListPanel;
 		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
-		//this.add(myBookInfoListPanel, BorderLayout.CENTER);
+		this.add(myBookInfoListPanel, BorderLayout.CENTER);
 		myCurrentPanel = myBookInfoListPanel;
 		//this.add(myBookInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
@@ -90,19 +90,19 @@ public class LibraryFrame extends JFrame{
 		
 		searchBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
-				
+				showBookInfoListPanel();
 			}
 		});
 		
 		searchPatrons.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
-				
+				showPatronListPanel();
 			}
 		});
 		
 		searchKeyword.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
-				
+				showSearchPanel();
 			}
 		});
 		
@@ -264,4 +264,23 @@ public class LibraryFrame extends JFrame{
 		pack();
 		this.repaint();
 	}
+	
+	public void showSearchPanel() {
+		//System.out.println("show book info panel");
+		remove(myCurrentPanel);
+		myCurrentPanel = new SearchPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
+	}
+	
+	public void showPatronListPanel() {
+		//System.out.println("show book info panel");
+		remove(myCurrentPanel);
+		myCurrentPanel = new PatronListPanel(this, myDatabase);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
+	}
+	
 }
