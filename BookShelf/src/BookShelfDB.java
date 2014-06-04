@@ -82,6 +82,32 @@ public class BookShelfDB {
 		return pubList;
 	}
 	
+	public List<String> getPublisherName() throws SQLException {
+		if (conn == null) {
+			createConnection();
+		}
+		Statement stmt = null;
+		String query = "SELECT publisherName FROM _445team15.Publisher";
+		
+		List<String> pubNameList = new ArrayList<String>();
+		try {
+			stmt = conn.createStatement();
+			ResultSet  rs = stmt.executeQuery(query);
+			while(rs.next()) {
+				String publisherName = rs.getString("publisherName");
+				
+				pubNameList.add(publisherName);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return pubNameList;
+	}
+	
 	public List<Publisher> getPublisherByName(String publisherName) {
 		List<Publisher> filterList = new ArrayList<Publisher>();
 		try {
@@ -442,7 +468,7 @@ public class BookShelfDB {
             statement = conn.createStatement();
             ResultSet patronResult = statement.executeQuery(sql);
             while (patronResult.next()) {
-            	maxOrderID = patronResult.getInt("MAX(orderID)");
+            	maxOrderID = patronResult.getInt("MAX(recordID)");
             }
         } catch (SQLException e) {
             System.out.println(e);

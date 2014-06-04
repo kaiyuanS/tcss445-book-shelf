@@ -5,6 +5,9 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -167,15 +170,30 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent anEvent) {
 		
 		if (anEvent.getSource() == myAddButton) {
-				BookInfo newBookInfo = new BookInfo(myISBNText.getText(), myTitleText.getText(),
-						Integer.valueOf(myYearText.getText()), myAuthorText.getText(),
-						myFormatText.getText(), Integer.valueOf(myPageNumberText.getText()),
-						myLanguageText.getText(), Integer.valueOf(myBookSelfNumberText.getText()),
-						Integer.valueOf(myLayerNumberText.getText()), myPublisherText.getText());
+				List<String> publisherName = new ArrayList<String>();
+				try {
+					publisherName = myDatabase.getPublisherName();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 				
-				myDatabase.addBookInfo(newBookInfo);
-				//JOptionPane.showMessageDialog(null, "Added Successfully!");
-				myFrame.showBookInfoListPanel();
+				if(!publisherName.contains(myPublisherText.getText())) {
+					JOptionPane.showMessageDialog(null, "the publisher do not extist!", "error",JOptionPane.ERROR_MESSAGE);
+				} else {
+				
+					BookInfo newBookInfo = new BookInfo(myISBNText.getText(), myTitleText.getText(),
+							Integer.valueOf(myYearText.getText()), myAuthorText.getText(),
+							myFormatText.getText(), Integer.valueOf(myPageNumberText.getText()),
+							myLanguageText.getText(), Integer.valueOf(myBookSelfNumberText.getText()),
+							Integer.valueOf(myLayerNumberText.getText()), myPublisherText.getText());
+					
+					
+					
+					myDatabase.addBookInfo(newBookInfo);
+					//JOptionPane.showMessageDialog(null, "Added Successfully!");
+					myFrame.showBookInfoListPanel();
+				}
 		}
 		
 	}

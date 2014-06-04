@@ -83,6 +83,7 @@ public class LibraryFrame extends JFrame{
 	private void initButtonPanel() {
 		myButtonPanel = new JPanel();
 		JButton searchBooks = new JButton("Search Book Info");
+		JButton searchPublishers = new JButton("Search Publisher Info");
 		JButton searchPatrons = new JButton("Search Patrons");
 		JButton searchKeyword = new JButton("Search Keyword");
 		JButton viewRecord = new JButton("View Record");
@@ -92,6 +93,12 @@ public class LibraryFrame extends JFrame{
 		searchBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
 				showBookInfoListPanel();
+			}
+		});
+		
+		searchPublishers.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent theActionEvent) {
+				showPublisherListPanel();
 			}
 		});
 		
@@ -120,11 +127,11 @@ public class LibraryFrame extends JFrame{
 		});
 		
 		myButtonPanel.add(searchTheBooks);
+		myButtonPanel.add(searchPublishers);
 		myButtonPanel.add(searchBooks);
 		myButtonPanel.add(searchPatrons);
 		myButtonPanel.add(searchKeyword);
 		myButtonPanel.add(viewRecord);
-		
 		
 	}
 	
