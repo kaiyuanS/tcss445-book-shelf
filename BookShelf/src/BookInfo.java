@@ -14,7 +14,7 @@ public class BookInfo {
     
     public BookInfo(String anISBN, String aTitle, int aYear,
             String anAuthor, String aFormat, int aPageNumber,
-            String aLanguage, int aBookselfNumber, int aLayerNumber,
+            String aLanguage, int aBookshelfNumber, int aLayerNumber,
             String aPublisherName) {
         myISBN = anISBN;
         myTitle = aTitle;
@@ -23,7 +23,7 @@ public class BookInfo {
         myFormat = aFormat;
         myPageNumber = aPageNumber;
         myLanguage = aLanguage;
-        myBookshelfNumber = aBookselfNumber;
+        myBookshelfNumber = aBookshelfNumber;
         myLayerNumber = aLayerNumber;
         myPublisherName = aPublisherName;
     }
@@ -84,12 +84,12 @@ public class BookInfo {
         myLanguage = aLanguage;
     }
 
-    public int getBookselfNumber() {
+    public int getBookshelfNumber() {
         return myBookshelfNumber;
     }
 
-    public void setBookselfNumber(int aBookselfNumber) {
-        myBookshelfNumber = aBookselfNumber;
+    public void setBookshelfNumber(int aBookshelfNumber) {
+        myBookshelfNumber = aBookshelfNumber;
     }
 
     public int getLayerNumber() {
@@ -114,7 +114,7 @@ public class BookInfo {
                 + "\nYear: " + myYear + "\nAuthor: " + myAuthor
                 + "\nFormat: " + myFormat
                 + "\nPage Number: " + myPageNumber + "\nLanguage: " + myLanguage
-                + "\nBookself NUmber: " + myBookshelfNumber + "\nLayer Number: " + myLayerNumber
+                + "\nBookshelf NUmber: " + myBookshelfNumber + "\nLayer Number: " + myLayerNumber
                 + "\nPublisher: " + myPublisherName;
     }
 }

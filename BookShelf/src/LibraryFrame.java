@@ -51,23 +51,23 @@ public class LibraryFrame extends JFrame{
 	private void initPanels() {
 		initButtonPanel();
 		//initBookListPanel();
-		initBookInfoList();
-		initBookInfo();
+		myBookInfoListPanel = new BookInfoListPanel(myDatabase, this);
+		/*initBookInfo();
 		initPublisherPanel();
-		initPublisherListPanel();
+		initPublisherListPanel();*/
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
 		//this.add(myPublisherListPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myPublisherListPanel;
 		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
-		//this.add(myBookInfoListPanel, BorderLayout.CENTER);
-		//myCurrentPanel = myBookInfoListPanel;
+		this.add(myBookInfoListPanel, BorderLayout.CENTER);
+		myCurrentPanel = myBookInfoListPanel;
 		//this.add(myBookInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
-		mySearchPanel = new SearchPanel(myDatabase, this);
-		myCurrentPanel = myBookInfoPanel;
-		this.add(myCurrentPanel, BorderLayout.CENTER);
+		//mySearchPanel = new SearchPanel(myDatabase, this);
+		//myCurrentPanel = myBookInfoPanel;
+		//this.add(myCurrentPanel, BorderLayout.CENTER);
 	}
 	
 	private void initButtonPanel() {
@@ -101,7 +101,7 @@ public class LibraryFrame extends JFrame{
 		
 	}
 	
-	private void initBookListPanel() {
+	/*rivate void initBookListPanel() {
 		//myBookListPanel = new JPanel();
 		//myBookListPanel.setLayout(new BorderLayout());
 		
@@ -125,9 +125,9 @@ public class LibraryFrame extends JFrame{
 		JScrollPane scrollPane = new JScrollPane(bookListTable);
 		bookListTable.setFillsViewportHeight(true);
 		myBookListPanel.add(scrollPane, BorderLayout.CENTER);
-	}
+	}*/
 	
-	private void initPublisherPanel() {
+	/*private void initPublisherPanel() {
 		myPublisherInfoPanel = new PublisherInfoPanel(myDatabase, this);
 	}
 	private void initBookInfoList() {
@@ -138,9 +138,9 @@ public class LibraryFrame extends JFrame{
 	}
 	private void initPublisherListPanel() {
 		myPublisherListPanel = new PublisherListPanel(myDatabase, this);
-	}
+	}*/
 	
-	private class BookSearchListener implements ActionListener {
+	/*private class BookSearchListener implements ActionListener {
 		
 		JFrame myMainFrame;
 		
@@ -152,7 +152,7 @@ public class LibraryFrame extends JFrame{
 		public void actionPerformed(ActionEvent theActionEvent) {
 			//myMainFrame.add(comp)
 		}
-	}
+	}*/
 	
 	/*private void configPanel() {
 		BookInfo testBookInfo = new BookInfo("1234567890123", "Book Title", 2010,
@@ -162,11 +162,11 @@ public class LibraryFrame extends JFrame{
 		myBookListPanel = new BookListPanel(myDatabase);
 	}*/
 	
-	private void addPanel() {
+	/*private void addPanel() {
 		//add(myBookInfo, BorderLayout.CENTER);
 		add(myBookListPanel, BorderLayout.CENTER);
 		add(myButtonPanel, BorderLayout.SOUTH);
-	}
+	}*/
 	
 	/////////////////////////////////////////////////////
 	////JPanel Switch Method Here////////////////////////

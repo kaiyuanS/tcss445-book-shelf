@@ -478,7 +478,7 @@ public class BookShelfDB {
             preparedStatement.setString(5, aBookInfo.getFormat());
             preparedStatement.setInt(6, aBookInfo.getPageNumber());
             preparedStatement.setString(7, aBookInfo.getLanguage());
-            preparedStatement.setInt(8, aBookInfo.getBookselfNumber());
+            preparedStatement.setInt(8, aBookInfo.getBookshelfNumber());
             preparedStatement.setInt(9, aBookInfo.getLayerNumber());
             preparedStatement.setString(10, aBookInfo.getPublisherName());
             preparedStatement.executeUpdate();
@@ -504,7 +504,7 @@ public class BookShelfDB {
 					 + ", format"
 					 + ", pageNumber"
 					 + ", Language"
-					 + ", bookselfNumber"
+					 + ", bookshelfNumber"
 					 + ", layerNumber"
 					 + ", publisherName"
 					 + " from _445team15.BookInfo";
@@ -523,12 +523,12 @@ public class BookShelfDB {
 				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
-				int bookselfNumber = rs.getInt("bookselfNumber");
+				int bookshelfNumber = rs.getInt("bookshelfNumber");
 				int layerNumber = rs.getInt("layerNumber");
 				String publisherName = rs.getString("publisherName");
 				
 				BookInfo binfo = new BookInfo(isbn, title, year, author, 
-								 format, pageNumber, language, bookselfNumber,
+								 format, pageNumber, language, bookshelfNumber,
 								 layerNumber, publisherName);
 				
 				bookInfoList.add(binfo);
@@ -977,12 +977,12 @@ public class BookShelfDB {
 				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
-				int bookselfNumber = rs.getInt("bookselfNumber");
+				int bookshelfNumber = rs.getInt("bookshelfNumber");
 				int layerNumber = rs.getInt("layerNumber");
 				String publisherName = rs.getString("publisherName");
 				
 				BookInfo binfo = new BookInfo(isbn, title, year, author, 
-								 format, pageNumber, language, bookselfNumber,
+								 format, pageNumber, language, bookshelfNumber,
 								 layerNumber, publisherName);
 				
 				bookInfoList.add(binfo);

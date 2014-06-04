@@ -235,7 +235,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 				myBookData[i][4] = myBookInfoList.get(i).getFormat();
 				myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
 				myBookData[i][6] = myBookInfoList.get(i).getLanguage();
-				myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+				myBookData[i][7] = myBookInfoList.get(i).getBookshelfNumber();
 				myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
 				myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
 			}
@@ -309,7 +309,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 				myBookData[i][4] = myBookInfoList.get(i).getFormat();
 				myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
 				myBookData[i][6] = myBookInfoList.get(i).getLanguage();
-				myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+				myBookData[i][7] = myBookInfoList.get(i).getBookshelfNumber();
 				myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
 				myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
 			} else {

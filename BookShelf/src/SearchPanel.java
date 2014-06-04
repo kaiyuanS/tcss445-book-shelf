@@ -85,7 +85,6 @@ public class SearchPanel extends JPanel implements ActionListener{
 	
 	private void buildResultPanel() {
 		myResultPanel = new JPanel(new BorderLayout());
-		System.out.println(myResultList.size());
 		myBookData = new Object[myResultList.size()][myColName.length];
 		for (int i = 0; i < myResultList.size(); i++) {
 			myBookData[i][0] = myResultList.get(i).getTitle();
@@ -95,7 +94,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 			myBookData[i][4] = myResultList.get(i).getFormat();
 			myBookData[i][5] = myResultList.get(i).getPageNumber();
 			myBookData[i][6] = myResultList.get(i).getLanguage();
-			myBookData[i][7] = myResultList.get(i).getBookselfNumber();
+			myBookData[i][7] = myResultList.get(i).getBookshelfNumber();
 			myBookData[i][8] = myResultList.get(i).getLayerNumber();
 			myBookData[i][9] = myResultList.get(i).getPublisherName();
 		}
@@ -114,7 +113,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 	private String getCondition() {
 		String condition = "FALSE";
 		if (myKeyword.getText() == null || myKeyword.getText().equals("")) {
-			throw new IllegalArgumentException("The input could not be blank");
+			//nothing happened
 		} else {
 			String keyWord = myKeyword.getText();
 
@@ -137,11 +136,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 				}
 				
 				if (isDigit) {
-					condition += "OR `year` = " + keyWord;
+					condition += " OR `year` = " + keyWord;
 				}
 			}
 		}
-		System.out.println(condition);
 		return condition;
 	}
 
