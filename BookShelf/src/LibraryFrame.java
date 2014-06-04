@@ -23,9 +23,9 @@ public class LibraryFrame extends JFrame{
 	private BookShelfDB myDatabase;
 	
 	private BookListPanel myBookListPanel; //
-	private JPanel myPatronListPanel; //
-	private JPanel myRecordListPanel;
-	private JPanel myPublisherListPanel;
+	private PatronListPanel myPatronListPanel; //
+	private PatronRecordList myRecordListPanel;
+	private PublisherListPanel myPublisherListPanel;
 	private BookInfoPanel myBookInfo;
 	private JPanel myPatronInfo;
 	private JPanel myPublisherInfo;
@@ -75,7 +75,7 @@ public class LibraryFrame extends JFrame{
 		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
 		//this.add(myBookInfoListPanel, BorderLayout.CENTER);
-		//myCurrentPanel = myBookInfoListPanel;
+		myCurrentPanel = myBookInfoListPanel;
 		//this.add(myBookInfoPanel, BorderLayout.CENTER);
 		//myCurrentPanel = myBookInfoPanel;
 		
