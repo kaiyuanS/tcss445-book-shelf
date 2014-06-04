@@ -3,16 +3,21 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 
-public class BookInfoPanel extends JPanel {
+public class BookInfoPanel extends JPanel implements ActionListener{
 
 	BookInfo myBookInfo;
+	BookShelfDB myDatabase;
+	LibraryFrame myFrame;
 	
 	private JPanel myLabelPanel;
 	private JPanel myTextPanel;
@@ -39,17 +44,17 @@ public class BookInfoPanel extends JPanel {
 	private JTextField myBookSelfNumberText;
 	private JTextField myLayerNumberText;
 	private JTextField myPublisherText;
-
-	private JButton myRecordButton;
-	private JButton myEditButton;
 	
-	private static Dimension LABEL_SIZE = new Dimension(100, 45);
+	private JButton myAddButton;
+	
+	private static Dimension LABEL_SIZE = new Dimension(150, 45);
 	private static Dimension TEXT_SIZE = new Dimension(500, 45);
 	private static Dimension BUTTON_SIZE = new Dimension(150, 25);
 	
-	public BookInfoPanel() {
+	public BookInfoPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
-		//myBookInfo = BookInfo;
+		myDatabase = aDatabase;
+		myFrame = aFrame;
 		configLabel();
 		configTextField();
 		configButton();
@@ -81,50 +86,51 @@ public class BookInfoPanel extends JPanel {
 	}
 
 	private void configTextField() {
-		//myISBNText = new JTextField(myBookInfo.getISBN());
+		myISBNText = new JTextField();
 		myISBNText.setPreferredSize(TEXT_SIZE);
-		//myTitleText = new JTextField(myBookInfo.getTitle());
+		myTitleText = new JTextField();
 		myTitleText.setPreferredSize(TEXT_SIZE);
-		//myYearText = new JTextField(Integer.valueOf(myBookInfo.getYear()).toString());
+		myYearText = new JTextField();
 		myYearText.setPreferredSize(TEXT_SIZE);
-		//myAuthorText = new JTextField(myBookInfo.getAuthor());
+		myAuthorText = new JTextField();
 		myAuthorText.setPreferredSize(TEXT_SIZE);
-		//myFormatText = new JTextField(myBookInfo.getFormat() == 1?"Hard cover":"Paper Back");
+		myFormatText = new JTextField();
 		myFormatText.setPreferredSize(TEXT_SIZE);
-		//myPageNumberText = new JTextField(Integer.valueOf(myBookInfo.getPageNumber()).toString());
+		myPageNumberText = new JTextField();
 		myPageNumberText.setPreferredSize(TEXT_SIZE);
-		//myLanguageText = new JTextField(myBookInfo.getLanguage());
+		myLanguageText = new JTextField();
 		myLanguageText.setPreferredSize(TEXT_SIZE);
-		//myBookSelfNumberText = new JTextField(Integer.valueOf(myBookInfo.getBookselfNumber()).toString());
+		myBookSelfNumberText = new JTextField();
 		myBookSelfNumberText.setPreferredSize(TEXT_SIZE);
-		//myLayerNumberText = new JTextField(Integer.valueOf(myBookInfo.getLayerNumber()).toString());
+		myLayerNumberText = new JTextField();
 		myLayerNumberText.setPreferredSize(TEXT_SIZE);
-		//myPublisherText = new JTextField(myBookInfo.getPublisherName());
+		myPublisherText = new JTextField();
 		myPublisherText.setPreferredSize(TEXT_SIZE);
 		
-		myISBNText.setEditable(false);
-		myTitleText.setEditable(false);
-		myYearText.setEditable(false);
-		myAuthorText.setEditable(false);
-		myFormatText.setEditable(false);
-		myPageNumberText.setEditable(false);
-		myLanguageText.setEditable(false);
-		myBookSelfNumberText.setEditable(false);
-		myLayerNumberText.setEditable(false);
-		myPublisherText.setEditable(false);
+		myISBNText.setEditable(true);
+		myTitleText.setEditable(true);
+		myYearText.setEditable(true);
+		myAuthorText.setEditable(true);
+		myFormatText.setEditable(true);
+		myPageNumberText.setEditable(true);
+		myLanguageText.setEditable(true);
+		myBookSelfNumberText.setEditable(true);
+		myLayerNumberText.setEditable(true);
+		myPublisherText.setEditable(true);
 		
 	}
+	
 	private void configButton() {
-		myRecordButton = new JButton("View Record");
-		myRecordButton.setPreferredSize(BUTTON_SIZE);
-		myEditButton = new JButton("Edit");
-		myEditButton.setPreferredSize(BUTTON_SIZE);
+		myAddButton = new JButton("Add");
+		myAddButton.setPreferredSize(BUTTON_SIZE);
+		myAddButton.addActionListener(this);
 	}
+	
 	private void addComponents() {
 		myLabelPanel = new JPanel();
-		myLabelPanel.setLayout(new GridLayout(10, 2));
+		myLabelPanel.setLayout(new GridLayout(10, 1));
 		myTextPanel = new JPanel();
-		myTextPanel.setLayout(new GridLayout(10, 2));
+		myTextPanel.setLayout(new GridLayout(10, 1));
 		myButtonPanel = new JPanel();
 		myButtonPanel.setLayout(new FlowLayout());
 		
@@ -149,12 +155,29 @@ public class BookInfoPanel extends JPanel {
 		myLabelPanel.add(myPublisherLabel);
 		myTextPanel.add(myPublisherText);
 		
-		myButtonPanel.add(myRecordButton);
-		myButtonPanel.add(myEditButton);
+		myButtonPanel.add(myAddButton);
 		
+		setLayout(new BorderLayout());
 		add(myLabelPanel, BorderLayout.WEST);
 		add(myTextPanel, BorderLayout.CENTER);
 		add(myButtonPanel, BorderLayout.SOUTH);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent anEvent) {
+		
+		if (anEvent.getSource() == myAddButton) {
+				BookInfo newBookInfo = new BookInfo(myISBNText.getText(), myTitleText.getText(),
+						Integer.valueOf(myYearText.getText()), myAuthorText.getText(),
+						myFormatText.getText(), Integer.valueOf(myPageNumberText.getText()),
+						myLanguageText.getText(), Integer.valueOf(myBookSelfNumberText.getText()),
+						Integer.valueOf(myLayerNumberText.getText()), myPublisherText.getText());
+				
+				myDatabase.addBookInfo(newBookInfo);
+				JOptionPane.showMessageDialog(null, "Added Successfully!");
+				myFrame.showBookListPanel();
+		}
+		
 	}
 
 

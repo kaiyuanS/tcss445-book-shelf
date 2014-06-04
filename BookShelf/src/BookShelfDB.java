@@ -97,6 +97,54 @@ public class BookShelfDB {
 		return filterList;
 	}
 	
+	public void addPublisher(Publisher aPublisher) {
+		String sql = "INSERT INTO _445team15.Publisher VALUES "
+                + "(?, ?, ?, ?, ?, ?, ?);";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            if (conn == null) {
+                createConnection();
+            }
+            preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setString(1, aPublisher.getName());
+            preparedStatement.setString(2, aPublisher.getStreet());
+            preparedStatement.setString(3, aPublisher.getCity());
+            preparedStatement.setString(4, aPublisher.getState());
+            preparedStatement.setString(5, aPublisher.getZipCode());
+            preparedStatement.setString(6, aPublisher.getCountry());
+            preparedStatement.setInt(7, aPublisher.getYearFounded());
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+	}
+	
+	public void upDatePublisher(String aPublisherName, String anAttribute, Object aData) {
+		String sql = "UPDATE _445team15.Publisher SET "
+                + anAttribute + " = ? WHERE publisherName = ?;";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            if (conn == null) {
+                createConnection();
+            }
+            preparedStatement = conn.prepareStatement(sql);
+            if (aData instanceof String) {
+            	preparedStatement.setString(1, (String)aData);
+            } else {
+            	preparedStatement.setInt(1, (int)aData);
+            }
+            
+            preparedStatement.setString(2, aPublisherName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+	}
+	
 	/// other publisher sql statements
 	
 	////////////////////////////////////////////////////////////////////
@@ -457,9 +505,9 @@ public class BookShelfDB {
 				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
-				int bookshelfNumber = rs.getInt("bookshelfNumber");
+				int bookshelfNumber = rs.getInt("bookselfNumber");
 				int layerNumber = rs.getInt("layerNumber");
-				String publisherName = rs.getString("publisher_publisherName");
+				String publisherName = rs.getString("publisherName");
 				
 				BookInfo binfo = new BookInfo(isbn, title, year, author, 
 								 format, pageNumber, language, bookshelfNumber,

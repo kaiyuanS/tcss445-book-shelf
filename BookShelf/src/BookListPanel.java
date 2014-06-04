@@ -287,26 +287,10 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 			myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
 			myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
 		}
+		repaint();
 	}
 	
 	private void unSelectedAll() {
-		//System.out.print("clear");
-		/*myYearBefore1990.setSelected(false);
-		myYear1991_2000.setSelected(false);
-		myYear2001_2010.setSelected(false);
-		myYearAfter2011.setSelected(false);
-		myPageLess500.setSelected(false);
-		myPage501_1000.setSelected(false);
-		myPage1001_2000.setSelected(false);
-		myPageMore2000.setSelected(false);
-		myHardCover.setSelected(false);
-		myPaperBack.setSelected(false);
-		myEnglish.setSelected(false);
-		mySpanish.setSelected(false);
-		myFrench.setSelected(false);
-		myChinese.setSelected(false);
-		myRussian.setSelected(false);
-		myOtherLanguage.setSelected(false);*/
 		myYearGroup.clearSelection();
 		myPageGroup.clearSelection();
 		myFormatGroup.clearSelection();
