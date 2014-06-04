@@ -19,9 +19,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
+import javax.swing.table.TableModel;
 
 
-public class BookListPanel extends JPanel{
+public class BookListPanel extends JPanel implements ActionListener, TableModelListener{
 	
 	private BookShelfDB myDatebase;
 	private List<BookInfo> myBookInfoList = new ArrayList<BookInfo>();
@@ -31,30 +33,36 @@ public class BookListPanel extends JPanel{
 	
 	private JTable myBookTable;
 	private JScrollPane myListScrollPane;
-	private String[] myColName = {"Title", "Author", "ISBN", "Year", "format", "Page Number",
-			"Language", "Bookself Number", "Layer Number", "Publisher Name"};
+	private String[] myColName = {"title", "author", "ISBN", "year", "format", "pageNumber",
+			"language", "bookselfNumber", "layerNumber", "publisherName"};
 	private Object[][] myBookData;
 	
+	JButton mySearch;
+	JButton myClear;
 	JButton myAdd;
 	JButton myDelete;
 	
 	private JLabel myYearLabel;
+	ButtonGroup myYearGroup;
 	private JRadioButton myYearBefore1990;
 	private JRadioButton myYear1991_2000;
 	private JRadioButton myYear2001_2010;
 	private JRadioButton myYearAfter2011;
 	
 	private JLabel myPageLabel;
+	ButtonGroup myPageGroup;
 	private JRadioButton myPageLess500;
 	private JRadioButton myPage501_1000;
 	private JRadioButton myPage1001_2000;
 	private JRadioButton myPageMore2000;
 	
 	private JLabel myFormatLabel;
+	ButtonGroup myFormatGroup;
 	private JRadioButton myHardCover;
 	private JRadioButton myPaperBack;
 	
 	private JLabel myLanguageLabel;
+	ButtonGroup myLanguageGroup;
 	private JRadioButton myEnglish;
 	private JRadioButton mySpanish;
 	private JRadioButton myFrench;
@@ -62,8 +70,8 @@ public class BookListPanel extends JPanel{
 	private JRadioButton myRussian;
 	private JRadioButton myOtherLanguage;
 	
-	private static Dimension LABEL_SIZE = new Dimension(200, 25);
-	private static Dimension BUTTON_SIZE = new Dimension(200, 20);
+	private static Dimension LABEL_SIZE = new Dimension(200, 20);
+	private static Dimension BUTTON_SIZE = new Dimension(200, 15);
 	
 	public BookListPanel(BookShelfDB aDatabase) {
 		super();
@@ -72,8 +80,8 @@ public class BookListPanel extends JPanel{
 		configFilter();
 		configList();
 		addComponents();
-		myBookInfoList.add(new BookInfo("1234567890123", "Book Title", 2010,
-                "Book Author", 1, 500, "English", 20, 3, "Book Publisher"));
+		//myBookInfoList.add(new BookInfo("1234567890123", "Book Title", 2010,
+               // "Book Author", 1, 500, "English", 20, 3, "Book Publisher"));
 	}
 	
 	private void configButton() {
@@ -87,11 +95,11 @@ public class BookListPanel extends JPanel{
 		myYear2001_2010.setPreferredSize(BUTTON_SIZE);
 		myYearAfter2011 = new JRadioButton("After 2010");
 		myYearAfter2011.setPreferredSize(BUTTON_SIZE);
-		ButtonGroup yearGroup = new ButtonGroup();
-		yearGroup.add(myYearBefore1990);
-		yearGroup.add(myYear1991_2000);
-		yearGroup.add(myYear2001_2010);
-		yearGroup.add(myYearAfter2011);
+		myYearGroup = new ButtonGroup();
+		myYearGroup.add(myYearBefore1990);
+		myYearGroup.add(myYear1991_2000);
+		myYearGroup.add(myYear2001_2010);
+		myYearGroup.add(myYearAfter2011);
 		
 		myPageLabel = new JLabel("Page Number: ");
 		myPageLabel.setPreferredSize(LABEL_SIZE);
@@ -103,11 +111,11 @@ public class BookListPanel extends JPanel{
 		myPage1001_2000.setPreferredSize(BUTTON_SIZE);
 		myPageMore2000 = new JRadioButton("More than 2000");
 		myPageMore2000.setPreferredSize(BUTTON_SIZE);
-		ButtonGroup pageGroup = new ButtonGroup();
-		pageGroup.add(myPageLess500);
-		pageGroup.add(myPage501_1000);
-		pageGroup.add(myPage1001_2000);
-		pageGroup.add(myPageMore2000);
+		myPageGroup = new ButtonGroup();
+		myPageGroup.add(myPageLess500);
+		myPageGroup.add(myPage501_1000);
+		myPageGroup.add(myPage1001_2000);
+		myPageGroup.add(myPageMore2000);
 		
 		myFormatLabel = new JLabel("Format: ");
 		myFormatLabel.setPreferredSize(LABEL_SIZE);
@@ -115,9 +123,9 @@ public class BookListPanel extends JPanel{
 		myHardCover.setPreferredSize(BUTTON_SIZE);
 		myPaperBack = new JRadioButton("Paper back");
 		myPaperBack.setPreferredSize(BUTTON_SIZE);
-		ButtonGroup formatGroup = new ButtonGroup();
-		formatGroup.add(myHardCover);
-		formatGroup.add(myPaperBack);
+		myFormatGroup = new ButtonGroup();
+		myFormatGroup.add(myHardCover);
+		myFormatGroup.add(myPaperBack);
 		
 		myLanguageLabel = new JLabel("Lannguage: ");
 		myLanguageLabel.setPreferredSize(LABEL_SIZE);
@@ -133,18 +141,24 @@ public class BookListPanel extends JPanel{
 		myRussian.setPreferredSize(BUTTON_SIZE);
 		myOtherLanguage = new JRadioButton("Other");
 		myOtherLanguage.setPreferredSize(BUTTON_SIZE);
-		ButtonGroup languageGroup = new ButtonGroup();
-		languageGroup.add(myEnglish);
-		languageGroup.add(mySpanish);
-		languageGroup.add(myFrench);
-		languageGroup.add(myChinese);
-		languageGroup.add(myRussian);
-		languageGroup.add(myOtherLanguage);
+		myLanguageGroup = new ButtonGroup();
+		myLanguageGroup.add(myEnglish);
+		myLanguageGroup.add(mySpanish);
+		myLanguageGroup.add(myFrench);
+		myLanguageGroup.add(myChinese);
+		myLanguageGroup.add(myRussian);
+		myLanguageGroup.add(myOtherLanguage);
 	}
 	
 	private void configFilter() {
+		myClear = new JButton("Clear All");
+		mySearch = new JButton("Search");
 		myFilterPanel = new JPanel();
-		myFilterPanel.setLayout(new GridLayout(20, 1));
+		myFilterPanel.setPreferredSize(new Dimension(200, 500));
+		myClear.setPreferredSize(new Dimension(100, 20));
+		myClear.addActionListener(this);
+		mySearch.addActionListener(this);
+		myFilterPanel.setLayout(new GridLayout(22, 1));
 		myFilterPanel.add(myYearLabel);
 		myFilterPanel.add(myYearBefore1990);
 		myFilterPanel.add(myYear1991_2000);
@@ -165,26 +179,14 @@ public class BookListPanel extends JPanel{
 		myFilterPanel.add(myChinese);
 		myFilterPanel.add(myRussian);
 		myFilterPanel.add(myOtherLanguage);
+		myFilterPanel.add(mySearch);
+		myFilterPanel.add(myClear);
 	}
 	
 	private void configList() {
 		myListPanel= new JPanel();
 		
 		refreshData();
-		
-		myBookData = new Object[myBookInfoList.size()][myColName.length];
-		for (int i=0; i<myBookInfoList.size(); i++) {
-			myBookData[i][0] = myBookInfoList.get(i).getTitle();
-			myBookData[i][1] = myBookInfoList.get(i).getAuthor();
-			myBookData[i][2] = myBookInfoList.get(i).getISBN();
-			myBookData[i][3] = myBookInfoList.get(i).getYear();
-			myBookData[i][4] = myBookInfoList.get(i).getFormat() == 1?"Hard cover":"Paper Back";
-			myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
-			myBookData[i][6] = myBookInfoList.get(i).getLanguage();
-			myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
-			myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
-			myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
-		}
 		
 		myBookTable = new JTable(myBookData, myColName);
 		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
@@ -202,7 +204,7 @@ public class BookListPanel extends JPanel{
 		buttons.add(myDelete);
 		myListPanel.setLayout(new BorderLayout());
 		myListPanel.add(myListScrollPane, BorderLayout.CENTER);
-		//myListPanel.add(buttons, BorderLayout.SOUTH);
+		myListPanel.add(buttons, BorderLayout.SOUTH);
 	}
 	
 	private void addComponents() {
@@ -213,10 +215,135 @@ public class BookListPanel extends JPanel{
 	private void refreshData() {
 		try {
 			myBookInfoList = myDatebase.getBookInfo();
+			refreshTable();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	private void filterBookInfo() {
+		String aCondition = "TRUE";
+		
+		if (myYearBefore1990.isSelected()) {
+			aCondition += " AND year <= 1990";
+		} else if (myYear1991_2000.isSelected()) {
+			aCondition += " AND year > 1990 AND year <= 2000";
+		} else if (myYear2001_2010.isSelected()) {
+			aCondition += " AND year > 2000 AND year <= 2010";
+		} else if (myYearAfter2011.isSelected()) {
+			aCondition += " AND year > 2010";
+		}
+		if (myPageLess500.isSelected()) {
+			aCondition += " AND pageNumber <= 500";
+		} else if (myPage501_1000.isSelected()) {
+			aCondition += " AND pageNumber > 500 AND pageNumber <= 1000";
+		} else if (myPage1001_2000.isSelected()) {
+			aCondition += " AND pageNumber > 1000 AND pageNumber <= 2000";
+		} else if (myPageMore2000.isSelected()) {
+			aCondition += " AND pageNumber > 2000";
+		}
+		if (myHardCover.isSelected()) {
+			aCondition += " AND format = 1";
+		} else if (myPaperBack.isSelected()) {
+			aCondition += " AND format = 2";
+		}
+		if (myEnglish.isSelected()) {
+			aCondition += " AND Language = 'English'";
+		} else if (mySpanish.isSelected()) {
+			aCondition += " AND Language = 'Spanish'";
+		} else if (myFrench.isSelected()) {
+			aCondition += " AND Language = 'French'";
+		} else if (myChinese.isSelected()) {
+			aCondition += " AND Language = 'Chinese'";
+		} else if (myRussian.isSelected()) {
+			aCondition += " AND Language = 'Russian'";
+		} else if (myOtherLanguage.isSelected()) {
+			aCondition += " AND Language <> 'English' AND"
+					+ " Language <> 'Spanish' AND"
+					+ " Language <> 'French' AND"
+					+ " Language <> 'Chinese' AND"
+					+ " Language <> 'Russian'";
+		}
+		
+		try {
+			myBookInfoList = myDatebase.getFilteredBookInfo(aCondition);
+			refreshTable();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void refreshTable() {
+		myBookData = new Object[myBookInfoList.size()][myColName.length];
+		for (int i=0; i<myBookInfoList.size(); i++) {
+			myBookData[i][0] = myBookInfoList.get(i).getTitle();
+			myBookData[i][1] = myBookInfoList.get(i).getAuthor();
+			myBookData[i][2] = myBookInfoList.get(i).getISBN();
+			myBookData[i][3] = myBookInfoList.get(i).getYear();
+			myBookData[i][4] = myBookInfoList.get(i).getFormat();
+			myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
+			myBookData[i][6] = myBookInfoList.get(i).getLanguage();
+			myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+			myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
+			myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
+		}
+	}
+	
+	private void unSelectedAll() {
+		//System.out.print("clear");
+		/*myYearBefore1990.setSelected(false);
+		myYear1991_2000.setSelected(false);
+		myYear2001_2010.setSelected(false);
+		myYearAfter2011.setSelected(false);
+		myPageLess500.setSelected(false);
+		myPage501_1000.setSelected(false);
+		myPage1001_2000.setSelected(false);
+		myPageMore2000.setSelected(false);
+		myHardCover.setSelected(false);
+		myPaperBack.setSelected(false);
+		myEnglish.setSelected(false);
+		mySpanish.setSelected(false);
+		myFrench.setSelected(false);
+		myChinese.setSelected(false);
+		myRussian.setSelected(false);
+		myOtherLanguage.setSelected(false);*/
+		myYearGroup.clearSelection();
+		myPageGroup.clearSelection();
+		myFormatGroup.clearSelection();
+		myLanguageGroup.clearSelection();
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent anEvent) {
+		if (anEvent.getSource() == myClear) {
+			unSelectedAll();
+			refreshData();
+		} else if (anEvent.getSource() == mySearch) {
+			filterBookInfo();
+		} else if (anEvent.getSource() == myAdd) {
+			//add a new one
+		} else if (anEvent.getSource() == myDelete) {
+			int row = myBookTable.getSelectedRow();
+			if (row != -1) {
+				int theISBN = (int)myBookData[row][2];
+				myDatebase.removeBookInfo(theISBN);
+			}
+		}
+		
+	}
+	
+	@Override
+	public void tableChanged(TableModelEvent anEvent) {
+		int row = anEvent.getFirstRow();
+        int column = anEvent.getColumn();
+        TableModel model = (TableModel)anEvent.getSource();
+        String columnName = model.getColumnName(column);
+        String ISBN = (String)model.getValueAt(row, 2);
+        Object data = model.getValueAt(row, column);
+       
+        myDatebase.updateBookInfo(ISBN, columnName, data);
+		
+	}
+
 	
 }

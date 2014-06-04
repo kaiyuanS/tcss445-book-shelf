@@ -39,7 +39,7 @@ public class LibraryFrame extends JFrame{
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.setPreferredSize(new Dimension(800, 600));
 		this.setLayout(new BorderLayout());
-		addPanel();
+		//addPanel();
 		//initPanels();
 		myRecordListPanel = new PatronRecordList(myDatabase, null);
 		this.add(myRecordListPanel, BorderLayout.CENTER);
@@ -52,10 +52,12 @@ public class LibraryFrame extends JFrame{
 		initButtonPanel();
 		initBookListPanel();
 		initBookInfoList();
+		initBookInfo();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
 		//this.add(myPublisherInfo, BorderLayout.CENTER);
-		this.add(myBookInfoList, BorderLayout.CENTER);
+		//this.add(myBookInfoList, BorderLayout.CENTER);
+		add(myBookInfo, BorderLayout.CENTER);
 		
 	}
 	
@@ -154,6 +156,9 @@ public class LibraryFrame extends JFrame{
 	private void initBookInfoList() {
 		myBookInfoList = new BookListPanel(myDatabase);
 	}
+	private void initBookInfo() {
+		myBookInfo = new BookInfoPanel();
+	}
 	
 	private class BookSearchListener implements ActionListener {
 		
@@ -170,9 +175,9 @@ public class LibraryFrame extends JFrame{
 	
 	private void configPanel() {
 		BookInfo testBookInfo = new BookInfo("1234567890123", "Book Title", 2010,
-                "Book Author", 1, 500, "English", 20, 3, "Book Publisher");
+                "Book Author", "Hard Cover", 500, "English", 20, 3, "Book Publisher");
 		myButtonPanel = new ButtonPanel();
-		myBookInfo = new BookInfoPanel(testBookInfo);
+		myBookInfo = new BookInfoPanel();
 		myBookListPanel = new BookListPanel(myDatabase);
 	}
 	

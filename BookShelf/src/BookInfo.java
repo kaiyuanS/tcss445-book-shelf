@@ -5,7 +5,7 @@ public class BookInfo {
     private String myTitle;
     private int myYear;
     private String myAuthor;
-    private int myFormat; // 1: hardcover, 2:paperback
+    private String myFormat; // 1: hardcover, 2:paperback
     private int myPageNumber;
     private String myLanguage;
     private int myBookshelfNumber;
@@ -13,7 +13,7 @@ public class BookInfo {
     private String myPublisherName;
     
     public BookInfo(String anISBN, String aTitle, int aYear,
-            String anAuthor, int aFormat, int aPageNumber,
+            String anAuthor, String aFormat, int aPageNumber,
             String aLanguage, int aBookselfNumber, int aLayerNumber,
             String aPublisherName) {
         myISBN = anISBN;
@@ -60,11 +60,11 @@ public class BookInfo {
         myAuthor = anAuthor;
     }
 
-    public int getFormat() {
+    public String getFormat() {
         return myFormat;
     }
 
-    public void setFormat(int aFormat) {
+    public void setFormat(String aFormat) {
         myFormat = aFormat;
     }
 
@@ -112,7 +112,7 @@ public class BookInfo {
     public String toString() {
         return "BookInfo\nISBN: " + myISBN + "\nTitle: " + myTitle
                 + "\nYear: " + myYear + "\nAuthor: " + myAuthor
-                + "\nFormat: " + (myFormat == 1?"hard cover":"paper back")
+                + "\nFormat: " + myFormat
                 + "\nPage Number: " + myPageNumber + "\nLanguage: " + myLanguage
                 + "\nBookself NUmber: " + myBookshelfNumber + "\nLayer Number: " + myLayerNumber
                 + "\nPublisher: " + myPublisherName;

@@ -47,9 +47,9 @@ public class BookInfoPanel extends JPanel {
 	private static Dimension TEXT_SIZE = new Dimension(500, 45);
 	private static Dimension BUTTON_SIZE = new Dimension(150, 25);
 	
-	public BookInfoPanel(BookInfo aBookInfo) {
+	public BookInfoPanel() {
 		super();
-		myBookInfo = aBookInfo;
+		//myBookInfo = BookInfo;
 		configLabel();
 		configTextField();
 		configButton();
@@ -81,25 +81,25 @@ public class BookInfoPanel extends JPanel {
 	}
 
 	private void configTextField() {
-		myISBNText = new JTextField(myBookInfo.getISBN());
+		//myISBNText = new JTextField(myBookInfo.getISBN());
 		myISBNText.setPreferredSize(TEXT_SIZE);
-		myTitleText = new JTextField(myBookInfo.getTitle());
+		//myTitleText = new JTextField(myBookInfo.getTitle());
 		myTitleText.setPreferredSize(TEXT_SIZE);
-		myYearText = new JTextField(Integer.valueOf(myBookInfo.getYear()).toString());
+		//myYearText = new JTextField(Integer.valueOf(myBookInfo.getYear()).toString());
 		myYearText.setPreferredSize(TEXT_SIZE);
-		myAuthorText = new JTextField(myBookInfo.getAuthor());
+		//myAuthorText = new JTextField(myBookInfo.getAuthor());
 		myAuthorText.setPreferredSize(TEXT_SIZE);
-		myFormatText = new JTextField(myBookInfo.getFormat() == 1?"Hard cover":"Paper Back");
+		//myFormatText = new JTextField(myBookInfo.getFormat() == 1?"Hard cover":"Paper Back");
 		myFormatText.setPreferredSize(TEXT_SIZE);
-		myPageNumberText = new JTextField(Integer.valueOf(myBookInfo.getPageNumber()).toString());
+		//myPageNumberText = new JTextField(Integer.valueOf(myBookInfo.getPageNumber()).toString());
 		myPageNumberText.setPreferredSize(TEXT_SIZE);
-		myLanguageText = new JTextField(myBookInfo.getLanguage());
+		//myLanguageText = new JTextField(myBookInfo.getLanguage());
 		myLanguageText.setPreferredSize(TEXT_SIZE);
-		myBookSelfNumberText = new JTextField(Integer.valueOf(myBookInfo.getBookselfNumber()).toString());
+		//myBookSelfNumberText = new JTextField(Integer.valueOf(myBookInfo.getBookselfNumber()).toString());
 		myBookSelfNumberText.setPreferredSize(TEXT_SIZE);
-		myLayerNumberText = new JTextField(Integer.valueOf(myBookInfo.getLayerNumber()).toString());
+		//myLayerNumberText = new JTextField(Integer.valueOf(myBookInfo.getLayerNumber()).toString());
 		myLayerNumberText.setPreferredSize(TEXT_SIZE);
-		myPublisherText = new JTextField(myBookInfo.getPublisherName());
+		//myPublisherText = new JTextField(myBookInfo.getPublisherName());
 		myPublisherText.setPreferredSize(TEXT_SIZE);
 		
 		myISBNText.setEditable(false);

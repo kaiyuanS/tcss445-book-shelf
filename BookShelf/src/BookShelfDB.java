@@ -409,7 +409,7 @@ public class BookShelfDB {
             preparedStatement.setString(2, aBookInfo.getTitle());
             preparedStatement.setInt(3, aBookInfo.getYear());
             preparedStatement.setString(4, aBookInfo.getAuthor());
-            preparedStatement.setInt(5, aBookInfo.getFormat());
+            preparedStatement.setString(5, aBookInfo.getFormat());
             preparedStatement.setInt(6, aBookInfo.getPageNumber());
             preparedStatement.setString(7, aBookInfo.getLanguage());
             preparedStatement.setInt(8, aBookInfo.getBookselfNumber());
@@ -454,7 +454,7 @@ public class BookShelfDB {
 				String title = rs.getString("title");
 				int year = rs.getInt("year");
 				String author = rs.getString("author");
-				int format = rs.getInt("format");
+				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
 				int bookshelfNumber = rs.getInt("bookshelfNumber");
@@ -832,6 +832,116 @@ public class BookShelfDB {
     	}
     	
     	return bookList;
+    }
+    
+    /**
+     * update a publisher
+     * @param aPublisherName
+     * @param anAttribute
+     * @param data
+     */
+    public void updatePublisher(String aPublisherName, String anAttribute, Object data) {
+        String sql = "UPDATE _445team15.Publisher SET "
+                + anAttribute + " = ? WHERE publisherName = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            if (data instanceof Integer) {
+            	preparedStatement.setInt(1, (int)data);
+            } else {
+            	preparedStatement.setString(1, (String)data);
+            }
+            preparedStatement.setString(2, aPublisherName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    /**
+     * update a book info
+     * @param anISBN
+     * @param anAttribute
+     * @param data
+     */
+    public void updateBookInfo(String anISBN, String anAttribute, Object data) {
+        String sql = "UPDATE _445team15.BookInfo SET "
+                + anAttribute + " = ? WHERE anISBN = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            if (data instanceof Integer) {
+            	preparedStatement.setInt(1, (int)data);
+            } else {
+            	preparedStatement.setString(1, (String)data);
+            }
+            preparedStatement.setString(2, anISBN);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+    }
+    
+    public List<BookInfo> getFilteredBookInfo(String aCondition) throws SQLException {
+    	if (conn == null) {
+    		createConnection();
+    	}
+
+    	Statement stmt = null;
+    	
+		String query = "SELECT * FROM _445team15.BookInfo WHERE " + aCondition + ";";
+		
+		bookInfoList = new ArrayList<BookInfo>();
+		
+		try {
+			stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			
+			while(rs.next()) {
+				String isbn = rs.getString("ISBN");
+				String title = rs.getString("title");
+				int year = rs.getInt("year");
+				String author = rs.getString("author");
+				String format = rs.getString("format");
+				int pageNumber = rs.getInt("pageNumber");
+				String language = rs.getString("Language");
+				int bookshelfNumber = rs.getInt("bookshelfNumber");
+				int layerNumber = rs.getInt("layerNumber");
+				String publisherName = rs.getString("publisher_publisherName");
+				
+				BookInfo binfo = new BookInfo(isbn, title, year, author, 
+								 format, pageNumber, language, bookshelfNumber,
+								 layerNumber, publisherName);
+				
+				bookInfoList.add(binfo);
+			}
+		} catch (SQLException e) {
+			System.out.println(e);
+		} finally {
+			if (stmt != null) {
+				stmt.close();
+			}
+		}
+		return bookInfoList;		 
+	}
+    
+    /**
+     * remove a boonInfo
+     * @param anISBN
+     */
+    public void removeBookInfo(int anISBN) {
+        String sql = "DELETE FROM _445team15.BookInfo WHERE ISBN = ?";
+        PreparedStatement preparedStatement = null;
+        try {
+        	preparedStatement = conn.prepareStatement(sql);
+            preparedStatement.setInt(1, anISBN);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
     }
 }
 
