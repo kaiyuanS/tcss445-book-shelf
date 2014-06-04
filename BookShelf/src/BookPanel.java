@@ -128,10 +128,11 @@ public class BookPanel extends JPanel implements ActionListener {
 			for (BookInfo book : myBooks) {
 				if (book.getISBN().equals(newBook.getISBN())) {
 					tmp = book;
+					break;
 				}
 			}
 			
-			if (tmp == null) {
+			if (tmp != null) {
 				myDB.addBook(newBook);
 			} else {
 				System.out.println("ISBN Not Found In BookInfo");
