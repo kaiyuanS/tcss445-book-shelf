@@ -26,6 +26,7 @@ import javax.swing.table.TableModel;
 public class BookInfoListPanel extends JPanel implements ActionListener, TableModelListener{
 	
 	private BookShelfDB myDatebase;
+	private LibraryFrame myFrame;
 	private List<BookInfo> myBookInfoList = new ArrayList<BookInfo>();
 	
 	private JPanel myFilterPanel;
@@ -73,9 +74,10 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	private static Dimension LABEL_SIZE = new Dimension(200, 20);
 	private static Dimension BUTTON_SIZE = new Dimension(200, 15);
 	
-	public BookInfoListPanel(BookShelfDB aDatabase) {
+	public BookInfoListPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatebase = aDatabase;
+		myFrame = aFrame;
 		configButton();
 		configFilter();
 		configList();
@@ -288,7 +290,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		}
 		
 		try {
-			System.out.println(aCondition);
+			//System.out.println(aCondition);
 			myBookInfoList = myDatebase.getFilteredBookInfo(aCondition);
 			refreshTable();
 		} catch (SQLException e) {
@@ -297,9 +299,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	}
 	
 	private void refreshTable() {
-		System.out.println(myBookInfoList.size());
-		myBookData = new Object[myBookInfoList.size()][myColName.length];
-		for (int i=0; i<myBookInfoList.size(); i++) {
+		//System.out.println(myBookInfoList.size());
+		for (int i=0; i<myBookData.length; i++) {
+			if (i < myBookInfoList.size()) {
 				myBookData[i][0] = myBookInfoList.get(i).getTitle();
 				myBookData[i][1] = myBookInfoList.get(i).getAuthor();
 				myBookData[i][2] = myBookInfoList.get(i).getISBN();
@@ -310,21 +312,22 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 				myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
 				myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
 				myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
+			} else {
+				myBookData[i][0] = null;
+				myBookData[i][1] = null;
+				myBookData[i][2] = null;
+				myBookData[i][3] = null;
+				myBookData[i][4] = null;
+				myBookData[i][5] = null;
+				myBookData[i][6] = null;
+				myBookData[i][7] = null;
+				myBookData[i][8] = null;
+				myBookData[i][9] = null;
+			}
 		}
 		
-		myBookTable = new JTable(myBookData, myColName);
-		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		myBookTable.getModel().addTableModelListener(this);
-		myListScrollPane = new JScrollPane(myBookTable);
-		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		myListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		myListPanel.remove(myListScrollPane);
-		myListPanel.add(myListScrollPane, BorderLayout.CENTER);
-		remove(myListPanel);
-		add(myListPanel, BorderLayout.CENTER);
-		this.repaint();
-		
-		
+		myBookTable.repaint();
+
 	}
 	
 	private void unSelectedAll() {
@@ -342,7 +345,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		} else if (anEvent.getSource() == mySearch) {
 			filterBookInfo();
 		} else if (anEvent.getSource() == myAdd) {
-			//add a new one
+			myFrame.showBookInfoPanel();
 		} else if (anEvent.getSource() == myDelete) {
 			int row = myBookTable.getSelectedRow();
 			if (row != -1) {

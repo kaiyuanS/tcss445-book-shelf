@@ -175,7 +175,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 				
 				myDatabase.addBookInfo(newBookInfo);
 				//JOptionPane.showMessageDialog(null, "Added Successfully!");
-				myFrame.showBookListPanel();
+				myFrame.showBookInfoListPanel();
 		}
 		
 	}

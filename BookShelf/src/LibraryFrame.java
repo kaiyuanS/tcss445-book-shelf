@@ -19,19 +19,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LibraryFrame extends JFrame{
-	
+	private JPanel myCurrentPanel;
 	private BookShelfDB myDatabase;
 	
-	private BookListPanel myBookListPanel; //
+	private JPanel myBookListPanel; //
 	private JPanel myPatronListPanel; //
 	private JPanel myRecordListPanel;
-	private JPanel myPublisherListPanel;
+	private PublisherListPanel myPublisherListPanel;
 	private BookInfoPanel myBookInfoPanel;
 	private JPanel myPatronInfo;
 	private PublisherInfoPanel myPublisherInfoPanel;
 	private JPanel myButtonPanel; //1
 	private JPanel mySearchPanel;
-	private BookInfoListPanel myBookInfoList;
+	private BookInfoListPanel myBookInfoListPanel;
 	
 	
 	public LibraryFrame() {
@@ -54,11 +54,17 @@ public class LibraryFrame extends JFrame{
 		initBookInfoList();
 		initBookInfo();
 		initPublisherPanel();
+		initPublisherListPanel();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
+		this.add(myPublisherListPanel, BorderLayout.CENTER);
+		myCurrentPanel = myPublisherListPanel;
 		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
-		//this.add(myBookInfoList, BorderLayout.CENTER);
-		this.add(myBookInfoPanel, BorderLayout.CENTER);
+		//myCurrentPanel = myBookInfoPanel;
+		//this.add(myBookInfoListPanel, BorderLayout.CENTER);
+		//myCurrentPanel = myBookInfoListPanel;
+		//this.add(myBookInfoPanel, BorderLayout.CENTER);
+		//myCurrentPanel = myBookInfoPanel;
 		
 	}
 	
@@ -71,7 +77,7 @@ public class LibraryFrame extends JFrame{
 		
 		searchBooks.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent theActionEvent) {
-				
+				showBookInfoListPanel();
 			}
 		});
 		
@@ -123,10 +129,13 @@ public class LibraryFrame extends JFrame{
 		myPublisherInfoPanel = new PublisherInfoPanel(myDatabase, this);
 	}
 	private void initBookInfoList() {
-		myBookInfoList = new BookListPanel(myDatabase);
+		myBookInfoListPanel = new BookInfoListPanel(myDatabase, this);
 	}
 	private void initBookInfo() {
 		myBookInfoPanel = new BookInfoPanel(myDatabase, this);
+	}
+	private void initPublisherListPanel() {
+		myPublisherListPanel = new PublisherListPanel(myDatabase, this);
 	}
 	
 	private class BookSearchListener implements ActionListener {
@@ -160,14 +169,36 @@ public class LibraryFrame extends JFrame{
 	////JPanel Switch Method Here////////////////////////
 	/////////////////////////////////////////////////////
 	public void showPublisherListPanel() {
-		System.out.println("show publisher list");
-		//myPublisherListPanel = new JPanel();
-		//add(myPublisherListPanel, BorderLayout.CENTER);
+		remove(myCurrentPanel);
+		myCurrentPanel = new PublisherListPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
 	}
 	
-	public void showBookListPanel() {
-		System.out.println("show book list");
-		myBookInfoList.initialize();
-		add(myBookInfoList, BorderLayout.CENTER);
+	public void showPublisherInfoPanel() {
+		remove(myCurrentPanel);
+		myCurrentPanel = new PublisherInfoPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
+	}
+	
+	public void showBookInfoListPanel() {
+		//System.out.println("show book info list panel");
+		remove(myCurrentPanel);
+		myCurrentPanel = new BookInfoListPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
+	}
+	
+	public void showBookInfoPanel() {
+		//System.out.println("show book info panel");
+		remove(myCurrentPanel);
+		myCurrentPanel = new BookInfoPanel(myDatabase, this);
+		add(myCurrentPanel, BorderLayout.CENTER);
+		pack();
+		this.repaint();
 	}
 }

@@ -145,6 +145,24 @@ public class BookShelfDB {
         } 
 	}
 	
+	public void removePublisher(String aPublisherName) {
+		String sql = "DELETE FROM _445team15.Publisher WHERE publisherName = ?;";
+        
+        PreparedStatement preparedStatement = null;
+        try {
+            if (conn == null) {
+                createConnection();
+            }
+            preparedStatement = conn.prepareStatement(sql);
+            
+            preparedStatement.setString(1, aPublisherName);
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
+	}
+	
 	/// other publisher sql statements
 	
 	////////////////////////////////////////////////////////////////////
