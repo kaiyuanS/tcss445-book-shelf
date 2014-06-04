@@ -174,7 +174,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 						Integer.valueOf(myLayerNumberText.getText()), myPublisherText.getText());
 				
 				myDatabase.addBookInfo(newBookInfo);
-				JOptionPane.showMessageDialog(null, "Added Successfully!");
+				//JOptionPane.showMessageDialog(null, "Added Successfully!");
 				myFrame.showBookListPanel();
 		}
 		

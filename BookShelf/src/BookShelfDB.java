@@ -505,12 +505,12 @@ public class BookShelfDB {
 				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
-				int bookshelfNumber = rs.getInt("bookselfNumber");
+				int bookselfNumber = rs.getInt("bookselfNumber");
 				int layerNumber = rs.getInt("layerNumber");
 				String publisherName = rs.getString("publisherName");
 				
 				BookInfo binfo = new BookInfo(isbn, title, year, author, 
-								 format, pageNumber, language, bookshelfNumber,
+								 format, pageNumber, language, bookselfNumber,
 								 layerNumber, publisherName);
 				
 				bookInfoList.add(binfo);
@@ -540,6 +540,33 @@ public class BookShelfDB {
     	}
     	
     	return bookInfo;
+    }
+    
+    /**
+     * update a book info
+     * @param anISBN
+     * @param anAttribute
+     * @param data
+     */
+    public void updateBookInfo(String anISBN, String anAttribute, Object data) {
+    	
+        String sql = "UPDATE _445team15.BookInfo SET "
+                + anAttribute + " = ? WHERE ISBN = ?;";
+        PreparedStatement preparedStatement = null;
+        try {
+            preparedStatement = conn.prepareStatement(sql);
+            if (data instanceof Integer) {
+            	preparedStatement.setInt(1, (int)data);
+            } else {
+            	preparedStatement.setString(1, (String)data);
+            }
+            preparedStatement.setString(2, anISBN);
+            preparedStatement.executeUpdate();
+            
+        } catch (SQLException e) {
+            System.out.println(e);
+            e.printStackTrace();
+        } 
     }
     
     ///////////////////////////////////////////////////////////////////////
@@ -907,30 +934,7 @@ public class BookShelfDB {
         } 
     }
     
-    /**
-     * update a book info
-     * @param anISBN
-     * @param anAttribute
-     * @param data
-     */
-    public void updateBookInfo(String anISBN, String anAttribute, Object data) {
-        String sql = "UPDATE _445team15.BookInfo SET "
-                + anAttribute + " = ? WHERE anISBN = ?;";
-        PreparedStatement preparedStatement = null;
-        try {
-            preparedStatement = conn.prepareStatement(sql);
-            if (data instanceof Integer) {
-            	preparedStatement.setInt(1, (int)data);
-            } else {
-            	preparedStatement.setString(1, (String)data);
-            }
-            preparedStatement.setString(2, anISBN);
-            preparedStatement.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e);
-            e.printStackTrace();
-        } 
-    }
+    
     
     public List<BookInfo> getFilteredBookInfo(String aCondition) throws SQLException {
     	if (conn == null) {
@@ -955,12 +959,12 @@ public class BookShelfDB {
 				String format = rs.getString("format");
 				int pageNumber = rs.getInt("pageNumber");
 				String language = rs.getString("Language");
-				int bookshelfNumber = rs.getInt("bookshelfNumber");
+				int bookselfNumber = rs.getInt("bookselfNumber");
 				int layerNumber = rs.getInt("layerNumber");
-				String publisherName = rs.getString("publisher_publisherName");
+				String publisherName = rs.getString("publisherName");
 				
 				BookInfo binfo = new BookInfo(isbn, title, year, author, 
-								 format, pageNumber, language, bookshelfNumber,
+								 format, pageNumber, language, bookselfNumber,
 								 layerNumber, publisherName);
 				
 				bookInfoList.add(binfo);
@@ -979,12 +983,12 @@ public class BookShelfDB {
      * remove a boonInfo
      * @param anISBN
      */
-    public void removeBookInfo(int anISBN) {
+    public void removeBookInfo(String anISBN) {
         String sql = "DELETE FROM _445team15.BookInfo WHERE ISBN = ?";
         PreparedStatement preparedStatement = null;
         try {
         	preparedStatement = conn.prepareStatement(sql);
-            preparedStatement.setInt(1, anISBN);
+            preparedStatement.setString(1, anISBN);
             preparedStatement.executeUpdate();
         } catch (SQLException e) {
             System.out.println(e);

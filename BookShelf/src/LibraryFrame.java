@@ -31,7 +31,7 @@ public class LibraryFrame extends JFrame{
 	private PublisherInfoPanel myPublisherInfoPanel;
 	private JPanel myButtonPanel; //1
 	private JPanel mySearchPanel;
-	private BookListPanel myBookInfoList;
+	private BookInfoListPanel myBookInfoList;
 	
 	
 	public LibraryFrame() {
@@ -56,9 +56,9 @@ public class LibraryFrame extends JFrame{
 		initPublisherPanel();
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 		//this.add(myBookListPanel, BorderLayout.CENTER);
-		this.add(myPublisherInfoPanel, BorderLayout.CENTER);
+		//this.add(myPublisherInfoPanel, BorderLayout.CENTER);
 		//this.add(myBookInfoList, BorderLayout.CENTER);
-		//this.add(myBookInfoPanel, BorderLayout.CENTER)
+		this.add(myBookInfoPanel, BorderLayout.CENTER);
 		
 	}
 	
@@ -167,7 +167,7 @@ public class LibraryFrame extends JFrame{
 	
 	public void showBookListPanel() {
 		System.out.println("show book list");
-		//myPublisherListPanel = new JPanel();
-		//add(myPublisherListPanel, BorderLayout.CENTER);
+		myBookInfoList.initialize();
+		add(myBookInfoList, BorderLayout.CENTER);
 	}
 }

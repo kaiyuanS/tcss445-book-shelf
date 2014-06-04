@@ -152,7 +152,7 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 					myCountryText.getText(), Integer.valueOf(myFoundedText.getText()));
 			
 			myDatebase.addPublisher(newPublisher);
-			JOptionPane.showMessageDialog(null, "Added Successfully!");
+			//JOptionPane.showMessageDialog(null, "Added Successfully!");
 			myFrame.showPublisherListPanel();
 	}
 		

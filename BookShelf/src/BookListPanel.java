@@ -23,7 +23,7 @@ import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
 
-public class BookListPanel extends JPanel implements ActionListener, TableModelListener{
+public class BookInfoListPanel extends JPanel implements ActionListener, TableModelListener{
 	
 	private BookShelfDB myDatebase;
 	private List<BookInfo> myBookInfoList = new ArrayList<BookInfo>();
@@ -73,7 +73,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	private static Dimension LABEL_SIZE = new Dimension(200, 20);
 	private static Dimension BUTTON_SIZE = new Dimension(200, 15);
 	
-	public BookListPanel(BookShelfDB aDatabase) {
+	public BookInfoListPanel(BookShelfDB aDatabase) {
 		super();
 		myDatebase = aDatabase;
 		configButton();
@@ -82,6 +82,12 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		addComponents();
 		//myBookInfoList.add(new BookInfo("1234567890123", "Book Title", 2010,
                // "Book Author", 1, 500, "English", 20, 3, "Book Publisher"));
+	}
+	
+	public void initialize() {
+		myClear.doClick();
+		mySearch.doClick();
+		
 	}
 	
 	private void configButton() {
@@ -190,6 +196,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		
 		myBookTable = new JTable(myBookData, myColName);
 		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		myBookTable.getModel().addTableModelListener(this);
 		myListScrollPane = new JScrollPane(myBookTable);
 		//myListScrollPane.setHorizontalScrollBar(myListScrollPane.createHorizontalScrollBar());
 		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
@@ -202,6 +209,8 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		JPanel buttons = new JPanel(new FlowLayout());
 		buttons.add(myAdd);
 		buttons.add(myDelete);
+		myAdd.addActionListener(this);
+		myDelete.addActionListener(this);
 		myListPanel.setLayout(new BorderLayout());
 		myListPanel.add(myListScrollPane, BorderLayout.CENTER);
 		myListPanel.add(buttons, BorderLayout.SOUTH);
@@ -215,7 +224,20 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	private void refreshData() {
 		try {
 			myBookInfoList = myDatebase.getBookInfo();
-			refreshTable();
+			myBookData = new Object[myBookInfoList.size()][myColName.length];
+			for (int i=0; i<myBookInfoList.size(); i++) {
+				myBookData[i][0] = myBookInfoList.get(i).getTitle();
+				myBookData[i][1] = myBookInfoList.get(i).getAuthor();
+				myBookData[i][2] = myBookInfoList.get(i).getISBN();
+				myBookData[i][3] = myBookInfoList.get(i).getYear();
+				myBookData[i][4] = myBookInfoList.get(i).getFormat();
+				myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
+				myBookData[i][6] = myBookInfoList.get(i).getLanguage();
+				myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+				myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
+				myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
+			}
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -225,13 +247,13 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		String aCondition = "TRUE";
 		
 		if (myYearBefore1990.isSelected()) {
-			aCondition += " AND year <= 1990";
+			aCondition += " AND `year` <= 1990";
 		} else if (myYear1991_2000.isSelected()) {
-			aCondition += " AND year > 1990 AND year <= 2000";
+			aCondition += " AND `year` > 1990 AND year <= 2000";
 		} else if (myYear2001_2010.isSelected()) {
-			aCondition += " AND year > 2000 AND year <= 2010";
+			aCondition += " AND `year` > 2000 AND year <= 2010";
 		} else if (myYearAfter2011.isSelected()) {
-			aCondition += " AND year > 2010";
+			aCondition += " AND `year` > 2010";
 		}
 		if (myPageLess500.isSelected()) {
 			aCondition += " AND pageNumber <= 500";
@@ -243,22 +265,22 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 			aCondition += " AND pageNumber > 2000";
 		}
 		if (myHardCover.isSelected()) {
-			aCondition += " AND format = 1";
+			aCondition += " AND `format` = 'Hard Cover'";
 		} else if (myPaperBack.isSelected()) {
-			aCondition += " AND format = 2";
+			aCondition += " AND `format` = 'Paper Back'";
 		}
 		if (myEnglish.isSelected()) {
-			aCondition += " AND Language = 'English'";
+			aCondition += " AND `Language` = 'English'";
 		} else if (mySpanish.isSelected()) {
-			aCondition += " AND Language = 'Spanish'";
+			aCondition += " AND `Language` = 'Spanish'";
 		} else if (myFrench.isSelected()) {
-			aCondition += " AND Language = 'French'";
+			aCondition += " AND `Language` = 'French'";
 		} else if (myChinese.isSelected()) {
-			aCondition += " AND Language = 'Chinese'";
+			aCondition += " AND `Language` = 'Chinese'";
 		} else if (myRussian.isSelected()) {
-			aCondition += " AND Language = 'Russian'";
+			aCondition += " AND `Language` = 'Russian'";
 		} else if (myOtherLanguage.isSelected()) {
-			aCondition += " AND Language <> 'English' AND"
+			aCondition += " AND `Language` <> 'English' AND"
 					+ " Language <> 'Spanish' AND"
 					+ " Language <> 'French' AND"
 					+ " Language <> 'Chinese' AND"
@@ -266,6 +288,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		}
 		
 		try {
+			System.out.println(aCondition);
 			myBookInfoList = myDatebase.getFilteredBookInfo(aCondition);
 			refreshTable();
 		} catch (SQLException e) {
@@ -274,20 +297,34 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	}
 	
 	private void refreshTable() {
+		System.out.println(myBookInfoList.size());
 		myBookData = new Object[myBookInfoList.size()][myColName.length];
 		for (int i=0; i<myBookInfoList.size(); i++) {
-			myBookData[i][0] = myBookInfoList.get(i).getTitle();
-			myBookData[i][1] = myBookInfoList.get(i).getAuthor();
-			myBookData[i][2] = myBookInfoList.get(i).getISBN();
-			myBookData[i][3] = myBookInfoList.get(i).getYear();
-			myBookData[i][4] = myBookInfoList.get(i).getFormat();
-			myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
-			myBookData[i][6] = myBookInfoList.get(i).getLanguage();
-			myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
-			myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
-			myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
+				myBookData[i][0] = myBookInfoList.get(i).getTitle();
+				myBookData[i][1] = myBookInfoList.get(i).getAuthor();
+				myBookData[i][2] = myBookInfoList.get(i).getISBN();
+				myBookData[i][3] = myBookInfoList.get(i).getYear();
+				myBookData[i][4] = myBookInfoList.get(i).getFormat();
+				myBookData[i][5] = myBookInfoList.get(i).getPageNumber();
+				myBookData[i][6] = myBookInfoList.get(i).getLanguage();
+				myBookData[i][7] = myBookInfoList.get(i).getBookselfNumber();
+				myBookData[i][8] = myBookInfoList.get(i).getLayerNumber();
+				myBookData[i][9] = myBookInfoList.get(i).getPublisherName();
 		}
-		repaint();
+		
+		myBookTable = new JTable(myBookData, myColName);
+		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		myBookTable.getModel().addTableModelListener(this);
+		myListScrollPane = new JScrollPane(myBookTable);
+		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
+		myListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+		myListPanel.remove(myListScrollPane);
+		myListPanel.add(myListScrollPane, BorderLayout.CENTER);
+		remove(myListPanel);
+		add(myListPanel, BorderLayout.CENTER);
+		this.repaint();
+		
+		
 	}
 	
 	private void unSelectedAll() {
@@ -301,7 +338,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	public void actionPerformed(ActionEvent anEvent) {
 		if (anEvent.getSource() == myClear) {
 			unSelectedAll();
-			refreshData();
+			filterBookInfo();
 		} else if (anEvent.getSource() == mySearch) {
 			filterBookInfo();
 		} else if (anEvent.getSource() == myAdd) {
@@ -309,8 +346,9 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		} else if (anEvent.getSource() == myDelete) {
 			int row = myBookTable.getSelectedRow();
 			if (row != -1) {
-				int theISBN = (int)myBookData[row][2];
+				String theISBN = (String)myBookData[row][2];
 				myDatebase.removeBookInfo(theISBN);
+				mySearch.doClick();
 			}
 		}
 		
@@ -324,7 +362,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
         String columnName = model.getColumnName(column);
         String ISBN = (String)model.getValueAt(row, 2);
         Object data = model.getValueAt(row, column);
-       
+
         myDatebase.updateBookInfo(ISBN, columnName, data);
 		
 	}
