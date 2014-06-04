@@ -133,7 +133,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddBookButton) {
-			
+			myFrame.showBookPanel();
 		} else if (theEvent.getSource() == mySearchPatronRecordButton) {
 			if (myTable.getRowCount() > 0) {
 				int bookID = (int)myTable.getValueAt(myTable.getSelectedRow(), 0);
@@ -191,7 +191,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 			this.remove(myScrollPane);
 			initializeTableData(myBookListInfo);
 			this.repaint();
-		}
+		} 
 	}
 	
 	public void tableChanged(TableModelEvent theEvent) {

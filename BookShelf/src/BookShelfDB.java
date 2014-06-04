@@ -5,6 +5,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Date;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -441,7 +442,7 @@ public class BookShelfDB {
             statement = conn.createStatement();
             ResultSet patronResult = statement.executeQuery(sql);
             while (patronResult.next()) {
-            	maxOrderID = patronResult.getInt("orderID");
+            	maxOrderID = patronResult.getInt("MAX(orderID)");
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -473,6 +474,8 @@ public class BookShelfDB {
     			prepStatement.setInt(1,  (Integer)data);
     		} else if (data instanceof Date) {
     			prepStatement.setDate(1, (Date)data);
+    		} else if (data == null) {
+    			prepStatement.setNull(1, Types.NULL);
     		}
     		
     		prepStatement.setInt(2, recordID);
@@ -715,7 +718,7 @@ public class BookShelfDB {
             statement = conn.createStatement();
             ResultSet patronResult = statement.executeQuery(sql);
             while (patronResult.next()) {
-                maxBookID = patronResult.getInt("bookID");
+                maxBookID = patronResult.getInt("MAX(bookID)");
             }
         } catch (SQLException e) {
             System.out.println(e);
@@ -879,7 +882,7 @@ public class BookShelfDB {
             statement = conn.createStatement();
             ResultSet patronResult = statement.executeQuery(sql);
             while (patronResult.next()) {
-                maxPatronID = patronResult.getInt("patronID");
+                maxPatronID = patronResult.getInt("MAX(patronID)");
             }
         } catch (SQLException e) {
             System.out.println(e);

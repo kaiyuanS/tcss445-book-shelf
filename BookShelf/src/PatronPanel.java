@@ -57,6 +57,8 @@ public class PatronPanel extends JPanel implements ActionListener {
 	
 	private JButton myAddButton;
 	
+	private JButton myBackButton;
+	
 	private JPanel myLabelPanel;
 	
 	private JPanel myTextPanel;

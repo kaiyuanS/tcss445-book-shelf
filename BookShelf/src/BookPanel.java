@@ -104,7 +104,7 @@ public class BookPanel extends JPanel implements ActionListener {
 		myTextPanel.add(myISBNText);
 		
 		myButtonPanel.add(myAddButton);
-		myButtonPanel.add(myBackButton);
+		//myButtonPanel.add(myBackButton);
 		
 		setLayout(new BorderLayout());
 		add(myLabelPanel, BorderLayout.WEST);

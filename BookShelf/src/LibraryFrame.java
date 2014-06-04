@@ -82,10 +82,11 @@ public class LibraryFrame extends JFrame{
 	
 	private void initButtonPanel() {
 		myButtonPanel = new JPanel();
-		JButton searchBooks = new JButton("Search Books");
+		JButton searchBooks = new JButton("Search Book Info");
 		JButton searchPatrons = new JButton("Search Patrons");
 		JButton searchKeyword = new JButton("Search Keyword");
 		JButton viewRecord = new JButton("View Record");
+		JButton searchTheBooks = new JButton("Search Books");
 		myButtonPanel.setLayout(new FlowLayout());
 		
 		searchBooks.addActionListener(new ActionListener() {
@@ -112,10 +113,18 @@ public class LibraryFrame extends JFrame{
 			}
 		});
 		
+		searchTheBooks.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				showBookListPanel();
+			}
+		});
+		
+		myButtonPanel.add(searchTheBooks);
 		myButtonPanel.add(searchBooks);
 		myButtonPanel.add(searchPatrons);
 		myButtonPanel.add(searchKeyword);
 		myButtonPanel.add(viewRecord);
+		
 		
 	}
 	
@@ -233,7 +242,11 @@ public class LibraryFrame extends JFrame{
 		replaceContentPanel(new BookListPanel(this, myDatabase));
 	}
 	
-
+	public void showBookPanel() {
+		System.out.println("LibraryFrame: Changing to BookPanel");
+		replaceContentPanel(new BookPanel(this, myDatabase));
+	}
+	
 	
 	/////////////////////////////////////////////////////
 	////JPanel Switch Method Here////////////////////////
@@ -262,4 +275,11 @@ public class LibraryFrame extends JFrame{
 		replaceContentPanel(new PatronListPanel(this, myDatabase));
 	}
 	
+	public void showPatronPanel() {
+		replaceContentPanel(new PatronPanel(this, myDatabase));
+	}
+	
+	public void showPatronRecordPanel() {
+		replaceContentPanel(new PatronRecordPanel(this, myDatabase));
+	}
 }
