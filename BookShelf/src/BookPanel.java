@@ -55,6 +55,7 @@ public class BookPanel extends JPanel implements ActionListener {
 
 	private void configLabel() {
 		myBookIDLabel = new JLabel("BookID:");
+		myBookIDLabel.setPreferredSize(LABEL_SIZE);
 		myISBNLabel = new JLabel("ISBN:");
 		myISBNLabel.setPreferredSize(LABEL_SIZE);
 	}
@@ -70,7 +71,7 @@ public class BookPanel extends JPanel implements ActionListener {
 			e.printStackTrace();
 		}
 
-		myBookIDText.setText(String.valueOf(bookID));
+		myBookIDText.setText(String.valueOf(String.valueOf(bookID)));
 		myISBNText = new JTextField();
 		myISBNText.setPreferredSize(TEXT_SIZE);
 		
