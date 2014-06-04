@@ -27,10 +27,10 @@ public class LibraryFrame extends JFrame{
 	private PatronRecordList myRecordListPanel;
 	private PublisherListPanel myPublisherListPanel;
 	private BookInfoPanel myBookInfo;
-	private JPanel myPatronInfo;
-	private JPanel myPublisherInfo;
+	private PatronRecord myPatronInfo;
+	private PublisherInfoPanel myPublisherInfo;
 	private JPanel myButtonPanel; //1
-	private JPanel mySearchPanel;
+	private SearchPanel mySearchPanel;
 	private BookInfoListPanel myBookInfoListPanel;
 	//private BookListPanel myBookList;
 	
@@ -85,6 +85,7 @@ public class LibraryFrame extends JFrame{
 		JButton searchBooks = new JButton("Search Books");
 		JButton searchPatrons = new JButton("Search Patrons");
 		JButton searchKeyword = new JButton("Search Keyword");
+		JButton viewRecord = new JButton("View Record");
 		myButtonPanel.setLayout(new FlowLayout());
 		
 		searchBooks.addActionListener(new ActionListener() {
@@ -105,9 +106,16 @@ public class LibraryFrame extends JFrame{
 			}
 		});
 		
+		viewRecord.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent theActionEvent) {
+				showPatronRecordListPanel(null);
+			}
+		});
+		
 		myButtonPanel.add(searchBooks);
 		myButtonPanel.add(searchPatrons);
 		myButtonPanel.add(searchKeyword);
+		myButtonPanel.add(viewRecord);
 		
 	}
 	
@@ -140,7 +148,7 @@ public class LibraryFrame extends JFrame{
 	*/
 	
 	private void initPublisherPanel() {
-		myPublisherInfo = new JPanel();
+		myPublisherInfo = new PublisherInfoPanel(myDatabase, this);
 		myPublisherInfo.setLayout(new BorderLayout());
 		
 		
@@ -251,7 +259,7 @@ public class LibraryFrame extends JFrame{
 	}
 	
 	public void showPatronListPanel() {
-		replaceContentPanel(new PublisherListPanel(myDatabase, this));
+		replaceContentPanel(new PatronListPanel(this, myDatabase));
 	}
 	
 }
