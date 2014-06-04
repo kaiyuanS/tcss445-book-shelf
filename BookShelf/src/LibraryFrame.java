@@ -34,7 +34,6 @@ public class LibraryFrame extends JFrame{
 	private BookInfoListPanel myBookInfoListPanel;
 	//private BookListPanel myBookList;
 	
-	private JPanel myContentPanel;
 	private JPanel myCurrentPanel;
 	
 	
@@ -208,10 +207,10 @@ public class LibraryFrame extends JFrame{
 	}
 	
 	public void replaceContentPanel(JPanel thePanel) {
-		this.remove(myContentPanel);
-		myContentPanel = thePanel;
+		this.remove(myCurrentPanel);
+		myCurrentPanel = thePanel;
 		
-		this.add(myContentPanel, BorderLayout.CENTER);
+		this.add(myCurrentPanel, BorderLayout.CENTER);
 		this.pack();
 		this.repaint();
 	}
@@ -232,55 +231,27 @@ public class LibraryFrame extends JFrame{
 	////JPanel Switch Method Here////////////////////////
 	/////////////////////////////////////////////////////
 	public void showPublisherListPanel() {
-		remove(myCurrentPanel);
-		myCurrentPanel = new PublisherListPanel(myDatabase, this);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new PublisherListPanel(myDatabase, this));
 	}
 	
 	public void showPublisherInfoPanel() {
-		remove(myCurrentPanel);
-		myCurrentPanel = new PublisherInfoPanel(myDatabase, this);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new PublisherInfoPanel(myDatabase, this));
 	}
 	
 	public void showBookInfoListPanel() {
-		//System.out.println("show book info list panel");
-		remove(myCurrentPanel);
-		myCurrentPanel = new BookInfoListPanel(myDatabase, this);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new BookInfoListPanel(myDatabase, this));
 	}
 	
 	public void showBookInfoPanel() {
-		//System.out.println("show book info panel");
-		remove(myCurrentPanel);
-		myCurrentPanel = new BookInfoPanel(myDatabase, this);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new BookInfoPanel(myDatabase, this));
 	}
 	
 	public void showSearchPanel() {
-		//System.out.println("show book info panel");
-		remove(myCurrentPanel);
-		myCurrentPanel = new SearchPanel(myDatabase, this);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new SearchPanel(myDatabase, this));
 	}
 	
 	public void showPatronListPanel() {
-		//System.out.println("show book info panel");
-		remove(myCurrentPanel);
-		myCurrentPanel = new PatronListPanel(this, myDatabase);
-		add(myCurrentPanel, BorderLayout.CENTER);
-		pack();
-		this.repaint();
+		replaceContentPanel(new PublisherListPanel(myDatabase, this));
 	}
 	
 }
