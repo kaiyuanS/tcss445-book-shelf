@@ -19,27 +19,49 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+/**
+ * This is a list view of the Book information list
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 @SuppressWarnings("serial")
 public class BookInfoListPanel extends JPanel implements ActionListener, TableModelListener{
 	
+	/** the database */
 	private BookShelfDB myDatebase;
+	
+	/** the frame */
 	private LibraryFrame myFrame;
+	
+	/** the list of the book information */
 	private List<BookInfo> myBookInfoList = new ArrayList<BookInfo>();
 	
+	/** the filter panel */
 	private JPanel myFilterPanel;
+	
+	/** the list panel */
 	private JPanel myListPanel;
 	
+	/** the data table */
 	private JTable myBookTable;
+	
+	/** the scroll pane */
 	private JScrollPane myListScrollPane;
+	
+	/** the cloumn name array */
 	private String[] myColName = {"title", "author", "ISBN", "year", "format", "pageNumber",
 			"language", "bookshelfNumber", "layerNumber", "publisherName"};
+	
+	/** the table data */
 	private Object[][] myBookData;
 	
+	/* all the  buttons */
 	JButton mySearch;
 	JButton myClear;
 	JButton myAdd;
 	JButton myDelete;
 	
+	/* the filter labels and radio buttons */
 	private JLabel myYearLabel;
 	ButtonGroup myYearGroup;
 	private JRadioButton myYearBefore1990;
@@ -71,6 +93,11 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	private static Dimension LABEL_SIZE = new Dimension(200, 20);
 	private static Dimension BUTTON_SIZE = new Dimension(200, 15);
 	
+	/**
+	 * the construtor
+	 * @param aDatabase the database
+	 * @param aFrame the main frame
+	 */
 	public BookInfoListPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatebase = aDatabase;
@@ -79,16 +106,20 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		configFilter();
 		configList();
 		addComponents();
-		//myBookInfoList.add(new BookInfo("1234567890123", "Book Title", 2010,
-               // "Book Author", 1, 500, "English", 20, 3, "Book Publisher"));
 	}
 	
+	/**
+	 * initialize the panel
+	 */
 	public void initialize() {
 		myClear.doClick();
 		mySearch.doClick();
 		
 	}
 	
+	/**
+	 * ads the buttons
+	 */
 	private void configButton() {
 		myYearLabel = new JLabel("Year: ");
 		myYearLabel.setPreferredSize(LABEL_SIZE);
@@ -155,6 +186,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		myLanguageGroup.add(myOtherLanguage);
 	}
 	
+	/**
+	 * configure the filter components
+	 */
 	private void configFilter() {
 		myClear = new JButton("Clear All");
 		mySearch = new JButton("Search");
@@ -188,6 +222,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		myFilterPanel.add(myClear);
 	}
 	
+	/**
+	 * configure the list
+	 */
 	private void configList() {
 		myListPanel= new JPanel();
 		
@@ -197,11 +234,8 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		myBookTable.getModel().addTableModelListener(this);
 		myListScrollPane = new JScrollPane(myBookTable);
-		//myListScrollPane.setHorizontalScrollBar(myListScrollPane.createHorizontalScrollBar());
 		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-		//myListScrollPane.setVerticalScrollBar(myListScrollPane.createVerticalScrollBar());
 		myListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
-		//myBookTable.setFillsViewportHeight(true);
 		
 		myAdd = new JButton("Add");
 		myDelete = new JButton("Delete");
@@ -215,11 +249,17 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		myListPanel.add(buttons, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * add all components
+	 */
 	private void addComponents() {
 		add(myFilterPanel, BorderLayout.WEST);
 		add(myListPanel, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * refresh the data according the the list get from the database
+	 */
 	private void refreshData() {
 		try {
 			myBookInfoList = myDatebase.getBookInfo();
@@ -242,6 +282,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		}
 	}
 	
+	/**
+	 * get the SQL string according to the filter
+	 */
 	private void filterBookInfo() {
 		String aCondition = "TRUE";
 		
@@ -287,7 +330,6 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		}
 		
 		try {
-			//System.out.println(aCondition);
 			myBookInfoList = myDatebase.getFilteredBookInfo(aCondition);
 			refreshTable();
 		} catch (SQLException e) {
@@ -299,7 +341,6 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	 * This method shows the filtered the filtered bookInfo in the JTable
 	 */
 	private void refreshTable() {
-		//System.out.println(myBookInfoList.size());
 		for (int i=0; i<myBookData.length; i++) {
 			if (i < myBookInfoList.size()) {
 				myBookData[i][0] = myBookInfoList.get(i).getTitle();
@@ -337,6 +378,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		myLanguageGroup.clearSelection();
 	}
 	
+	/**
+	 * this method change the panel according to the buttons the user clicked
+	 */
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
 		if (anEvent.getSource() == myClear) { //clear selections
@@ -357,7 +401,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		
 	}
 	
-	/*
+	/**
 	 * when bookInfo was edited in the JTable,
 	 * modify the data it in the database 
 	 */

@@ -14,17 +14,33 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * this class is a book information panel
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 @SuppressWarnings("serial")
 public class BookInfoPanel extends JPanel implements ActionListener{
 
+	/** a book's information */
 	BookInfo myBookInfo;
+	
+	/** the database */
 	BookShelfDB myDatabase;
+
+	/** the main frame */
 	LibraryFrame myFrame;
 	
+	/** the label panel */
 	private JPanel myLabelPanel;
+	
+	/** the text panel */
 	private JPanel myTextPanel;
+	
+	/** the button panel */
 	private JPanel myButtonPanel;
 	
+	/* all of the labels */
 	private JLabel myISBNLabel;
 	private JLabel myTitleLabel;
 	private JLabel myYearLabel;
@@ -36,6 +52,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 	private JLabel myLayerNumberLabel;
 	private JLabel myPublisherLabel;
 	
+	/* all of the text fields */
 	private JTextField myISBNText;
 	private JTextField myTitleText;
 	private JTextField myYearText;
@@ -47,12 +64,19 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 	private JTextField myLayerNumberText;
 	private JTextField myPublisherText;
 	
+	/** the "add" button */
 	private JButton myAddButton;
 	
+	/* default size of the components */
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
 	private static Dimension TEXT_SIZE = new Dimension(500, 45);
 	private static Dimension BUTTON_SIZE = new Dimension(150, 25);
 	
+	/**
+	 * the constructor
+	 * @param aDatabase the data base
+	 * @param aFrame the main frame
+	 */
 	public BookInfoPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatabase = aDatabase;
@@ -63,6 +87,9 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		addComponents();
 	}
 
+	/**
+	 * configure the labels
+	 */
 	private void configLabel() {
 		myISBNLabel = new JLabel("ISBN:");
 		myISBNLabel.setPreferredSize(LABEL_SIZE);
@@ -87,6 +114,9 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		
 	}
 
+	/**
+	 * configure the text fields
+	 */
 	private void configTextField() {
 		myISBNText = new JTextField();
 		myISBNText.setPreferredSize(TEXT_SIZE);
@@ -122,12 +152,18 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		
 	}
 	
+	/**
+	 * configure the buttons
+	 */
 	private void configButton() {
 		myAddButton = new JButton("Add");
 		myAddButton.setPreferredSize(BUTTON_SIZE);
 		myAddButton.addActionListener(this);
 	}
 	
+	/**
+	 * add all the components into the panel
+	 */
 	private void addComponents() {
 		myLabelPanel = new JPanel();
 		myLabelPanel.setLayout(new GridLayout(10, 1));
@@ -165,6 +201,9 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * add the new information when finished
+	 */
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
 		
