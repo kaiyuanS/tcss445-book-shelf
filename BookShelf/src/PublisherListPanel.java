@@ -14,23 +14,50 @@ import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
 import javax.swing.table.TableModel;
 
+/**
+ * This panel shows a list view of all the publishers
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 @SuppressWarnings("serial")
 public class PublisherListPanel extends JPanel implements ActionListener, TableModelListener{
 	
+	/** the system database */
 	BookShelfDB myDatabase;
+	
+	/** the main frame of the application */
 	LibraryFrame myFrame;
 	
+	/** the list of publiher to show */
 	List<Publisher> myPublisherList;
+	
+	/** the scroll pane of the table */
 	private JScrollPane myListScrollPane;
+	
+	/** the data to show in the table */
 	private Object[][] myPublisherData;
+	
+	/** the column name of the table */
 	private String[] myColName = {"publisherName", "publisherStreet", "publisherCity", "publisherState",
 			"publisherZip", "publisherCountry", "publisherFounded"};
+	
+	/** the table to show the publisher information */
 	private JTable myPublisherTable;
 	
+	/** the panel holds all labels */
 	JPanel myListPanel;
+	
+	/** the add button */
 	private JButton myAdd;
+	
+	/** the delete button */
 	private JButton myDelete;
 	
+	/** 
+	 * the constructor of this panel
+	 * @param aDatabase the system database
+	 * @param aFrame the main frame of the application
+	 */
 	public PublisherListPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatabase = aDatabase;
@@ -40,6 +67,9 @@ public class PublisherListPanel extends JPanel implements ActionListener, TableM
 		addComponents();
 	}
 
+	/**
+	 * configure the list panel
+	 */
 	private void configList() {
 		getData();
 		myListPanel = new JPanel(new BorderLayout());
@@ -66,6 +96,9 @@ public class PublisherListPanel extends JPanel implements ActionListener, TableM
 		
 	}
 	
+	/**
+	 * the the data of all publishers from the database
+	 */
 	private void getData() {
 		try {
 			myPublisherList = myDatabase.getPublishers();
@@ -84,15 +117,20 @@ public class PublisherListPanel extends JPanel implements ActionListener, TableM
 		}
 	}
 	
+	/**
+	 * add all components to the panel
+	 */
 	private void addComponents() {
 		add(myListPanel, BorderLayout.CENTER);
 	}
 	
+	/**
+	 * refresh the information in the panel
+	 */
 	private void refreshTable() {
 		try {
 			myPublisherList = myDatabase.getPublishers();
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		for (int i = 0; i < myPublisherData.length; i++) {
@@ -117,6 +155,10 @@ public class PublisherListPanel extends JPanel implements ActionListener, TableM
 		myPublisherTable.repaint();
 	}
 
+	/**
+	 * Switch to add panel if the user click the add button,
+	 * and delete the selected publisher uf the user click the delete button
+	 */
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
 		
@@ -133,6 +175,10 @@ public class PublisherListPanel extends JPanel implements ActionListener, TableM
 		
 	}
 
+	/**
+	 * chang the data and upload it to the database
+	 * system if the user change the data in the table
+	 */
 	@Override
 	public void tableChanged(TableModelEvent anEvent) {
 		int row = anEvent.getFirstRow();

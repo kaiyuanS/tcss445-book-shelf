@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
@@ -61,8 +62,8 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 	
 	/**
 	 * the constructor, create the panel
-	 * @param aDatabase the sys
-	 * @param aFrame
+	 * @param aDatabase the system database
+	 * @param aFrame he main frame of the application
 	 */
 	public PublisherInfoPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
@@ -76,6 +77,9 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 		addComponents();
 	}
 	
+	/**
+	 * configure all of the labels
+	 */
 	private void configLabel() {
 		myNameLabel = new JLabel("Publisher Name:");
 		myNameLabel.setPreferredSize(LABEL_SIZE);
@@ -93,6 +97,9 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 		myFoundedLabel.setPreferredSize(LABEL_SIZE);
 	}
 	
+	/**
+	 * configure all of the textfields
+	 */
 	private void configTextField() {
 		myNameText = new JTextField();
 		myNameText.setPreferredSize(TEXT_SIZE);
@@ -119,6 +126,9 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 		
 	}
 	
+	/**
+	 * configure the buttons
+	 */
 	private void configButton() {
 		myAddButton = new JButton("Add");
 		myAddButton.setPreferredSize(BUTTON_SIZE);
@@ -157,18 +167,20 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 	
-	
-
+	/** 
+	 * add a new publisher into the system after click add button
+	 */
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
 		
 		if (anEvent.getSource() == myAddButton) {
+			
 			Publisher newPublisher = new Publisher(myNameText.getText().toLowerCase(), myStreetText.getText(),
 					myCityText.getText(), myStateText.getText(), myZipText.getText(),
 					myCountryText.getText(), Integer.valueOf(myFoundedText.getText()));
 			
 			myDatebase.addPublisher(newPublisher);
-			//JOptionPane.showMessageDialog(null, "Added Successfully!");
+			JOptionPane.showMessageDialog(null, "Added Successfully!");
 			myFrame.showPublisherListPanel();
 		}
 		

@@ -16,6 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
+/**
+ * This is the panel to do the keyword search
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 @SuppressWarnings("serial")
 /**
  * The SearchPanel panel allows the users to search for a book based off of its title, author, isbn,
@@ -26,38 +31,61 @@ import javax.swing.JTextField;
  */
 public class SearchPanel extends JPanel implements ActionListener{
 	
+	/** the system database */
 	private BookShelfDB myDatabase;
-	//private LibraryFrame myFrame;
 	
+	/** the textfields used to input the keyword */
 	private JTextField myKeyword;
+	
+	/** the label to show message */
 	private JLabel myLabel;
+	
+	/** the button to do the search */
 	private JButton mySearch;
 	
+	/* the check boxes let the user chose which attributes to search */
 	private JCheckBox myTitle;
 	private JCheckBox myAuthor;
 	private JCheckBox myISBN;
 	private JCheckBox myYear;
 	
+	/** the search function panel */
 	private JPanel mySearchPanel;
+	
+	/** the result list panel */
 	private JPanel myResultPanel;
 	
+	/** the table used to show the result */
 	private JTable myBookTable;
+	
+	/** the Scroll pane to show the table*/
 	private JScrollPane myListScrollPane;
+	
+	/** the column name of the table */
 	private String[] myColName = {"title", "author", "ISBN", "year", "format", "pageNumber",
 			"language", "bookselfNumber", "layerNumber", "publisherName"};
+	
+	/** the data in the table */
 	private Object[][] myBookData;
+	
+	/** the result lest of searching */
 	private List<BookInfo> myResultList = new ArrayList<BookInfo>();
 	
-	
-	
+	/**
+	 * the constructor, used to build the search panel
+	 * @param aDatabase the system database
+	 * @param aFrame the main frame
+	 */
 	public SearchPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatabase = aDatabase;
-		//myFrame = aFrame;
 		buildSearchPanel();
 		buildResultPanel();
 	}
 
+	/**
+	 * the method build the search panel
+	 */
 	private void buildSearchPanel() {
 		mySearchPanel = new JPanel(new GridLayout(2,1));
 		
@@ -90,6 +118,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 		add(mySearchPanel, BorderLayout.NORTH);
 	}
 	
+	/**
+	 * the method used to build the result list panel
+	 */
 	private void buildResultPanel() {
 		myResultPanel = new JPanel(new BorderLayout());
 		myBookData = new Object[myResultList.size()][myColName.length];
@@ -117,6 +148,10 @@ public class SearchPanel extends JPanel implements ActionListener{
 		repaint();
 	}
 	
+	/**
+	 * this method used to generate the search condition the the SQL
+	 * @return the condition String in the SQL
+	 */
 	private String getCondition() {
 		String condition = "FALSE";
 		if (myKeyword.getText() == null || myKeyword.getText().equals("")) {
@@ -150,7 +185,9 @@ public class SearchPanel extends JPanel implements ActionListener{
 		return condition;
 	}
 
-
+	/**
+	 * Do the search when the user click the search button
+	 */
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
 		if (anEvent.getSource() == mySearch) {
