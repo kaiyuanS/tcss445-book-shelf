@@ -17,6 +17,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
+/**
+ * The BookPanel panel holds the labels and textfields needed to allow the user to 
+ * enter in a new book's information.
+ * 
+ * @author Kevin Alexander
+ * @version June 04, 2014
+ *
+ */
 public class BookPanel extends JPanel implements ActionListener {
 	
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -47,6 +55,14 @@ public class BookPanel extends JPanel implements ActionListener {
 	
 	private JPanel myButtonPanel;
 	
+	/**
+	 * The BookPanel constructor takes in a LibraryFrame and BookShelfDB and assigns them to 
+	 * myFrame and myDB respectively. Then it calls the necessary methods to initialize the labels,
+	 * textfields, and button.
+	 * 
+	 * @param theFrame The LibraryFrame parameter.
+	 * @param theDB The BookShelfDB parameter.
+	 */
 	public BookPanel(LibraryFrame theFrame, BookShelfDB theDB) {
 		super();
 		
@@ -63,6 +79,9 @@ public class BookPanel extends JPanel implements ActionListener {
 		addComponents();
 	}
 
+	/**
+	 * Configures the labels.
+	 */
 	private void configLabel() {
 		myBookIDLabel = new JLabel("BookID:");
 		myBookIDLabel.setPreferredSize(LABEL_SIZE);
@@ -70,6 +89,9 @@ public class BookPanel extends JPanel implements ActionListener {
 		myISBNLabel.setPreferredSize(LABEL_SIZE);
 	}
 
+	/**
+	 * Configures the textfields.
+	 */
 	private void configTextField() {
 		myBookIDText = new JTextField();
 		myBookIDText.setPreferredSize(TEXT_SIZE);
@@ -90,6 +112,9 @@ public class BookPanel extends JPanel implements ActionListener {
 		
 	}
 	
+	/**
+	 * Configures the button.
+	 */
 	private void configButton() {
 		myAddButton = new JButton("Add");
 		myAddButton.setPreferredSize(BUTTON_SIZE);
@@ -100,6 +125,9 @@ public class BookPanel extends JPanel implements ActionListener {
 		myBackButton.addActionListener(this);
 	}
 	
+	/**
+	 * Adds the components to the BookPanel.
+	 */
 	private void addComponents() {
 		myLabelPanel = new JPanel();
 		myLabelPanel.setLayout(new GridLayout(10, 1));
@@ -122,6 +150,9 @@ public class BookPanel extends JPanel implements ActionListener {
 		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Called to handle button clicks.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddButton) {
 			Book newBook = new Book(Integer.parseInt(myBookIDText.getText()), myISBNText.getText());

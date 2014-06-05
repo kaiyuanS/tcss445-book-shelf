@@ -19,6 +19,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
+/**
+ * The BookListPanel panel will hold all the information related to Books, along with the 
+ * book title and book author.
+ * 
+ * @author Kevin Alexander
+ * @version June 04, 2014
+ *
+ */
 public class BookListPanel extends JPanel implements ActionListener, TableModelListener {
 	
 	private String[] myColumnNames = {"bookID", "title", "author", "ISBN" };
@@ -47,6 +55,14 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	
 	private JScrollPane myScrollPane;
 	
+	/**
+	 * The BookListPanel constructor takes in LibraryFrame and BookShelfDB parameters and assigns
+	 * them to myFrame and myDB respectively. It then calls initializePanel() to continue to set
+	 * up the panel.
+	 * 
+	 * @param theFrame The LibraryFrame parameter.
+	 * @param theDB The BookShelfDB parameter.
+	 */
 	public BookListPanel(LibraryFrame theFrame, BookShelfDB theDB) {
 		super();
 		
@@ -57,6 +73,10 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		initializePanel();
 	}
 	
+	/**
+	 * Initializes the panel with all necessary components such as the buttons, table, and
+	 * text search fields.
+	 */
 	private void initializePanel() {
 		this.setLayout(new BorderLayout());
 		
@@ -76,6 +96,12 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		this.repaint();
 	}
 	
+	/**
+	 * This initializes the data that is held within the table to the
+	 * list of Object[] that is being passed in.
+	 * 
+	 * @param bookList The list of Object[].
+	 */
 	private void initializeTableData(List<Object[]> bookList) {
 		
 		myData = new Object[bookList.size()][myColumnNames.length];
@@ -101,6 +127,10 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		this.revalidate();
 	}
 	
+	/**
+	 * This initializes the buttons along with the search textfield and the 
+	 * drop down box.
+	 */
 	private void initializeButtonPanel() {
 		
 		myAddBookButton = new JButton("Add Book");
@@ -137,11 +167,12 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		buttonPanel.add(myAddBookButton);
 		buttonPanel.add(mySearchPatronRecordButton);
 		
-		//buttonPanel.setPreferredSize(new Dimension(myFrame.getWidth()/2, myFrame.getHeight()));
-		
 		this.add(buttonPanel, BorderLayout.WEST);
 	}
 	
+	/**
+	 * This function is called when a button is clicked.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddBookButton) {
 			myFrame.showBookPanel();
@@ -205,6 +236,10 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		} 
 	}
 	
+	/**
+	 * This method takes any changes and initializes the data again with the 
+	 * current bookInfo list since data can not be changed directly.
+	 */
 	public void tableChanged(TableModelEvent theEvent) {
 		this.remove(myScrollPane);
 		initializeTableData(myBookListInfo);

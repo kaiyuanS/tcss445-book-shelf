@@ -18,6 +18,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
+/**
+ * The BookListPanel panel will hold all the information related to Patrons. The panel allows
+ * the user to search for Patrons along all its attributes and also allows the user to see
+ * all patron records for the patron.
+ * 
+ * @author Kevin Alexander
+ * @version June 4, 2014
+ *
+ */
 public class PatronListPanel extends JPanel implements ActionListener, TableModelListener {
 	
 	private BookShelfDB myDB;
@@ -46,7 +55,14 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 	
 	private JTextField mySearchField;
 	
-	
+	/**
+	 * The PatronListPanel constructor takes in a LibraryFrame and BookShelfDB object as parameters,
+	 * sets myFrame and myDB to them respectively, and then calls the necessary methods to initialize
+	 * the data.
+	 * 
+	 * @param theFrame The LibraryFrame parameter.
+	 * @param theDB The BookShelfDB parameter.
+	 */
 	public PatronListPanel(LibraryFrame theFrame, BookShelfDB theDB) {
 		super();
 		
@@ -57,6 +73,9 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		initializePanel();
 	}
 	
+	/**
+	 * Initializes the panel including the keyword textfield, all the buttons, and the table.
+	 */
 	private void initializePanel() {
 		this.setLayout(new BorderLayout());
 		
@@ -72,6 +91,9 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		initializeTableData(myPatronList);
 	}
 	
+	/**
+	 * Initializes the buttons.
+	 */
 	private void initializeButtonPanel() {
 		
 		JPanel buttonPanel = new JPanel();
@@ -113,6 +135,10 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		this.add(buttonPanel, BorderLayout.WEST);
 	}
 	
+	/**
+	 * Initializes the table data to the data within the List<> parameter.
+	 * @param theList The List<> parameter.
+	 */
 	private void initializeTableData(List<Patron> theList) {
 		myData = new Object[theList.size()][myColumnNames.length];
 		
@@ -144,7 +170,9 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		this.revalidate();
 	}
 	
-	
+	/**
+	 * Called when a button is clicked.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == mySearchByButton) {
 			if (!mySearchField.getText().equals("Enter Keyword")) {
@@ -247,14 +275,20 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		}
 	}
 	
+	/**
+	 * Called when a tables data has been changed. Users cannot change patronID.
+	 */
 	public void tableChanged(TableModelEvent theEvent) {
 		int row = theEvent.getFirstRow();
 		int col = theEvent.getColumn();
 		TableModel model = (TableModel)theEvent.getSource();
 		String columnName = model.getColumnName(col);
-		if (!columnName.equals("patronId")) {
+		if (col != 0) {
 			Object data = model.getValueAt(row, col);
 			myDB.editPatron(row, columnName, data);
+		} else {
+			this.remove(myScrollPane);
+			initializeTableData(myPatronList);
 		}
 		
 	}

@@ -14,6 +14,14 @@ import java.awt.Dimension;
 import java.sql.SQLException;
 
 @SuppressWarnings("serial")
+/**
+ * The PatronPanel panel holds the labels and textfields necessary for a user
+ * to create a new Patron.
+ * 
+ * @author Kevin Alexander
+ * @version June 4, 2014
+ *
+ */
 public class PatronPanel extends JPanel implements ActionListener { 
 
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -70,6 +78,14 @@ public class PatronPanel extends JPanel implements ActionListener {
 	
 	private JPanel myButtonPanel;
 	
+	/**
+	 * The PatronPanel constructor takes in a LibraryFrame and BookShelfDB as parameters and
+	 * assigns myFrame and myDB to them accordingly. It then calls the necessary methods to 
+	 * initialize the labels, textfields, and button.
+	 * 
+	 * @param theFrame The LibraryFrame parameter.
+	 * @param theDB The BookShelfDB parameter.
+	 */
 	public PatronPanel (LibraryFrame theFrame, BookShelfDB theDB) {
 		super();
 		
@@ -86,6 +102,9 @@ public class PatronPanel extends JPanel implements ActionListener {
 		addComponents();
 	}
 
+	/**
+	 * Configures the labels.
+	 */
 	private void configLabel() {
 		myPatronIDLabel = new JLabel("PatronID:");
 		myPatronIDLabel.setPreferredSize(LABEL_SIZE);
@@ -103,6 +122,9 @@ public class PatronPanel extends JPanel implements ActionListener {
 		myZipLabel = new JLabel("ZipCode:");
 	}
 
+	/**
+	 * Configures the textfields.
+	 */
 	private void configTextField() {
 		myPatronIDText = new JTextField();
 		myPatronIDText.setPreferredSize(TEXT_SIZE);
@@ -151,6 +173,9 @@ public class PatronPanel extends JPanel implements ActionListener {
 		myZipText.setEditable(true);	
 	}
 	
+	/**
+	 * Configures the button.
+	 */
 	private void configButton() {
 		myAddButton = new JButton("Add");
 		myAddButton.setPreferredSize(BUTTON_SIZE);
@@ -162,6 +187,9 @@ public class PatronPanel extends JPanel implements ActionListener {
 		*/
 	}
 	
+	/**
+	 * Adds all the labels, textfields, and button to the PatronPanel.
+	 */
 	private void addComponents() {
 		myLabelPanel = new JPanel();
 		myLabelPanel.setLayout(new GridLayout(10, 1));
@@ -199,6 +227,9 @@ public class PatronPanel extends JPanel implements ActionListener {
 		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * Called when the button is clicked.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddButton) {
 			Patron newPatron = new Patron(Integer.parseInt(myPatronIDText.getText()), myFirstNameText.getText(),

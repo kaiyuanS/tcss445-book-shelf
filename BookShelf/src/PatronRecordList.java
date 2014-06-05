@@ -33,6 +33,8 @@ import java.util.List;
  *
  */
 public class PatronRecordList extends JPanel implements ActionListener, TableModelListener {
+	
+	private static final double DUES_PER_DAY_LATE = .2;
 	/**
 	 * The database.
 	 */
@@ -104,6 +106,14 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 		initializePanel(theObject);
 	}
 	
+	/**
+	 * Initializes the Panel with they search textfield, drop down menu, buttons, and table of 
+	 * information. If the parameter is not null it will be either a Book or Patron, and the 
+	 * information in the table will show all PatronRecords for that Book or Patron. If the
+	 * parameter is null, then it will initialize the table with all patronRecords.
+	 * 
+	 * @param theObject Initializes the table based on this object.
+	 */
 	private void initializePanel(Object theObject) {
 		this.setLayout(new BorderLayout());
 		
@@ -127,6 +137,12 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 		this.repaint();
 	}
 	
+	/**
+	 * Initializes the table data based on the list of PatronRecords being passed
+	 * in.
+	 * 
+	 * @param prList The list of PatronRecords.
+	 */
 	private void initializeTableData(List<PatronRecord> prList) {
 		myData = new Object[prList.size()][myColumnNames.length];
 		
@@ -161,6 +177,9 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 		this.revalidate();
 	}
 	
+	/**
+	 * Initializes the keyword textfield, drop down menu, and all the buttons.
+	 */
 	private void initializeButtonPanel() {
 		myButtonPanel = new JPanel();
 		myButtonPanel.setLayout(new GridLayout(0,1));
@@ -187,6 +206,9 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 		this.add(myButtonPanel, BorderLayout.WEST);
 	}
 	
+	/**
+	 * Called when a button is clicked.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		List<PatronRecord> prList;
 		if (theEvent.getSource() == mySearchByPatronButton) {
@@ -260,13 +282,17 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 		}
 	}
 	
+	/**
+	 * Called when a 
+	 */
 	public void tableChanged(TableModelEvent theEvent) {
 		int row = theEvent.getFirstRow();
 		int col = theEvent.getColumn();
 		TableModel model = (TableModel)theEvent.getSource();
 		String columnName = model.getColumnName(col);
-		if (col != 5) {
-			Object data = model.getValueAt(row, col);
+		Object data = model.getValueAt(row, col);
+		if (col != 5 && col != 0) {
+			
 			if (col == 3 || col == 4) {
 				Date date = null;
 				if (((String)data).equals("")) {
@@ -297,14 +323,48 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 						length /= 60;
 						// days
 						length /= 24;
-						double dues = .2 * length;
+						double dues = DUES_PER_DAY_LATE * length;
 						
 						JOptionPane.showMessageDialog(null, "BOOK OVERDUE: Charge: $" +  String.format("%.2f", dues));
 					}
 				}
 			} else {
-				myDB.editPatronRecord(row, columnName, data);
+				boolean canEdit = false;
+				if (col == 2) {
+					Book book = null;
+					
+					book = myDB.getBookByID(Integer.parseInt((String)data));
+					
+					if (book != null) {
+						canEdit = true;
+					} else {
+						JOptionPane.showMessageDialog(null, "No Book With That bookID", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				} else if (col == 1) {
+					Patron patron = null;
+					try {
+						patron = myDB.getPatronByID(Integer.parseInt((String)data));
+					} catch (SQLException e) {
+						System.out.println(e);
+						e.printStackTrace();
+					}
+					
+					if (patron != null) {
+						canEdit = true;
+					} else {
+						JOptionPane.showMessageDialog(null, "No Patron With That patronID", "Error", JOptionPane.ERROR_MESSAGE);
+					}
+				}
+				
+				if (canEdit) {
+					myDB.editPatronRecord(row, columnName, data);
+				} else {
+					this.remove(myScrollPane);
+					this.initializeTableData(myPatronRecordList);
+				}
 			}
+		} else {
+			
 		}
 	}
 }
