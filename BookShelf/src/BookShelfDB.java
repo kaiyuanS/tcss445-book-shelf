@@ -13,7 +13,8 @@ import java.util.Calendar;
 
 /**
  * The database of the system.
- * @author Kaiyuan Shi, Kevin Alexander
+ * @author Kaiyuan Shi
+ * @author Kevin Alexander
  * @version Spr. 2014
  */
 public class BookShelfDB {

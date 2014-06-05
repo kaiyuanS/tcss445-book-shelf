@@ -1,15 +1,39 @@
 
-
+/**
+ * This class holds the information of a book
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 public class BookInfo {
+	
+	/** the ISBN of a book */
     private String myISBN;
+    
+    /** the title of a book */
     private String myTitle;
+    
+    /** the publisher year of a book */
     private int myYear;
+    
+    /** the author of a book */
     private String myAuthor;
-    private String myFormat; // 1: hardcover, 2:paperback
+    
+    /** the format of a book */
+    private String myFormat; //hardcover or paperback
+    
+    /** the number of pages of a book */
     private int myPageNumber;
+    
+    /** the language of a book */
     private String myLanguage;
+    
+    /** the bookshelf number of a book */
     private int myBookshelfNumber;
+    
+    /** the layer number of a book on the bookshelf*/
     private int myLayerNumber;
+    
+    /** the name of the publisher of the book */
     private String myPublisherName;
     
     public BookInfo(String anISBN, String aTitle, int aYear,

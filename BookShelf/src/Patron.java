@@ -1,15 +1,36 @@
-
+/**
+ * This class represents a information of a patron
+ * @author Kaiyuan
+ * @version Spr. 2014
+ */
 
 public class Patron {
 
+	/** the ID number of a patron */
     private int myPatronID;
+    
+    /** the first name of a patron */
     private String myFirstName;
+    
+    /** the last name of a patron */
     private String myLastName;
+    
+    /** the email address of a patron */
     private String myPatronEmail;
+    
+    /** the phone number of a patron */
     private String myPhoneNumber;
+    
+    /** the street addressa of a patron */
     private String myStreetAddress;
+    
+    /** the city of apatron */
     private String myCity;
+    
+    /** the state of a patron */
     private String myState;
+    
+    /** the zip code of a patron */
     private String myZip;
 
     public Patron(int aPatronID, String aFirstName, String aLastName,

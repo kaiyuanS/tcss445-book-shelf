@@ -10,16 +10,30 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+/**
+ * the panel used to add a new publisher
+ * @author Kaiyuan Shi
+ * @version Spr. 2014
+ */
 @SuppressWarnings("serial")
 public class PublisherInfoPanel extends JPanel implements ActionListener{
 	
+	/** the syatem database */
 	private BookShelfDB myDatebase;
+	
+	/** the main frame */
 	private LibraryFrame myFrame;
 	
+	/** the Label panel */
 	private JPanel myLabelPanel;
+	
+	/** the text panel */
 	private JPanel myTextPanel;
+	
+	/** the butyon panel */
 	private JPanel myButtonPanel;
 	
+	/* the labels */
 	private JLabel myNameLabel;
 	private JLabel myStreetLabel;
 	private JLabel myCityLabel;
@@ -28,6 +42,7 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 	private JLabel myCountryLabel;
 	private JLabel myFoundedLabel;
 
+	/* text fields */
 	private JTextField myNameText;
 	private JTextField myStreetText;
 	private JTextField myCityText;
@@ -36,12 +51,19 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 	private JTextField myCountryText;
 	private JTextField myFoundedText;
 
+	/* the add button */
 	private JButton myAddButton;
 	
+	/* default components size */
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
 	private static Dimension TEXT_SIZE = new Dimension(500, 45);
 	private static Dimension BUTTON_SIZE = new Dimension(150, 25);
 	
+	/**
+	 * the constructor, create the panel
+	 * @param aDatabase the sys
+	 * @param aFrame
+	 */
 	public PublisherInfoPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatebase = aDatabase;
