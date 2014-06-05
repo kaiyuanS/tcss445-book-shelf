@@ -325,7 +325,7 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 						length /= 24;
 						double dues = DUES_PER_DAY_LATE * length;
 						
-						JOptionPane.showMessageDialog(null, "BOOK OVERDUE: Charge: $" +  String.format("%.2f", dues));
+						JOptionPane.showMessageDialog(null, "Charge: $" +  String.format("%.2f", dues), "BOOK OVERDUE", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			} else {
