@@ -2,6 +2,12 @@ import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 
+/**
+ * The main class that will run the program.
+ * @author Shi Kaiyuan
+ * @version June 3, 2014
+ *
+ */
 public final class LibraryMain {
     
     /**

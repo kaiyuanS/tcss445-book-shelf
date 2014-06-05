@@ -10,6 +10,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
+/**
+ * The LibraryFrame frame will hold all the panels necessary for the BookShelf library system. 
+ * 
+ * @author Kevin Alexander
+ * @author Shi Kaiyuan
+ * @version June 4, 2014
+ *
+ */
 public class LibraryFrame extends JFrame{
 	
 	private BookShelfDB myDatabase;
@@ -18,7 +26,10 @@ public class LibraryFrame extends JFrame{
 	
 	private JPanel myCurrentPanel;
 	
-	
+	/**
+	 * The LibraryFrame constructor. It initializes the frame and sets the first panel to show a
+	 * list of BookInfo items.
+	 */
 	public LibraryFrame() {
 		myDatabase = new BookShelfDB();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -30,7 +41,10 @@ public class LibraryFrame extends JFrame{
         this.setVisible(true);
 	}
 	
-	
+	/**
+	 * This method initializes the first panel (BookInfoListPanel) that will be placed
+	 * on the center of the LibraryFrame.
+	 */
 	private void initPanels() {
 		initButtonPanel();
 		myCurrentPanel = new BookInfoListPanel(myDatabase, this);
@@ -40,6 +54,9 @@ public class LibraryFrame extends JFrame{
 		this.add(myButtonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * This method initializes the buttons that will be on the LibraryFrame.
+	 */
 	private void initButtonPanel() {
 		myButtonPanel = new JPanel();
 		JButton searchBooks = new JButton("Search Book Info");
@@ -95,6 +112,10 @@ public class LibraryFrame extends JFrame{
 		
 	}
 	
+	/**
+	 * This method is used to replace the current JPanel on the LibraryFrame.
+	 * @param thePanel A JPanel.
+	 */
 	public void replaceContentPanel(JPanel thePanel) {
 		this.remove(myCurrentPanel);
 		myCurrentPanel = thePanel;
@@ -104,53 +125,83 @@ public class LibraryFrame extends JFrame{
 		this.repaint();
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a PatronRecordList panel.
+	 * @param theObject An object which is used to initialize the PatronRecordList panel.
+	 */
 	public void showPatronRecordListPanel(Object theObject) {
 		System.out.println("LibraryFrame: Changing to PatronRecordList");
 		replaceContentPanel(new PatronRecordList(this, myDatabase, theObject));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a BookListPanel.
+	 */
 	public void showBookListPanel() {
 		System.out.println("LibraryFrame: Changing to BookListPanel");
 		replaceContentPanel(new BookListPanel(this, myDatabase));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a BookPanel.
+	 */
 	public void showBookPanel() {
 		System.out.println("LibraryFrame: Changing to BookPanel");
 		replaceContentPanel(new BookPanel(this, myDatabase));
 	}
 	
-	
-	/////////////////////////////////////////////////////
-	////JPanel Switch Method Here////////////////////////
-	/////////////////////////////////////////////////////
+	/**
+	 * This method replaces the current JPanel with a PublisherListPanel.
+	 */
 	public void showPublisherListPanel() {
 		replaceContentPanel(new PublisherListPanel(myDatabase, this));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a PublisherInfoPanel.
+	 */
 	public void showPublisherInfoPanel() {
 		replaceContentPanel(new PublisherInfoPanel(myDatabase, this));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a BookInfoListPanel.
+	 */
 	public void showBookInfoListPanel() {
 		replaceContentPanel(new BookInfoListPanel(myDatabase, this));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a BookInfoPanel.
+	 */
 	public void showBookInfoPanel() {
 		replaceContentPanel(new BookInfoPanel(myDatabase, this));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a SearchPanel.
+	 */
 	public void showSearchPanel() {
 		replaceContentPanel(new SearchPanel(myDatabase, this));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a PatronListPanel.
+	 */
 	public void showPatronListPanel() {
 		replaceContentPanel(new PatronListPanel(this, myDatabase));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a PatronPanel.
+	 */
 	public void showPatronPanel() {
 		replaceContentPanel(new PatronPanel(this, myDatabase));
 	}
 	
+	/**
+	 * This method replaces the current JPanel with a PatronRecordPanel..
+	 */
 	public void showPatronRecordPanel() {
 		replaceContentPanel(new PatronRecordPanel(this, myDatabase));
 	}
