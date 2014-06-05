@@ -1,13 +1,24 @@
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.TableModelEvent;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+
 import java.sql.SQLException;
+
+import java.util.ArrayList;
 import java.util.List;
-import java.util.*;
 
-
+@SuppressWarnings("serial")
 public class BookListPanel extends JPanel implements ActionListener, TableModelListener {
 	
 	private String[] myColumnNames = {"bookID", "title", "author", "ISBN" };
@@ -30,7 +41,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 	
 	private JButton myClearSearchButton;
 	
-	private JComboBox mySearchByList;
+	private JComboBox<String> mySearchByList;
 	
 	private JTextField mySearchField;
 	
@@ -103,7 +114,7 @@ public class BookListPanel extends JPanel implements ActionListener, TableModelL
 		myClearSearchButton.addActionListener(this);
 		
 		
-		mySearchByList = new JComboBox(myColumnNames);
+		mySearchByList = new JComboBox<String>(myColumnNames);
 		mySearchByList.setSelectedIndex(0);
 		
 		mySearchField = new JTextField(45);

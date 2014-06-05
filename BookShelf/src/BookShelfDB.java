@@ -10,7 +10,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class BookShelfDB {
 	private static String userName = "_445team15";
@@ -706,7 +705,6 @@ public class BookShelfDB {
 	}
     
     public Book getBookByID(int bookID) {
-    	List<Book> booksByID = new ArrayList<Book>();
     	
     	try {
     		bookList = getBooks();

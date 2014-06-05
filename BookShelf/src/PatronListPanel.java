@@ -1,24 +1,23 @@
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JButton;
+import javax.swing.JTable;
+import javax.swing.JScrollPane;
+import javax.swing.JComboBox;
+import javax.swing.event.TableModelListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.table.TableModel;
+
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.TableModel;
-
-
+@SuppressWarnings("serial")
 public class PatronListPanel extends JPanel implements ActionListener, TableModelListener {
 	
 	private BookShelfDB myDB;
@@ -43,7 +42,7 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 	
 	private JScrollPane myScrollPane;
 	
-	private JComboBox mySearchByList;
+	private JComboBox<String> mySearchByList;
 	
 	private JTextField mySearchField;
 	
@@ -93,7 +92,7 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		buttonPanel.add(myViewPatronRecordsButton);
 		buttonPanel.add(myAddPatronButton);
 		
-		mySearchByList = new JComboBox(myColumnNames);
+		mySearchByList = new JComboBox<String>(myColumnNames);
 		mySearchByList.setSelectedIndex(0);
 		
 		mySearchField = new JTextField(45);
@@ -157,7 +156,6 @@ public class PatronListPanel extends JPanel implements ActionListener, TableMode
 		
 				int searchForIndex = mySearchByList.getSelectedIndex();
 				int found = 0;
-				Object searchFor;
 				
 				for (Patron patron : myPatronList) {
 					switch(searchForIndex) {

@@ -1,15 +1,26 @@
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.sql.Date;
+import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 import java.sql.SQLException;
+import java.sql.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class PatronRecordPanel extends JPanel implements ActionListener {
 	
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -26,8 +37,6 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 	
 	private JLabel myBorrowByLabel;
 	
-	private JLabel myReturnByLabel;
-	
 	private JTextField myRecordIDText;
 	
 	private JTextField myBookIDText;
@@ -35,8 +44,6 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 	private JTextField myPatronIDText;
 	
 	private JTextField myBorrowByText;
-	
-	private JTextField myReturnByText;
 	
 	private LibraryFrame myFrame;
 	
@@ -147,7 +154,7 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 	
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddButton) {
-			Date borrowBy = null, returnBy = null;
+			Date returnBy = null;
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 			Date date = null;
 			try {
@@ -164,27 +171,40 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 			List<PatronRecord> patronRecords = new ArrayList<PatronRecord>();
 			Patron patron = null;
 			Book book = null;
+			boolean bookNotCheckedOut = true;
 			try {
 				patron = myDB.getPatronByID(Integer.parseInt(myPatronIDText.getText()));
 				book = myDB.getBookByID(Integer.parseInt(myBookIDText.getText()));
+				patronRecords = myDB.getPatronRecordByBookID(Integer.parseInt(myBookIDText.getText()));
 				
 			} catch (SQLException e) {
 				System.out.println(e);
 				e.printStackTrace();
 			}
-			if (book != null && patron != null) {
+		
+			for (PatronRecord pr : patronRecords) {
+				if (pr.getReturnByDate() == null) {
+					bookNotCheckedOut = false;
+					break;
+				}
+			}
+			
+			if (book != null && patron != null && bookNotCheckedOut) {
 				myDB.placeOrder(newPatronRecord.getRecordID(), newPatronRecord.getBorrowByDate(), 
 						        newPatronRecord.getPatronID(), newPatronRecord.getBookID());
 				JOptionPane.showMessageDialog(null, "PatronRecord Successfully added. Book Is Due In 30 Days");
+				myFrame.showPatronRecordListPanel(null);
 			} else {
-				System.out.println("Book and or Patron Not Found in Database");
-				if (book == null && patron == null) {
-					JOptionPane.showMessageDialog(null, "Book and Patron Were Not Found In Database");
+				System.out.println("Book and or Patron Not Found in Database, or Book Already Checked Out");
+				if (!bookNotCheckedOut) {
+					JOptionPane.showMessageDialog(null, "Book Already Checked Out", "Error", JOptionPane.ERROR_MESSAGE);
+				} else if (book == null && patron == null) {
+					JOptionPane.showMessageDialog(null, "Book and Patron Were Not Found In Database", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 				else if (book == null) {
-					JOptionPane.showMessageDialog(null, "Book Was Not Found In Database");
+					JOptionPane.showMessageDialog(null, "Book Was Not Found In Database", "Error", JOptionPane.ERROR_MESSAGE);
 				} else {
-					JOptionPane.showMessageDialog(null, "Patron Was Not Found In Database");
+					JOptionPane.showMessageDialog(null, "Patron Was Not Found In Database", "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		} else if (theEvent.getSource() == myBackButton) {

@@ -1,12 +1,22 @@
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+
 import java.sql.SQLException;
-import java.util.*;
+
+import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class BookPanel extends JPanel implements ActionListener {
 	
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -137,7 +147,7 @@ public class BookPanel extends JPanel implements ActionListener {
 				JOptionPane.showConfirmDialog(null, "Book Successfully Added!");
 				myFrame.showBookListPanel();
 			} else {
-				JOptionPane.showMessageDialog(null, "ISBN Was Not Found In Database");
+				JOptionPane.showMessageDialog(null, "ISBN Was Not Found In Database", "Error", JOptionPane.ERROR_MESSAGE);
 				System.out.println("ISBN Not Found In BookInfo");
 			}
 		} else if (theEvent.getSource() == myBackButton) {

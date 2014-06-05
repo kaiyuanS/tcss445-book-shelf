@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+@SuppressWarnings("serial")
 /**
  * This is the PatronRecordList panel class. It is used to show a scrollable list of all the 
  * PatronRecords currently within the database. This panel allows the user to search all records

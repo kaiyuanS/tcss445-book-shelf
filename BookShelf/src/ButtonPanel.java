@@ -1,11 +1,9 @@
-import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
+@SuppressWarnings("serial")
 public class ButtonPanel extends JPanel{
 	
 	private JButton myBookList;

@@ -1,12 +1,19 @@
-import javax.swing.*;
-import javax.swing.event.*;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.BorderLayout;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
+import java.awt.Dimension;
+
 import java.sql.SQLException;
-import java.util.List;
-import java.util.*;
 
+@SuppressWarnings("serial")
 public class PatronPanel extends JPanel implements ActionListener { 
 
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -56,8 +63,6 @@ public class PatronPanel extends JPanel implements ActionListener {
 	private BookShelfDB myDB;
 	
 	private JButton myAddButton;
-	
-	private JButton myBackButton;
 	
 	private JPanel myLabelPanel;
 	

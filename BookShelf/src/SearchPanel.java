@@ -16,11 +16,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 
-
+@SuppressWarnings("serial")
 public class SearchPanel extends JPanel implements ActionListener{
 	
 	private BookShelfDB myDatabase;
-	private LibraryFrame myFrame;
+	//private LibraryFrame myFrame;
 	
 	private JTextField myKeyword;
 	private JLabel myLabel;
@@ -46,7 +46,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 	public SearchPanel(BookShelfDB aDatabase, LibraryFrame aFrame) {
 		super();
 		myDatabase = aDatabase;
-		myFrame = aFrame;
+		//myFrame = aFrame;
 		buildSearchPanel();
 		buildResultPanel();
 	}
