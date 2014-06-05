@@ -149,9 +149,10 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		if (theEvent.getSource() == myAddButton) {
 			Date borrowBy = null, returnBy = null;
 			SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			Date date = null;
 			try {
 				java.util.Date parsed = format.parse(myBorrowByText.getText());
-				Date date = new Date(parsed.getTime());
+				date = new Date(parsed.getTime());
 				
 			} catch (ParseException e) {
 				System.out.println(e);
@@ -159,7 +160,7 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 			}
 			PatronRecord newPatronRecord = new PatronRecord(Integer.parseInt((myRecordIDText.getText())),
 					Integer.parseInt(myPatronIDText.getText()), Integer.parseInt(myBookIDText.getText()),
-					borrowBy, returnBy);
+					date, returnBy);
 			List<PatronRecord> patronRecords = new ArrayList<PatronRecord>();
 			Patron patron = null;
 			Book book = null;
@@ -174,8 +175,17 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 			if (book != null && patron != null) {
 				myDB.placeOrder(newPatronRecord.getRecordID(), newPatronRecord.getBorrowByDate(), 
 						        newPatronRecord.getPatronID(), newPatronRecord.getBookID());
+				JOptionPane.showMessageDialog(null, "PatronRecord Successfully added. Book Is Due In 30 Days");
 			} else {
 				System.out.println("Book and or Patron Not Found in Database");
+				if (book == null && patron == null) {
+					JOptionPane.showMessageDialog(null, "Book and Patron Were Not Found In Database");
+				}
+				else if (book == null) {
+					JOptionPane.showMessageDialog(null, "Book Was Not Found In Database");
+				} else {
+					JOptionPane.showMessageDialog(null, "Patron Was Not Found In Database");
+				}
 			}
 		} else if (theEvent.getSource() == myBackButton) {
 			myFrame.showPatronRecordListPanel(null);

@@ -202,7 +202,7 @@ public class PatronPanel extends JPanel implements ActionListener {
 					       myZipText.getText());
 			
 			myDB.addPatron(newPatron);
-			
+			JOptionPane.showMessageDialog(null, "Patron Successfully Added");
 			myFrame.showPatronListPanel();
 			
 		} 

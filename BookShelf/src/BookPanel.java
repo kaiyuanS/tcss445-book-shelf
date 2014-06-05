@@ -134,7 +134,10 @@ public class BookPanel extends JPanel implements ActionListener {
 			
 			if (tmp != null) {
 				myDB.addBook(newBook);
+				JOptionPane.showConfirmDialog(null, "Book Successfully Added!");
+				myFrame.showBookListPanel();
 			} else {
+				JOptionPane.showMessageDialog(null, "ISBN Was Not Found In Database");
 				System.out.println("ISBN Not Found In BookInfo");
 			}
 		} else if (theEvent.getSource() == myBackButton) {

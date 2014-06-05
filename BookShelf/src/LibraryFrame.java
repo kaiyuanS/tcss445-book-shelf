@@ -40,7 +40,7 @@ public class LibraryFrame extends JFrame{
 	public LibraryFrame() {
 		myDatabase = new BookShelfDB();
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-		this.setPreferredSize(new Dimension(800, 600));
+		this.setPreferredSize(new Dimension(850, 600));
 		this.setLayout(new BorderLayout());
 		//addPanel();
 		initPanels();
