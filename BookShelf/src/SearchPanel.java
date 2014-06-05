@@ -100,7 +100,7 @@ public class SearchPanel extends JPanel implements ActionListener{
 		}
 		myBookTable = new JTable(myBookData, myColName);
 		myBookTable.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-		//myBookTable.setEnabled(false);
+		myBookTable.setEnabled(false);
 		myListScrollPane = new JScrollPane(myBookTable);
 		myListScrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 		myListScrollPane.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);

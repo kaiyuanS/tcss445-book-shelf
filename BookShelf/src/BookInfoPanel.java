@@ -178,7 +178,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 					e.printStackTrace();
 				}
 				
-				if(!publisherName.contains(myPublisherText.getText())) {
+				if(!publisherName.contains(myPublisherText.getText().toLowerCase())) {
 					JOptionPane.showMessageDialog(null, "the publisher do not extist!", "error",JOptionPane.ERROR_MESSAGE);
 				} else {
 				

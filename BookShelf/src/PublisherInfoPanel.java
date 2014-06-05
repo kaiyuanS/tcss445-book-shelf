@@ -147,14 +147,14 @@ public class PublisherInfoPanel extends JPanel implements ActionListener{
 	public void actionPerformed(ActionEvent anEvent) {
 		
 		if (anEvent.getSource() == myAddButton) {
-			Publisher newPublisher = new Publisher(myNameText.getText(), myStreetText.getText(),
+			Publisher newPublisher = new Publisher(myNameText.getText().toLowerCase(), myStreetText.getText(),
 					myCityText.getText(), myStateText.getText(), myZipText.getText(),
 					myCountryText.getText(), Integer.valueOf(myFoundedText.getText()));
 			
 			myDatebase.addPublisher(newPublisher);
 			//JOptionPane.showMessageDialog(null, "Added Successfully!");
 			myFrame.showPublisherListPanel();
-	}
+		}
 		
 	}
 	

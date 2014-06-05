@@ -293,7 +293,7 @@ public class BookShelfDB {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			while (rs.next()) {
-				int recordNum = rs.getInt("recordInt");
+				int recordNum = rs.getInt("recordID");
 				Date borrowBy = rs.getDate("borrowBy");
 				int patronId = rs.getInt("patronID");
 				int bookId = rs.getInt("bookID");
@@ -331,10 +331,10 @@ public class BookShelfDB {
 			ResultSet rs = stmt.executeQuery(query);
 			
 			while (rs.next()) {
-				int recordNum = rs.getInt("recordInt");
+				int recordNum = rs.getInt("recordID");
 				Date borrowBy = rs.getDate("borrowBy");
-				int patronId = rs.getInt("Patron_patronID");
-				int bookId = rs.getInt("Book_bookID");
+				int patronId = rs.getInt("patronID");
+				int bookId = rs.getInt("bookID");
 				Date returnBy = rs.getDate("returnBy");
 				
 				PatronRecord pr = new PatronRecord(recordNum, patronId, bookId, borrowBy, returnBy);
