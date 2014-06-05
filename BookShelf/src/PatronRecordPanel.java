@@ -20,6 +20,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * 
+ * @author Administrator
+ *
+ */
 @SuppressWarnings("serial")
 /**
  * The PatronRecordPanel holds all the information related to the PatronRecord. This panel is
