@@ -32,7 +32,7 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	private JTable myBookTable;
 	private JScrollPane myListScrollPane;
 	private String[] myColName = {"title", "author", "ISBN", "year", "format", "pageNumber",
-			"language", "bookselfNumber", "layerNumber", "publisherName"};
+			"language", "bookshelfNumber", "layerNumber", "publisherName"};
 	private Object[][] myBookData;
 	
 	JButton mySearch;
@@ -295,6 +295,9 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		}
 	}
 	
+	/**
+	 * This method shows the filtered the filtered bookInfo in the JTable
+	 */
 	private void refreshTable() {
 		//System.out.println(myBookInfoList.size());
 		for (int i=0; i<myBookData.length; i++) {
@@ -336,14 +339,14 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 	
 	@Override
 	public void actionPerformed(ActionEvent anEvent) {
-		if (anEvent.getSource() == myClear) {
+		if (anEvent.getSource() == myClear) { //clear selections
 			unSelectedAll();
 			filterBookInfo();
-		} else if (anEvent.getSource() == mySearch) {
+		} else if (anEvent.getSource() == mySearch) { //search the bookInfo by filter
 			filterBookInfo();
-		} else if (anEvent.getSource() == myAdd) {
+		} else if (anEvent.getSource() == myAdd) { //add a new bookInfo
 			myFrame.showBookInfoPanel();
-		} else if (anEvent.getSource() == myDelete) {
+		} else if (anEvent.getSource() == myDelete) { //delete a bookInfo 
 			int row = myBookTable.getSelectedRow();
 			if (row != -1) {
 				String theISBN = (String)myBookData[row][2];
@@ -354,6 +357,10 @@ public class BookInfoListPanel extends JPanel implements ActionListener, TableMo
 		
 	}
 	
+	/*
+	 * when bookInfo was edited in the JTable,
+	 * modify the data it in the database 
+	 */
 	@Override
 	public void tableChanged(TableModelEvent anEvent) {
 		int row = anEvent.getFirstRow();

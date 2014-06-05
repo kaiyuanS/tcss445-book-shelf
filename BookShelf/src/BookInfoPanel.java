@@ -32,7 +32,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 	private JLabel myFormatLabel;
 	private JLabel myPageNumberLabel;
 	private JLabel myLanguageLabel;
-	private JLabel myBookselfNumberLabel;
+	private JLabel myBookshelfNumberLabel;
 	private JLabel myLayerNumberLabel;
 	private JLabel myPublisherLabel;
 	
@@ -43,7 +43,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 	private JTextField myFormatText;
 	private JTextField myPageNumberText;
 	private JTextField myLanguageText;
-	private JTextField myBookSelfNumberText;
+	private JTextField myBookShelfNumberText;
 	private JTextField myLayerNumberText;
 	private JTextField myPublisherText;
 	
@@ -78,8 +78,8 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		myPageNumberLabel.setPreferredSize(LABEL_SIZE);
 		myLanguageLabel = new JLabel("Language:");
 		myLanguageLabel.setPreferredSize(LABEL_SIZE);
-		myBookselfNumberLabel = new JLabel("Bookself Number:");
-		myBookselfNumberLabel.setPreferredSize(LABEL_SIZE);
+		myBookshelfNumberLabel = new JLabel("Bookshelf Number:");
+		myBookshelfNumberLabel.setPreferredSize(LABEL_SIZE);
 		myLayerNumberLabel = new JLabel("Layer Number:");
 		myLayerNumberLabel.setPreferredSize(LABEL_SIZE);
 		myPublisherLabel = new JLabel("Publisher:");
@@ -102,8 +102,8 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		myPageNumberText.setPreferredSize(TEXT_SIZE);
 		myLanguageText = new JTextField();
 		myLanguageText.setPreferredSize(TEXT_SIZE);
-		myBookSelfNumberText = new JTextField();
-		myBookSelfNumberText.setPreferredSize(TEXT_SIZE);
+		myBookShelfNumberText = new JTextField();
+		myBookShelfNumberText.setPreferredSize(TEXT_SIZE);
 		myLayerNumberText = new JTextField();
 		myLayerNumberText.setPreferredSize(TEXT_SIZE);
 		myPublisherText = new JTextField();
@@ -116,7 +116,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		myFormatText.setEditable(true);
 		myPageNumberText.setEditable(true);
 		myLanguageText.setEditable(true);
-		myBookSelfNumberText.setEditable(true);
+		myBookShelfNumberText.setEditable(true);
 		myLayerNumberText.setEditable(true);
 		myPublisherText.setEditable(true);
 		
@@ -150,8 +150,8 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 		myTextPanel.add(myPageNumberText);
 		myLabelPanel.add(myLanguageLabel);
 		myTextPanel.add(myLanguageText);
-		myLabelPanel.add(myBookselfNumberLabel);
-		myTextPanel.add(myBookSelfNumberText);
+		myLabelPanel.add(myBookshelfNumberLabel);
+		myTextPanel.add(myBookShelfNumberText);
 		myLabelPanel.add(myLayerNumberLabel);
 		myTextPanel.add(myLayerNumberText);
 		myLabelPanel.add(myPublisherLabel);
@@ -173,7 +173,6 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 				try {
 					publisherName = myDatabase.getPublisherName();
 				} catch (SQLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 				
@@ -184,7 +183,7 @@ public class BookInfoPanel extends JPanel implements ActionListener{
 					BookInfo newBookInfo = new BookInfo(myISBNText.getText(), myTitleText.getText(),
 							Integer.valueOf(myYearText.getText()), myAuthorText.getText(),
 							myFormatText.getText(), Integer.valueOf(myPageNumberText.getText()),
-							myLanguageText.getText(), Integer.valueOf(myBookSelfNumberText.getText()),
+							myLanguageText.getText(), Integer.valueOf(myBookShelfNumberText.getText()),
 							Integer.valueOf(myLayerNumberText.getText()), myPublisherText.getText());
 					
 					
