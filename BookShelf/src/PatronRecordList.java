@@ -202,6 +202,7 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 			if (prList.size() == 0) {
 				JOptionPane.showConfirmDialog(null, "No records for PatronID " + patronID);
 			} else {
+				this.remove(myScrollPane);
 				initializeTableData(prList);
 				this.repaint();
 			}
@@ -219,6 +220,7 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 			if (prList.size() == 0) {
 				JOptionPane.showConfirmDialog(null, "No records for BookID " + bookID);
 			} else {
+				this.remove(myScrollPane);
 				initializeTableData(prList);
 				this.repaint();
 			}
@@ -229,7 +231,7 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 				System.out.println(e);
 				e.printStackTrace();
 			}
-			
+			this.remove(myScrollPane);
 			initializeTableData(myPatronRecordList);
 			this.repaint();
 		} else if (theEvent.getSource() == myAddButton) {
@@ -244,15 +246,12 @@ public class PatronRecordList extends JPanel implements ActionListener, TableMod
 				e.printStackTrace();
 			}
 			
-			System.out.println(myPatronRecordList.size());
 			for (PatronRecord pr : myPatronRecordList) {
 				if (pr.getReturnByDate() == null) {
-					System.out.println("pr: " + pr.getRecordID() + " returnDate is null");
 					checkedOutOrders.add(pr);
 				}
 			}
 			
-
 			myPatronRecordList = checkedOutOrders;
 			this.remove(myScrollPane);
 			initializeTableData(myPatronRecordList);
