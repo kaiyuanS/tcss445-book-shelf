@@ -17,6 +17,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 
 @SuppressWarnings("serial")
+/**
+ * The SearchPanel panel allows the users to search for a book based off of its title, author, isbn,
+ * and/or year
+ * @author Shi Kaiyuan
+ * @version June 3, 2014
+ *
+ */
 public class SearchPanel extends JPanel implements ActionListener{
 	
 	private BookShelfDB myDatabase;
