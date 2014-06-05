@@ -11,6 +11,11 @@ import java.util.List;
 import java.util.Properties;
 import java.util.Calendar;
 
+/**
+ * The database of the system.
+ * @author Kaiyuan Shi, Kevin Alexander
+ * @version Spr. 2014
+ */
 public class BookShelfDB {
 	private static String userName = "_445team15";
     private static String password = "dubdap,";
@@ -22,6 +27,10 @@ public class BookShelfDB {
 	private List<BookInfo> bookInfoList;
 	private List<Patron> patronList;
 	
+	/**
+	 * create connection to the database
+	 * @throws SQLException the exception if there's any connection failure.
+	 */
 	public static void createConnection() throws SQLException {
 		Properties connectionProps = new Properties();
 		connectionProps.put("user", userName);
@@ -36,7 +45,11 @@ public class BookShelfDB {
 	////////////////////////////////////////////////////////
 	/// PUBLISHER METHODS //////////////////////////////////
 	////////////////////////////////////////////////////////
-	
+	/**
+	 * this method get all publishers in the system
+	 * @return all Publishers in the system
+	 * @throws SQLException the exception information
+	 */
 	public List<Publisher> getPublishers() throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -81,6 +94,11 @@ public class BookShelfDB {
 		return pubList;
 	}
 	
+	/**
+	 * This method gets all the publishers' name in the system
+	 * @return A List of String contains all the names of the publishers in the system
+	 * @throws SQLException the exception information
+	 */
 	public List<String> getPublisherName() throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -107,6 +125,11 @@ public class BookShelfDB {
 		return pubNameList;
 	}
 	
+	/**
+	 * this method returns all the publishers searching by the a name
+	 * @param publisherName the name to be used to do searching
+	 * @return the list of a publisher contains the given name
+	 */
 	public List<Publisher> getPublisherByName(String publisherName) {
 		List<Publisher> filterList = new ArrayList<Publisher>();
 		try {
@@ -124,6 +147,10 @@ public class BookShelfDB {
 		return filterList;
 	}
 	
+	/**
+	 * This method adds a new publisher in the system
+	 * @param aPublisher a new publisher needs to be added
+	 */
 	public void addPublisher(Publisher aPublisher) {
 		String sql = "INSERT INTO _445team15.Publisher VALUES "
                 + "(?, ?, ?, ?, ?, ?, ?);";
@@ -148,6 +175,12 @@ public class BookShelfDB {
         } 
 	}
 	
+	/**
+	 * update the publisher information in the system
+	 * @param aPublisherName the name of the publisher need to be updated
+	 * @param anAttribute the attribute of the publisher need to be updated
+	 * @param aData the data need to be updated
+	 */
 	public void upDatePublisher(String aPublisherName, String anAttribute, Object aData) {
 		String sql = "UPDATE _445team15.Publisher SET "
                 + anAttribute + " = ? WHERE publisherName = ?;";
@@ -172,6 +205,10 @@ public class BookShelfDB {
         } 
 	}
 	
+	/**
+	 * this method remove a publisher from the system
+	 * @param aPublisherName the name of the publisher need to be removed
+	 */
 	public void removePublisher(String aPublisherName) {
 		String sql = "DELETE FROM _445team15.Publisher WHERE publisherName = ?;";
         
@@ -190,12 +227,15 @@ public class BookShelfDB {
         } 
 	}
 	
-	/// other publisher sql statements
-	
 	////////////////////////////////////////////////////////////////////
 	////// PATRON RECORD METHODS ///////////////////////////////////////
 	////////////////////////////////////////////////////////////////////
 	
+	/**
+	 * this method returns all the patron records from the system
+	 * @return the List of all PatronRecords in the system 
+	 * @throws SQLException the exception information
+	 */
 	public List<PatronRecord> getPatronRecords() throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -236,6 +276,10 @@ public class BookShelfDB {
 		return prList;		 
 	}
 	
+	/**
+	 * this method returns all the non returned books in the system
+	 * @return a List of all non returnd books' records in the system
+	 */
 	public List<PatronRecord> getPatronRecordNonReturnedBooks() {
 		List<PatronRecord> nonReturnedBooks = new ArrayList<PatronRecord>();
 		
@@ -254,26 +298,12 @@ public class BookShelfDB {
 		return nonReturnedBooks;
 	}
 	
-	/*
-	public List<PatronRecord> getPatronRecordByPatronID(int patronID) {
-		List<PatronRecord> individualPatronRecords = new ArrayList<PatronRecord>();
-		
-		try {
-			prList = getPatronRecords();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		for (PatronRecord pr : prList) {
-			if (pr.getPatronID() == patronID) {
-				individualPatronRecords.add(pr);
-			}
-		}
-		
-		return individualPatronRecords;
-	}
-	*/
-	
+	/**
+	 * this methods get the borrow record accord to a patronID
+	 * @param patronID the patron ID number
+	 * @return all if the records of given patron ID
+	 * @throws SQLException the exception message
+	 */
 	public List<PatronRecord> getPatronRecordByPatronID(int patronID) throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -313,6 +343,12 @@ public class BookShelfDB {
 		return prList;
 	}
 	
+	/**
+	 * this method gets all the records of a given book 
+	 * @param bookID the bookID of a given book
+	 * @return all records of a given book
+	 * @throws SQLException the exception message
+	 */
 	public List<PatronRecord> getPatronRecordByBookID(int bookID) throws SQLException {
 		if (conn == null) {
 			createConnection();
@@ -357,7 +393,7 @@ public class BookShelfDB {
      * @param aRecordID
      * @param aDate
      */
-    public void setReturnDate(int aRecordID, Calendar aDate) {
+    /*public void setReturnDate(int aRecordID, Calendar aDate) {
         String sql = "UPDATE _445team15.PatronRecord SET returnBy = ? WHERE recordID = ?;";
         PreparedStatement preparedStatement = null;
         try {
@@ -368,13 +404,13 @@ public class BookShelfDB {
             System.out.println(e);
             e.printStackTrace();
         } 
-    }
+    }*/
     
     /**
      * get the record of a book
      * @param aBookID
      * @return
-     */
+     *//*
     public List<PatronRecord> getBookRecord(int aBookID) {
         String sql = "SELECT * FROM _445team15.PatronRecord WHERE bookID = ?;";
         PreparedStatement preparedStatement = null;
@@ -397,12 +433,12 @@ public class BookShelfDB {
             System.out.println(e);
         }
         return orderList;
-    }
+    }*/
     
     /**
      * get the record of a patron
-     * @param aBookID
-     * @return
+     * @param aPatronID the patron ID need to be searched
+     * @return the records of a given patron
      */
     public List<PatronRecord> getPatronRecord(int aPatronID) throws SQLException {
         String sql = "SELECT * FROM _445team15.PatronRecord WHERE patronID = ?;";
@@ -452,7 +488,7 @@ public class BookShelfDB {
 
     /**
      * get next recordID
-     * @return
+     * @return the ID of next order
      * @throws SQLException
      */
     public int getNextOrderID() throws SQLException {
@@ -480,6 +516,12 @@ public class BookShelfDB {
         return maxOrderID + 1;
     }
     
+    /**
+     * edit the patron record
+     * @param row row number
+     * @param columnName column name
+     * @param data the update data
+     */
     public void editPatronRecord(int row, String columnName, Object data) {
     	
     	PatronRecord patronRecord = prList.get(row);
@@ -547,6 +589,11 @@ public class BookShelfDB {
     }
     
 
+    /**
+     * get all the book's info
+     * @return all bookInfos in the system
+     * @throws SQLException
+     */
     public List<BookInfo> getBookInfo() throws SQLException {
     	if (conn == null) {
     		createConnection();
@@ -601,6 +648,12 @@ public class BookShelfDB {
 		return bookInfoList;		 
 	}
     
+    /**
+     * get BookInfo by a given ISBN
+     * @param isbn the given ISBN
+     * @return the BookInfo of the given ISBN
+     * @throws NullPointerException
+     */
     public BookInfo getBookInfoByISBN(String isbn) throws NullPointerException {
     	BookInfo bookInfo = null;
     	try {
@@ -668,7 +721,11 @@ public class BookShelfDB {
         } 
     }
     
-
+	/**
+	 * this methods get all books in the system
+	 * @return all books
+	 * @throws SQLException
+	 */
     public List<Book> getBooks() throws SQLException {
     	if (conn == null) {
     		createConnection();
@@ -727,7 +784,7 @@ public class BookShelfDB {
 
     /**
      * get next bookID
-     * @return
+     * @return next bookID #
      * @throws SQLException
      */
     public int getNextBookID() throws SQLException {
