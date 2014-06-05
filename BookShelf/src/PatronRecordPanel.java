@@ -21,6 +21,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressWarnings("serial")
+/**
+ * The PatronRecordPanel holds all the information related to the PatronRecord. This panel is
+ * used for the user to add a new PatronRecord to the database.
+ * 
+ * @author Kevin Alexander
+ * @version June 4, 2014
+ *
+ */
 public class PatronRecordPanel extends JPanel implements ActionListener {
 	
 	private static Dimension LABEL_SIZE = new Dimension(150, 45);
@@ -59,6 +67,13 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 	
 	private JPanel myButtonPanel;
 	
+	/**
+	 * The PatronRecord constructor takes in a LibraryFrame and BookShelfDB that myFrame and
+	 * myDB are assigned to respectively. It then configures the labels, textfields, and buttons.
+	 * 
+	 * @param theFrame The LibraryFrame.
+	 * @param theDB The BookShelfDB.
+	 */
 	public PatronRecordPanel(LibraryFrame theFrame, BookShelfDB theDB) {
 		super();
 		
@@ -75,6 +90,9 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		addComponents();
 	}
 
+	/**
+	 * This method configures all the labels.
+	 */
 	private void configLabel() {
 		myRecordIDLabel = new JLabel("RecordID:");
 		myRecordIDLabel.setPreferredSize(LABEL_SIZE);
@@ -86,6 +104,9 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		myBorrowByLabel.setPreferredSize(LABEL_SIZE);
 	}
 
+	/**
+	 * This method configures all the textfields.
+	 */
 	private void configTextField() {
 		myRecordIDText = new JTextField();
 		myRecordIDText.setPreferredSize(TEXT_SIZE);
@@ -115,6 +136,9 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		
 	}
 	
+	/**
+	 * This method configures all the buttons.
+	 */
 	private void configButton() {
 		myAddButton = new JButton("Add");
 		myAddButton.setPreferredSize(BUTTON_SIZE);
@@ -125,6 +149,9 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		myBackButton.addActionListener(this);
 	}
 	
+	/**
+	 * This method adss all the labels, textfields, and button(s) to the PatronRecordPanel.
+	 */
 	private void addComponents() {
 		myLabelPanel = new JPanel();
 		myLabelPanel.setLayout(new GridLayout(10, 1));
@@ -152,6 +179,9 @@ public class PatronRecordPanel extends JPanel implements ActionListener {
 		add(myButtonPanel, BorderLayout.SOUTH);
 	}
 	
+	/**
+	 * This method is called when a button is clicked.
+	 */
 	public void actionPerformed(ActionEvent theEvent) {
 		if (theEvent.getSource() == myAddButton) {
 			Date returnBy = null;
